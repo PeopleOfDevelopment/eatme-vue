@@ -1,6 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true,
+  lintOnSave: false,
 
   // npm run build 타겟 설정 (백엔드 연결)
   outputDir : "../eatme-server/src/main/resources/static",
