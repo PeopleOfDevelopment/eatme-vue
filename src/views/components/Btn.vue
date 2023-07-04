@@ -1,7 +1,8 @@
 <template>
     <div class="btn" :class="{ large }" 
     :style="{ backgroundColor: color, color: fontColor
-            ,border: borderColor}">
+            ,border: borderColor, padding: padding
+            ,width: width}">
         {{ text }}
     </div>
 </template>
@@ -13,10 +14,6 @@
                 type: String,
                 default: '연속촬영하기',
             },
-            large: {
-                type: Boolean,
-                default: false,
-            },
             color: {
                 type: String,
                 default: '#00A664',
@@ -27,6 +24,12 @@
             borderColor: {
                 default: 'solid 1px #00A664'
             },
+            padding: {
+                default: '10px'
+            },
+            width: {
+                default: '90%'
+            },
         },
     };
 </script>
@@ -34,8 +37,7 @@
 <style>
 .btn {
     display: inline-block;
-    margin: 4px;
-    padding: 6px 12px;
+    margin-top: 20px;
     border-radius: 4px;
     background-color: #000;
     color: #fff;
