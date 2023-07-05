@@ -8,7 +8,7 @@
 import { Options, Vue } from 'vue-class-component';
 import HelloWorld from './components/HelloWorld.vue';
 import axios from 'axios';
-import SideBar from './views/common/main/Sidebar.vue';
+import SideBar from './views/common/main/sidebar/Sidebar.vue';
 import Buttons from './views/components/Btn.vue';
 
 // 타입스크립트 연결 확인
