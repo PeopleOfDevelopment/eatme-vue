@@ -1,0 +1,56 @@
+:root {
+    --primary-l5: #F5FFF4;
+    --primary-l4: #C1FFD4;
+    --primary-l3: #78FBB0;
+    --primary-l2: #5ADE96;
+    --primary-l1: #38C27D;
+    --primary-def: #00A664;
+    --primary-d1: #008952;
+    --primary-d2: #006D40;
+    --primary-d3: #00522F;
+    --primary-d4: #00391F;
+    --primary-d5: #002110;
+
+    --secondary-l5: #FFFBFF;
+    --secondary-l4: #FFEDE9;
+    --secondary-l3: #FFDAD3;
+    --secondary-l2: #FFB4A5;
+    --secondary-l1: #FF8A72;
+    --secondary-def: #FE5737;
+    --secondary-d1: #DA3E20;
+    --secondary-d2: #B62407;
+    --secondary-d3: #8D1500;
+    --secondary-d4: #640C00;
+    --secondary-d5: #3E0500;
+
+    --system-success: #65C128;
+    --system-warning: #FFC300;
+    --system-danger: #D13125;
+    --system-info: #0272E2;
+
+    --gray900: #191C1A;
+    --gray800: #2E312E;
+    --gray700: #454744;
+    --gray600: #5C5F5C;
+    --gray500: #757874;
+    --gray400: #8F918D;
+    --gray300: #AAACA8;
+    --gray200: #C5C7C3;
+    --gray100: #E1E3DE;
+    --gray50: #F0F1EC;
+    --gray10: #FBFDF8;
+    --gray-white: #ffffff;
+    --gray-black: #000000;
+
+    --ngray900: #161D17;
+    --ngray800: #2B322C;
+    --ngray700: #414941;
+    --ngray600: #586059;
+    --ngray500: #717971;
+    --ngray400: #8B938A;
+    --ngray300: #A5ADA4;
+    --ngray200: #C1C9BF;
+    --ngray100: #DDE5DB;
+    --ngray50: #EBF3E9;
+    --ngray10: #F5FFF3;
+}
