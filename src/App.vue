@@ -2,14 +2,17 @@
   <!-- <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/> -->
   <SideBar></SideBar>
+  <modal1></modal1>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import HelloWorld from './components/HelloWorld.vue';
 import axios from 'axios';
-import SideBar from './views/common/main/Sidebar.vue';
+import SideBar from './views/common/main/sidebar/Sidebar.vue';
 import Buttons from './views/components/Btn.vue';
+import Join from './views/login/Join.vue';
+import modal1 from './views/common/components/modal1.vue';
 
 // 타입스크립트 연결 확인
 const testStr: string = "연결 완료"
@@ -30,6 +33,8 @@ async function getDbConnectionStatus() {
     HelloWorld,
     SideBar,
     Buttons,
+    Join,
+    modal1,
   },
 })
 export default class App extends Vue {}

@@ -1,8 +1,9 @@
 <template>
-    <div class="btn" :class="{ large }" 
+    <div class="btn"
     :style="{ backgroundColor: color, color: fontColor
-            ,border: borderColor, padding: padding
-            ,width: width}">
+            ,border: borderColor, padding: padding}"
+    :class="{ large }">
+        {{ i }}
         {{ text }}
     </div>
 </template>
@@ -22,13 +23,7 @@
                 default: '#00A664',
             },
             borderColor: {
-                default: 'solid 1px #00A664'
-            },
-            padding: {
-                default: '10px'
-            },
-            width: {
-                default: '90%'
+                default: 'solid 1px #00A664',
             },
         },
     };
@@ -46,7 +41,9 @@
 }
 
 .btn.large {
-    font-size: 20px;
-    padding: 10px 20px;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    width: 90%;
 }
 </style>
