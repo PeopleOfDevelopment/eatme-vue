@@ -1,0 +1,33 @@
+export default [{
+    id: 0,
+    title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
+    price: 6675,
+    discount: 25,
+    day: "2023.05.29",
+    martName: "gs25 영통한아름점",
+    },
+    {
+        id: 1,
+        title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 4봉",
+        price: 6675,
+        discount: 25,
+        day: "2023.05.29",
+        martName: "gs25 영통한아름점",
+    },
+    {
+        id: 2,
+        title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
+        price: 6675,
+        discount: 25,
+        day: "2023.05.29",
+        martName: "gs25 영통한아름점",
+        },
+        {
+            id: 3,
+            title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 2봉",
+            price: 6675,
+            discount: 25,
+            day: "2023.05.29",
+            martName: "gs25 영통한아름점",
+            },
+]
