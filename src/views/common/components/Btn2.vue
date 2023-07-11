@@ -31,6 +31,10 @@ const btnClass = computed(() => {
             return 'text-gray-button';
         case 'textGrayThin':
             return 'text-gray-thin-button';
+        case 'outline-green':
+            return 'outline-green-button';
+        case 'outline-gray' :
+            return 'outline-gray-button';
         default:
             return '';
     }
@@ -75,6 +79,20 @@ const btnClass = computed(() => {
 .text-gray-thin-button {
     color: var(--ngray600);
     font-weight: 500;
+}
+
+.outline-green-button {
+    width: 90%;
+    color: #00A664;
+    background-color: white;
+    border: solid 1px #00A664;
+}
+
+.outline-gray-button {
+    width: 90%;
+    color: #00A664;
+    background-color: white;
+    border: solid 1px #A5ADA4;
 }
 
 </style>

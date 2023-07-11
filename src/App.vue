@@ -1,6 +1,6 @@
 <template>
   <SideBar></SideBar>
-  <modal1></modal1>
+  <history1></history1>
 </template>
 
 <script lang="ts">
@@ -10,6 +10,7 @@ import SideBar from './views/common/main/sidebar/Sidebar.vue';
 import Buttons from './views/components/Btn.vue';
 import Join from './views/login/Join.vue';
 import modal1 from './views/common/components/modal1.vue';
+import history1 from './views/purchase/purchase-history/PurchaseHistory.vue';
 
 @Options({
   components: {
@@ -18,6 +19,7 @@ import modal1 from './views/common/components/modal1.vue';
     Buttons,
     Join,
     modal1,
+    history1,
   },
 })
 
