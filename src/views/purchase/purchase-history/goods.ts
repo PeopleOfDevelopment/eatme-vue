@@ -30,4 +30,12 @@ export default [{
             day: "2023.05.29",
             martName: "gs25 영통한아름점",
             },
+            {
+                id: 4,
+                title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 2봉",
+                price: 6675,
+                discount: 25,
+                day: "2023.05.29",
+                martName: "gs25 영통한아름점",
+                },
 ]
