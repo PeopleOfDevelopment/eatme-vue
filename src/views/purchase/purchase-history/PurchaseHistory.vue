@@ -8,6 +8,7 @@
             <p class="g-name1">{{ goods[i].title }}</p>
             <p class="d-text1">{{ goods[i].discount }}%</p>
             <p class="t-text1">{{ goods[i].price }}원</p>
+            <p class="o-text2">8000원</p>
             </div>
             <div class="p-menus3">
             <p class="d-text2">{{ goods[i].day }}</p>
@@ -66,7 +67,8 @@ import Btn from '../../common/components/Btn2.vue';
 .p-menus3 {
     width: 50%;
     float: right;
-    margin-top: 20px;
+    margin-top: 60px;
+    text-align: center;
 }
 
 .p-img1 {
@@ -97,18 +99,39 @@ import Btn from '../../common/components/Btn2.vue';
     color: #FE5737;
     text-align: left;
     margin-top: 10px;
+    margin-right: 10px;
     margin-bottom: 0px;
+    float: left;
 }
 
 .t-text1 {
     font-weight: bold;
     text-align: left;
+    float: right;
     margin-top: 10px;
-    margin: 0 auto;
+    margin-right: 77%;
+    margin-bottom: 0px;
+}
+
+.o-text2 {
+    text-align: left;
+    float: left;
+    margin-top: 5px;
+    font-size: 14px;
+    color: #8F918D;
+    text-decoration: line-through;
 }
 
 .d-text2 {
     text-align: right;
-    margin-right: 20%;
+    float: left;
+    margin-left: 250px;
+    padding-top: 15px;
+    color: #757874;
+}
+
+.t-btn1 {
+    float: right;
+    margin-right: 50px;
 }
 </style>

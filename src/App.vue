@@ -1,6 +1,7 @@
 <template>
-  <SideBar></SideBar>
-  <history1></history1>
+  <!-- <SideBar></SideBar>
+  <history1></history1> -->
+  <Join></Join>
 </template>
 
 <script lang="ts">
