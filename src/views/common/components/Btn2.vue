@@ -35,6 +35,10 @@ const btnClass = computed(() => {
             return 'outline-green-button';
         case 'outline-gray' :
             return 'outline-gray-button';
+        case 'outline-gray-small' :
+            return 'outline-gray-small-button';
+        case 'green-background':
+            return 'green-background-button';
         default:
             return '';
     }
@@ -88,11 +92,33 @@ const btnClass = computed(() => {
     border: solid 1px #00A664;
 }
 
+.green-background-button {
+    width: 100%;
+    color: white;
+    background-color: #00A664;
+    border: solid 1px #00A664;
+    padding: 15px;
+}
+
 .outline-gray-button {
     width: 90%;
     color: #00A664;
     background-color: white;
     border: solid 1px #A5ADA4;
+}
+
+.outline-gray-small-button {
+    width: 60px;
+    height: 12px;
+    color: #C1C9BF;
+    background-color: white;
+    border-radius: 20px;
+    border: solid 1px #C1C9BF;
+    font-size: 12px;
+    font-weight: 200;
+    margin-top: 15px;
+    text-align: center;
+    padding: 5px;
 }
 
 </style>
