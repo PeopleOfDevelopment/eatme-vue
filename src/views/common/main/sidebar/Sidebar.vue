@@ -67,8 +67,8 @@
         구매내역
       </p>
     </div>
-    <Btns btntype="outline-green">장바구니</Btns>
-    <Btns btntype="outline-gray">판매 관리</Btns>
+    <Btns btntype="outline-green" style="margin-top: 10px;">장바구니</Btns>
+    <Btns btntype="outline-gray" style="margin-top: 10px;">판매 관리</Btns>
   </div>
 </template>
 
@@ -85,14 +85,16 @@ export default {
 
 <style>
 .sideBar {
+  width: 12%;
   height: 100%;
   padding-left: 24px;
   padding-right: 24px;
-  padding-top: 24px;
+  padding-top: 12px;
   background-color: white;
   border-right-style: solid;
   border-right-color: #dde5db;
   border-right-width: 1px;
+  position: fixed;
 }
 
 .eatMe {
