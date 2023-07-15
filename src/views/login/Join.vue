@@ -5,20 +5,24 @@
         <p class="join-text2">이미 EAT ME의 회원이신가요?</p>
         <p class="join-text3">로그인</p>
         <div class="ph1">
-        <div class="id1"><placeHolder :placeholder="input1" style="width: 100%; float: left;"></placeHolder></div>
-        <Btns btntype="outline-green" style="width: 70px; padding: 10px;
-        margin-top: 7px; margin-left: 50px;">중복확인</Btns>
+            <div class="id1"><placeHolder :placeholder="input1" style="width: 91%; float: left;"></placeHolder></div>
+            <Btns btntype="outline-green" style="width: 70px; padding: 18px 10px 18px 10px;
+                margin-top: 7px; margin-left:2px; float: right;">중복확인</Btns>
         </div>
+
         <div class="ph1">
-        <div class="pw1"><placeHolder :placeholder="input2" style="width: 100%; float: left;"></placeHolder></div>
-        <Btns btntype="outline-green" style="width: 70px; padding: 10px;
-        margin-top: 7px; margin-left: 50px;">중복확인</Btns>
+            <div class="pw1"><placeHolder :placeholder="input2" style="width: 91%; float: left;"></placeHolder></div>
+            <Btns btntype="outline-green" style="width: 70px; padding: 18px 10px 18px 10px;
+                margin-top: 7px; margin-left: 2px; float: right;">중복확인</Btns>
         </div>
+
         <placeHolder :placeholder="input3"></placeHolder>
         <p class="join-text4">※문자, 숫자를 조합하여 8자리 이상 길이로 구성해주세요.</p>
+
         <placeHolder :placeholder="input4"></placeHolder>
         <placeHolder :placeholder="input5"></placeHolder>
         <placeHolder :placeholder="input6"></placeHolder>
+
         <div class="c-text1">
             <input type="checkbox" style="margin-right: 5px;">
             <p style="margin-right: 5px; color: #D13125">(필수)</p>
@@ -37,7 +41,7 @@
             <p style="margin-right: 5px; color: #757874">이벤트 및 프로모션 메일 수신 동의</p>
             <Btns btntype="outline-gray-small">내용보기</Btns>
         </div>
-        <Btns btntype="green-background">회원가입</Btns>
+        <Btns btntype="green-background" style="margin-top: 10px; margin-left: 10px; width: 92%;">회원가입</Btns>
     </div>
 </template>
 
@@ -101,8 +105,7 @@ import Btns from '../common/components/Btn2.vue';
 
 .ph1 {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
+    float: left;
 }
 
 .id1 {

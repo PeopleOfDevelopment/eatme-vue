@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <input class="inputInfor" type="text" :placeholder="placeholder">
-    </div>
+    <input class="inputInfor" type="text" :placeholder="placeholder">
 </template>
 
 <script>
@@ -17,7 +15,7 @@
 
 <style>
 .inputInfor {
-    width: 100%;
+    width: 92%;
     padding: 18px;
     margin: 7px;
     font-size: 18px;

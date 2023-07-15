@@ -37,36 +37,36 @@ import Btn from '../../common/components/Btn2.vue';
 <style>
 .all {
     font-family: Pretendard;
-    width: 1620px;
-    float: right;
+    margin-left: auto;
+    margin-right: 1%;
+    width: 83%;
 }
 
 .p-text1 {
     font-size: 36px;
     font-weight: bold;
     text-align: left;
-    padding-left: 70px;
+    padding-left: 50px;
     padding-top: 20px;
     padding-bottom: 20px;
 }
 
 .p-menus1 {
     background-color: white;
-    width: 92%;
     height: 196px;
     margin: 0 auto;
     border-top: solid 1px #DDE5DB;
-    word-break: break-all;
+    display: flex;
 }
 
 .p-menus2 {
     width: 30%;
-    float: left;
+    margin-right: auto;
 }
 
 .p-menus3 {
     width: 50%;
-    float: right;
+    margin-left: auto;
     margin-top: 60px;
     text-align: center;
 }
@@ -76,7 +76,7 @@ import Btn from '../../common/components/Btn2.vue';
     width: 166px;
     height: 150px;
     margin: 20px;
-    float: left;
+    margin-right: auto;
 }
 
 .m-name1 {
@@ -133,5 +133,6 @@ import Btn from '../../common/components/Btn2.vue';
 .t-btn1 {
     float: right;
     margin-right: 50px;
+    margin-top: 18px;
 }
 </style>

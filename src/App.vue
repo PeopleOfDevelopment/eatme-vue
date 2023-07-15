@@ -2,10 +2,15 @@
   <SideBar></SideBar>
   <div id="main-wrapper">
     <Basket></Basket>
-    <!--<Main></Main>-->
+    <Main></Main>
     <Footer></Footer>
   </div>
-  <!--<Join></Join>-->
+  <!-- <Join></Join> -->
+  <!-- <SideBar></SideBar>
+  <div id="main-wrapper">
+    <history1></history1>
+    <Footer></Footer>
+  </div> -->
 </template>
 
 <script lang="ts">
