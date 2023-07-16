@@ -1,6 +1,6 @@
 <template>
     <button @click="modalOpen = true">모달창테스트</button>
-    <div class="black-bg" v-if="modalOpen == true">
+    <div class="black-bg" v-if="modalOpen === true">
     <div class="modal1">
         <p class="t1">정말 탈퇴하시겠어요?</p>
         <p class="t2">탈퇴할 시, 계정은 삭제되며 복구되지 않습니다.</p>

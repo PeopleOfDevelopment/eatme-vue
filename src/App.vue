@@ -6,11 +6,12 @@
     <Footer></Footer>
   </div> -->
   <!-- <Join></Join> -->
-  <SideBar></SideBar>
+  <!-- <SideBar></SideBar>
   <div id="main-wrapper">
     <history1></history1>
     <Footer></Footer>
-  </div>
+  </div> -->
+  <Login></Login>
 </template>
 
 <script lang="ts">
@@ -24,6 +25,7 @@ import history1 from './views/purchase/purchase-history/PurchaseHistory.vue';
 import Main from './views/common/main/Main.vue';
 import Basket from './views/purchase/basket/Basket.vue';
 import Footer from './views/common/main/footer/Footer.vue';
+import Login from './views/login/Login.vue';
 import './assets/style.css';
 
 @Options({
@@ -37,6 +39,7 @@ import './assets/style.css';
     Main,
     Footer,
     Basket,
+    Login,
   },
 })
 export default class App extends Vue {}

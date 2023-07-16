@@ -11,15 +11,15 @@
         </div>
 
         <div class="ph1">
-            <div class="pw1"><placeHolder :placeholder="input2" style="width: 91%; float: left;"></placeHolder></div>
+            <div class="pw1"><placeHolder :placeholder="input2" style="width: 91%; float: left;" maxlength="5"></placeHolder></div>
             <Btns btntype="ghost" style="width: 70px; padding: 18px 10px 18px 10px;
                 margin-top: 7px; margin-left: 2px; float: right;">중복확인</Btns>
         </div>
 
-        <placeHolder :placeholder="input3"></placeHolder>
+        <placeHolder :placeholder="input3" type="password" id="password1"></placeHolder>
         <p class="join-text4">※문자, 숫자를 조합하여 8자리 이상 길이로 구성해주세요.</p>
 
-        <placeHolder :placeholder="input4"></placeHolder>
+        <placeHolder :placeholder="input4" type="password" id="password2"></placeHolder>
         <placeHolder :placeholder="input5"></placeHolder>
         <placeHolder :placeholder="input6"></placeHolder>
 
@@ -41,7 +41,8 @@
             <p style="margin-right: 5px; color: #757874">이벤트 및 프로모션 메일 수신 동의</p>
             <Btns btntype="outline-gray-small">내용보기</Btns>
         </div>
-        <Btns btntype="solid" style="margin-top: 10px; margin-left: 10px; width: 92%;">회원가입</Btns>
+        <Btns btntype="solid" style="margin-top: 10px; margin-left: 10px; width: 92%;"
+        @click="test">회원가입</Btns>
     </div>
 </template>
 
@@ -57,11 +58,31 @@ import Btns from '../common/components/Btn2.vue';
         data() {
             return {
                 input1: '아이디',
-                input2: '닉네임',
+                input2: '닉네임(6자 이내)',
                 input3: '비밀번호',
                 input4: '비밀번호 확인',
                 input5: '이메일',
                 input6: '전화번호',
+            }
+        },
+
+        methods : {
+            test: function() {
+                var p1 = document.getElementById('password1').value;
+                var p2 = document.getElementById('password2').value;
+
+                if (p1.length < 8) {
+                    alert('입력한 글자가 8글자 이상이어야 합니다.');
+                    return false;
+                }
+
+                if (p1 != p2) {
+                    alert('비밀번호를 다시 한 번 확인해주세요.');
+                    return false;
+                } else {
+                    alert('비밀번호일치확인용문구');
+                    return true;
+                }
             }
         }
     }
