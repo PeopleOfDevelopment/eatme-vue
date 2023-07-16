@@ -31,14 +31,8 @@ const btnClass = computed(() => {
       return 'text-gray-button';
     case 'textGrayThin':
       return 'text-gray-thin-button';
-    case 'outline-green':
-      return 'outline-green-button';
-    case 'outline-gray':
-      return 'outline-gray-button';
     case 'outline-gray-small':
       return 'outline-gray-small-button';
-    case 'green-background':
-      return 'green-background-button';
     case 'chip':
       return 'chip';
     case 'chipGreen':

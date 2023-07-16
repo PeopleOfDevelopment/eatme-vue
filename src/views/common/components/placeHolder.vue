@@ -13,7 +13,7 @@
     };
 </script>
 
-<style>
+<style scoped>
 .inputInfor {
     width: 92%;
     padding: 18px;

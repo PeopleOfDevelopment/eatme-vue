@@ -6,13 +6,13 @@
         <p class="join-text3">로그인</p>
         <div class="ph1">
             <div class="id1"><placeHolder :placeholder="input1" style="width: 91%; float: left;"></placeHolder></div>
-            <Btns btntype="outline-green" style="width: 70px; padding: 18px 10px 18px 10px;
+            <Btns btntype="ghost" style="width: 70px; padding: 18px 10px 18px 10px;
                 margin-top: 7px; margin-left:2px; float: right;">중복확인</Btns>
         </div>
 
         <div class="ph1">
             <div class="pw1"><placeHolder :placeholder="input2" style="width: 91%; float: left;"></placeHolder></div>
-            <Btns btntype="outline-green" style="width: 70px; padding: 18px 10px 18px 10px;
+            <Btns btntype="ghost" style="width: 70px; padding: 18px 10px 18px 10px;
                 margin-top: 7px; margin-left: 2px; float: right;">중복확인</Btns>
         </div>
 
@@ -41,12 +41,12 @@
             <p style="margin-right: 5px; color: #757874">이벤트 및 프로모션 메일 수신 동의</p>
             <Btns btntype="outline-gray-small">내용보기</Btns>
         </div>
-        <Btns btntype="green-background" style="margin-top: 10px; margin-left: 10px; width: 92%;">회원가입</Btns>
+        <Btns btntype="solid" style="margin-top: 10px; margin-left: 10px; width: 92%;">회원가입</Btns>
     </div>
 </template>
 
 <script>
-import placeHolder from '../common/components/placeHolder.vue';
+import placeHolder from '../common/components/PlaceHolder.vue';
 import Btns from '../common/components/Btn2.vue';
 
     export default {

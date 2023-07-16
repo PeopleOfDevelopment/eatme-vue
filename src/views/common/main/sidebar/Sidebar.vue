@@ -67,8 +67,8 @@
         구매내역
       </p>
     </div>
-    <Btns btntype="outline-green" style="margin-top: 10px;">장바구니</Btns>
-    <Btns btntype="outline-gray" style="margin-top: 10px;">판매 관리</Btns>
+    <Btns btntype="ghost" style="margin-top: 10px;">장바구니</Btns>
+    <Btns btntype="outline" style="margin-top: 10px;">판매 관리</Btns>
   </div>
 </template>
 

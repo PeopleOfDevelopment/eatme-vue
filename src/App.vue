@@ -1,16 +1,16 @@
 <template>
-  <SideBar></SideBar>
+  <!-- <SideBar></SideBar>
   <div id="main-wrapper">
     <Main></Main>
     <Basket></Basket>
     <Footer></Footer>
-  </div>
+  </div> -->
   <!-- <Join></Join> -->
-  <!-- <SideBar></SideBar>
+  <SideBar></SideBar>
   <div id="main-wrapper">
     <history1></history1>
     <Footer></Footer>
-  </div> -->
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,7 +19,7 @@ import HelloWorld from './components/HelloWorld.vue';
 import SideBar from './views/common/main/sidebar/Sidebar.vue';
 import Buttons from './views/common/components/Btn2.vue';
 import Join from './views/login/Join.vue';
-import modal1 from './views/common/components/modal1.vue';
+import modal1 from './views/common/components/Modal1.vue';
 import history1 from './views/purchase/purchase-history/PurchaseHistory.vue';
 import Main from './views/common/main/Main.vue';
 import Basket from './views/purchase/basket/Basket.vue';
