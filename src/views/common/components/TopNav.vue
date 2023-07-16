@@ -1,6 +1,8 @@
 <template>
   <div id="top-nav" v-if="navType == 'location'" class="nav-location">
-    <Btn btntype="textGray" class="user-location">{{ userLocation }}</Btn>
+    <Btn btntype="textGray" class="user-location" @click="toggleModal">
+      {{ userLocation }}
+    </Btn>
     <Btn btntype="textGray" class="location-filter">{{ locationFilter }}</Btn>
   </div>
   <div id="top-nav" v-else-if="state == 'tabs'" class="nav-tabs">
@@ -8,14 +10,17 @@
   </div>
   <div id="top-nav" v-else-if="state == 'title'" class="nav-title"></div>
   <div v-else></div>
+  <SelectLocation v-if="modalOpen" />
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
 import Btn from './Btn2.vue';
+import SelectLocation from '../../purchase/select-location/SelectLocation.vue';
 
 const userLocation = ref('상명대학교');
 const locationFilter = ref('500m 이내');
+const modalOpen = ref(false);
 
 const props = defineProps({
   navType: {
@@ -23,6 +28,10 @@ const props = defineProps({
     default: 'location',
   },
 });
+
+const toggleModal = () => {
+  modalOpen.value = !modalOpen.value;
+};
 </script>
 
 <style scoped>

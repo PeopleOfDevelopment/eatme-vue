@@ -1,8 +1,8 @@
 <template>
   <SideBar></SideBar>
   <div id="main-wrapper">
-    <Basket></Basket>
     <Main></Main>
+    <Basket></Basket>
     <Footer></Footer>
   </div>
   <!-- <Join></Join> -->
