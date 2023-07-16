@@ -12,7 +12,7 @@
             </div>
             <div class="p-menus3">
             <p class="d-text2">{{ goods[i].day }}</p>
-            <Btn class="t-btn1" btntype="outline-green" style="width: 136px">리뷰 작성</Btn>
+            <Btn class="t-btn1" btntype="outline" style="width: 136px">리뷰 작성</Btn>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@ import Btn from '../../common/components/Btn2.vue';
     }
 </script>
 
-<style>
+<style scoped>
 .all {
     font-family: Pretendard;
     margin-left: auto;

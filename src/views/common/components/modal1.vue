@@ -27,7 +27,7 @@ import Buttons from './Btn.vue';
     }
 </script>
 
-<style>
+<style scoped>
 .black-bg{
     width: 100%;
     height: 100%;
