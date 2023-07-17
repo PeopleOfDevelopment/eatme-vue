@@ -1,5 +1,4 @@
-import axios from "axios"
-
+import http from "./http"
 export class QueryUtils {
   async query<T>(url?: string, condData?: any) {
     if(!url) {
@@ -7,7 +6,7 @@ export class QueryUtils {
     }
   
     try{
-      const response = await axios.post(url, condData)
+      const response = await http.post(url, condData)
       return response.data
     }catch(e) {
       console.error('query error', e)
