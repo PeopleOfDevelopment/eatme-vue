@@ -67,17 +67,15 @@
         구매내역
       </p>
     </div>
-    <Btns btntype="ghost" style="margin-top: 10px;">장바구니</Btns>
-    <Btns btntype="outline" style="margin-top: 10px;">판매 관리</Btns>
+    <Btns btntype="ghost" style="margin-top: 10px">장바구니</Btns>
+    <Btns btntype="outline" style="margin-top: 10px">판매 관리</Btns>
   </div>
 </template>
 
 <script>
-import Buttons from '../../components/Btn.vue';
-import Btns from '../../components/Btn2.vue';
+import Btns from '../../components/Btn.vue';
 export default {
   components: {
-    Buttons,
     Btns,
   },
 };
