@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import Btn from '../../common/components/Btn2.vue';
+import Btn from '../../common/components/Btn.vue';
 import { ref } from 'vue';
 
 const locationList = ref([

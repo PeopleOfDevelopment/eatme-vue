@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import Btn from '../../components/Btn2.vue';
+import Btn from '../../components/Btn.vue';
 </script>
 
 <style scoped>
