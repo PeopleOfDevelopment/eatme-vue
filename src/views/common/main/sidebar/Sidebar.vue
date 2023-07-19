@@ -15,7 +15,7 @@
             fill="#8B938A" />
         </svg>
       </div>
-      <p style="float: left; margin-left: 10px">로그인</p>
+      <p style="float: left; margin-left: 10px" onclick="location.href='login'">로그인</p>
     </div>
 
     <div class="search">
@@ -67,17 +67,15 @@
         구매내역
       </p>
     </div>
-    <Btns btntype="outline-green" style="margin-top: 10px;">장바구니</Btns>
-    <Btns btntype="outline-gray" style="margin-top: 10px;">판매 관리</Btns>
+    <Btns btntype="ghost" style="margin-top: 10px">장바구니</Btns>
+    <Btns btntype="outline" style="margin-top: 10px">판매 관리</Btns>
   </div>
 </template>
 
 <script>
-import Buttons from '../../components/Btn.vue';
-import Btns from '../../components/Btn2.vue';
+import Btns from '../../components/Btn.vue';
 export default {
   components: {
-    Buttons,
     Btns,
   },
 };
@@ -85,7 +83,7 @@ export default {
 
 <style>
 .sideBar {
-  width: 12%;
+  width: calc(12.8% - 48px);
   height: 100%;
   padding-left: 24px;
   padding-right: 24px;

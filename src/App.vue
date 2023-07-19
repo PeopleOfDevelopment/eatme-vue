@@ -1,29 +1,34 @@
 <template>
-  <SideBar></SideBar>
-  <div id="main-wrapper">
+  <!-- <SideBar></SideBar> -->
+  <!-- <div id="main-wrapper">
     <Main></Main>
     <Basket></Basket>
     <Footer></Footer>
+  </div> -->
+  <div id="app" class="main-wrapper">
+    <router-view></router-view>
   </div>
   <!-- <Join></Join> -->
   <!-- <SideBar></SideBar>
   <div id="main-wrapper">
     <history1></history1>
     <Footer></Footer>
-  </div> -->
+  </div>
+  <Login></Login> -->
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import HelloWorld from './components/HelloWorld.vue';
 import SideBar from './views/common/main/sidebar/Sidebar.vue';
-import Buttons from './views/common/components/Btn2.vue';
+import Buttons from './views/common/components/Btn.vue';
 import Join from './views/login/Join.vue';
-import modal1 from './views/common/components/modal1.vue';
+import modal1 from './views/common/components/Modal1.vue';
 import history1 from './views/purchase/purchase-history/PurchaseHistory.vue';
 import Main from './views/common/main/Main.vue';
 import Basket from './views/purchase/basket/Basket.vue';
 import Footer from './views/common/main/footer/Footer.vue';
+import Login from './views/login/Login.vue';
 import './assets/style.css';
 
 @Options({
@@ -37,6 +42,7 @@ import './assets/style.css';
     Main,
     Footer,
     Basket,
+    Login,
   },
 })
 export default class App extends Vue {}
@@ -51,7 +57,7 @@ export default class App extends Vue {}
   color: #2c3e50;
   display: flex;
 }
-#main-wrapper {
+.main-wrapper {
   flex: 1 0 0;
   display: flex;
   flex-direction: column;

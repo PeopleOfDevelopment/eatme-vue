@@ -15,7 +15,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import Btn from './Btn2.vue';
+import Btn from './Btn.vue';
 import SelectLocation from '../../purchase/select-location/SelectLocation.vue';
 
 const userLocation = ref('상명대학교');
