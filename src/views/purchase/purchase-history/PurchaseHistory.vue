@@ -1,4 +1,5 @@
 <template>
+  <Sidebar></Sidebar>
   <div class="all">
     <p class="p-text1">구매내역</p>
     <div class="p-menus1" v-for="(a, i) in goods" :key="i">
@@ -23,10 +24,12 @@
 <script>
 import data from './goods.ts';
 import Btn from '../../common/components/Btn.vue';
+import Sidebar from '../../common/main/sidebar/Sidebar.vue'
 
 export default {
   components: {
     Btn,
+    Sidebar,
   },
   data() {
     return {

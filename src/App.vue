@@ -1,9 +1,12 @@
 <template>
-  <SideBar></SideBar>
-  <div id="main-wrapper">
+  <!-- <SideBar></SideBar> -->
+  <!-- <div id="main-wrapper">
     <Main></Main>
     <Basket></Basket>
     <Footer></Footer>
+  </div> -->
+  <div id="app" class="main-wrapper">
+    <router-view></router-view>
   </div>
   <!-- <Join></Join> -->
   <!-- <SideBar></SideBar>
@@ -54,7 +57,7 @@ export default class App extends Vue {}
   color: #2c3e50;
   display: flex;
 }
-#main-wrapper {
+.main-wrapper {
   flex: 1 0 0;
   display: flex;
   flex-direction: column;
