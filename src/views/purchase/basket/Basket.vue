@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-import Btn from '../../common/components/Btn2.vue';
+import Btn from '../../common/components/Btn.vue';
 import { ref, watchEffect } from 'vue';
 
 const basketList = ref([

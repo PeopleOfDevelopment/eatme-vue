@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import Btn from '../../components/Btn2.vue';
+import Btn from '../../components/Btn.vue';
 </script>
 
 <style scoped>
@@ -29,7 +29,6 @@ import Btn from '../../components/Btn2.vue';
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-left: 12%;
 }
 .notice-wrap {
   display: flex;
