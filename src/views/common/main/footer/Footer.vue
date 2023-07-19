@@ -29,7 +29,6 @@ import Btn from '../../components/Btn.vue';
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-left: 12%;
 }
 .notice-wrap {
   display: flex;

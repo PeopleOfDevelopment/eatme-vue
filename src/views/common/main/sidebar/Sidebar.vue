@@ -83,7 +83,7 @@ export default {
 
 <style>
 .sideBar {
-  width: 12%;
+  width: calc(12.8% - 48px);
   height: 100%;
   padding-left: 24px;
   padding-right: 24px;
