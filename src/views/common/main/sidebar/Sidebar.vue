@@ -15,7 +15,7 @@
             fill="#8B938A" />
         </svg>
       </div>
-      <p style="float: left; margin-left: 10px">로그인</p>
+      <p style="float: left; margin-left: 10px" onclick="location.href='login'">로그인</p>
     </div>
 
     <div class="search">
