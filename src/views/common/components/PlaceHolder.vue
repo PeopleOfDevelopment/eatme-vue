@@ -1,6 +1,6 @@
 <template>
     <input class="inputInfor" type="text" :placeholder="placeholder">
-</template>
+</template> 
 
 <script>
     export default {

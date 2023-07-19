@@ -10,7 +10,7 @@
         style="padding: 10px 40px 10px 40px;" @click="modalOpen = false"></Buttons>
     </div>
     </div>
-</template>
+</template> 
 
 <script>
 import Buttons from './Btn.vue';
