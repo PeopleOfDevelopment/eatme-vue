@@ -31,6 +31,7 @@ import Footer from './views/common/main/footer/Footer.vue';
 import Login from './views/login/Login.vue';
 import './assets/style.css';
 
+
 @Options({
   components: {
     HelloWorld,
