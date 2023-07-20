@@ -1,7 +1,6 @@
 import axios from "axios"
-
-export class QueryUtils {
-  async query<T>(url?: string, condData?: any) {
+export class ApiUtils {
+  async post<T>(url?: string, condData?: any) {
     if(!url) {
       throw 'url이 빈값입니다.'
     }
