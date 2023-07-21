@@ -46,8 +46,8 @@
     <placeHolder
       :placeholder="input3"
       type="password"
-      id="password1"></placeHolder>
-    <p class="join-text4">
+      id="password1" @input="pw_check"></placeHolder>
+    <p class="join-text4" id="password_msg">
       ※문자, 숫자를 조합하여 8자리 이상 길이로 구성해주세요.
     </p>
 
@@ -127,6 +127,20 @@ export default {
         return true;
       }
     },
+
+    pw_check: function () {
+      var password = document.querySelector('#password1');
+      var password_msg = document.querySelector('#password_msg');
+      var pwValidation = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
+      if(pwValidation.test(password.value)) {
+          password_msg.innerHTML = '올바른 비밀번호입니다.';
+          password_msg.style.color = '#00a664';
+      } else {
+        password_msg.innerHTML = '올바르지 않은 형식입니다.';
+        password_msg.style.color = '#d13125'
+      }
+    }
   },
 };
 </script>
