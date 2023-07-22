@@ -1,5 +1,6 @@
 <template>
-  <div id="contents-wrapper">
+  <Sidebar></Sidebar>
+  <div id="main-wrapper">
     <h2 class="page-title">장바구니</h2>
     <div class="basket-wrapper">
       <div class="basket-section">
@@ -70,6 +71,7 @@
 
 <script setup>
 import Btn from '../../common/components/Btn.vue';
+import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import { ref, watchEffect } from 'vue';
 
 const basketList = ref([
@@ -119,7 +121,7 @@ const deleteChecked = () => {
 </script>
 
 <style scoped>
-#contents-wrapper {
+#main-wrapper {
   padding-inline: 75px;
   padding-block: 32px;
   display: flex;
@@ -145,7 +147,7 @@ const deleteChecked = () => {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  width: 400px;
+  width: 30%;
 }
 .basket-top {
   display: flex;
