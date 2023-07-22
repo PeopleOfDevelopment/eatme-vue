@@ -35,7 +35,7 @@
         <p class="b-text5">계정 정보를 입력해주세요</p>
 
         <Ph :placeholder="id" style="width: 50%"></Ph>
-        <Ph :placeholder="pw" style="width: 50%; margin-top: 20px"></Ph>
+        <Ph :placeholder="pw" style="width: 50%; margin-top: 20px" type="password"></Ph>
         <div class="b-text-box">
           <input type="checkbox" />
           <p class="b-text6">아이디 · 비밀번호 기억하기</p>
@@ -62,7 +62,7 @@
         </div>
 
         <div class="b-text7">
-          <p>회원가입</p>
+          <p onclick="location.href='join'">회원가입</p>
           <p>|</p>
           <p>비밀번호 찾기</p>
         </div>
