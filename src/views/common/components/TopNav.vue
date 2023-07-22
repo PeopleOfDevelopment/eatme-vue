@@ -1,9 +1,13 @@
 <template>
   <div id="top-nav" v-if="navType == 'location'" class="nav-location">
-    <Btn btntype="textGray" class="user-location" @click="toggleModal">
-      {{ userLocation }}
-    </Btn>
-    <Btn btntype="textGray" class="location-filter">{{ locationFilter }}</Btn>
+    <div class="location-box" @click="toggleModal">
+      <span class="material-symbols-rounded location-icon">location_on</span>
+      <Btn btntype="textGray" class="user-location">{{ userLocation }}</Btn>
+    </div>
+    <div class="location-box">
+      <span class="material-symbols-rounded filter-icon">tune</span>
+      <Btn btntype="textGray" class="location-filter">{{ locationFilter }}</Btn>
+    </div>
   </div>
   <div id="top-nav" v-else-if="state == 'tabs'" class="nav-tabs">
     <Btn v-for="tab in tabs" btntype="textGray">{{ tab }}</Btn>
@@ -46,6 +50,11 @@ const toggleModal = () => {
   justify-content: space-between;
   gap: 16px;
 }
+.location-box {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 .user-location {
   flex: 1 0 0;
   font-size: 20px;
@@ -54,7 +63,13 @@ const toggleModal = () => {
   color: var(--ngray800);
 }
 .location-filter {
-  padding: 0;
+  padding-right: 0;
+  color: var(--ngray500);
+}
+.location-icon {
+  color: var(--ngray800);
+}
+.filter-icon {
   color: var(--ngray500);
 }
 </style>

@@ -1,3 +1,4 @@
+/*색*/
 :root {
   --primary-l5: #f5fff4;
   --primary-l4: #c1ffd4;
@@ -55,6 +56,21 @@
   --ngray10: #f5fff3;
 }
 
+/*아이콘
+https://fonts.google.com/icons?icon.style=Rounded에서 'Inserting the icon'부분 사용
+채워진 아이콘은 클래스에 icon-fill 추가하거나 직접 속성 추가*/
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.icon-fill {
+  font-variation-settings: 'FILL' 1;
+}
+
+/*기본 레이아웃*/
 body {
   margin: 0;
+}
+
+#main-wrapper {
+  margin-left: 12.8%;
 }

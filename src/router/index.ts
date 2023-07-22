@@ -6,6 +6,7 @@ import Login from '../views/login/Login.vue';
 import Join from '../views/login/Join.vue';
 import Basket from '../views/purchase/basket/Basket.vue';
 import PurchaseHistory from '../views/purchase/purchase-history/PurchaseHistory.vue';
+import SellerReg from '../views/seller/seller-reg/Seller-Reg.vue';
 
 //라우터설계(경로랑 컴포넌트 배열로 입력)
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
   { path: '/join', component: Join },
   { path: '/basket', component: Basket },
   { path: '/purchase-history', component: PurchaseHistory },
+  { path: '/seller-reg', component: SellerReg },
 ];
 
 //라우터생성
