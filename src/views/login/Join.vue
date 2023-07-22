@@ -3,7 +3,7 @@
     <p class="eatme-text1">EAT ME</p>
     <p class="join-text1">회원가입</p>
     <p class="join-text2">이미 EAT ME의 회원이신가요?</p>
-    <p class="join-text3">로그인</p>
+    <p class="join-text3" onclick="location.href='login'" mouseover="target">로그인</p>
     <div class="ph1">
       <div class="id1">
         <placeHolder
