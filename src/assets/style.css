@@ -70,7 +70,12 @@ https://fonts.google.com/icons?icon.style=Rounded에서 'Inserting the icon'부�
 body {
   margin: 0;
 }
-
 #main-wrapper {
-  margin-left: 12.8%;
+  margin-left: 248px;
+}
+
+@media screen and (max-width: 768px) {
+  #main-wrapper {
+    margin-left: inherit;
+  }
 }
