@@ -68,7 +68,7 @@ const goPage = (page) => {
 
 <style scoped>
 .sideBar {
-  width: calc(12.8% - 48px);
+  width: 200px;
   height: 100%;
   padding-left: 24px;
   padding-right: 24px;
@@ -78,16 +78,18 @@ const goPage = (page) => {
   border-right-color: #dde5db;
   border-right-width: 1px;
   position: fixed;
+  display: flex;
+  flex-direction: column;
 }
 
 .eatMe {
-  float: left;
   font-family: Pretendard;
   font-weight: bold;
   font-size: 28px;
   margin-top: 24px;
   margin-bottom: 24px;
   color: #00a664;
+  text-align: left;
 }
 
 .user {
@@ -112,7 +114,6 @@ const goPage = (page) => {
 }
 
 .search {
-  width: 100%;
   border-radius: 4px;
   border: #ebf3e9;
   display: flex;
@@ -171,5 +172,10 @@ const goPage = (page) => {
   align-items: center;
   gap: 8px;
   justify-content: center;
+}
+@media screen and (max-width: 768px) {
+  .sideBar {
+    display: none;
+  }
 }
 </style>
