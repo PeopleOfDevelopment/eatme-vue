@@ -29,6 +29,8 @@ import Main from './views/common/main/Main.vue';
 import Basket from './views/purchase/basket/Basket.vue';
 import Footer from './views/common/main/footer/Footer.vue';
 import Login from './views/login/Login.vue';
+import Mypage from './views/user/mypage/Mypage.vue';
+import ChangeInfo from './views/user/mypage/change-user-info/ChangeUserInfo.vue';
 import './assets/style.css';
 
 
@@ -44,6 +46,8 @@ import './assets/style.css';
     Footer,
     Basket,
     Login,
+    Mypage,
+    ChangeInfo,
   },
 })
 export default class App extends Vue {}
