@@ -39,6 +39,8 @@ const btnClass = computed(() => {
       return 'chip-green';
     case 'chipRed':
       return 'chip-red';
+    case 'userInfo' :
+      return 'userInfo-button';
     default:
       return '';
   }
@@ -125,5 +127,18 @@ const btnClass = computed(() => {
   border-radius: 24px;
   background-color: var(--ngray50);
   color: var(--ngray800);
+}
+
+.chip-green {
+  padding: 8px 18px;
+  border-radius: 24px;
+  background-color: var(--primary-def);
+  color: var(--gray-white);
+}
+
+.userInfo-button {
+    color: var(--ngray900);
+    border: 1px solid #A5ADA4;
+    font-weight: 400;
 }
 </style>

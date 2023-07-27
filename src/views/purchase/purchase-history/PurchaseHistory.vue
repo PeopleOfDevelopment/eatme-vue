@@ -1,6 +1,6 @@
 <template>
   <Sidebar></Sidebar>
-  <div class="all">
+  <div id="main-wrapper" class="all">
     <p class="p-text1">구매내역</p>
     <div class="p-menus1" v-for="(a, i) in goods" :key="i">
       <div class="p-img1"></div>
@@ -43,8 +43,7 @@ export default {
 .all {
   font-family: Pretendard;
   margin-left: auto;
-  margin-right: 1%;
-  width: 83%;
+  width: 87%;
 }
 
 .p-text1 {
@@ -62,6 +61,7 @@ export default {
   margin: 0 auto;
   border-top: solid 1px #dde5db;
   display: flex;
+  margin: 5px;
 }
 
 .p-menus2 {
