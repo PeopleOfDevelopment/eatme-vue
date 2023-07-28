@@ -41,6 +41,8 @@ const btnClass = computed(() => {
       return 'chip-red';
     case 'userInfo' :
       return 'userInfo-button';
+    case 'danger' :
+      return 'danger-button';
     default:
       return '';
   }
@@ -127,6 +129,7 @@ const btnClass = computed(() => {
   border-radius: 24px;
   background-color: var(--ngray50);
   color: var(--ngray800);
+  font-weight: 300;
 }
 
 .chip-green {
@@ -134,11 +137,17 @@ const btnClass = computed(() => {
   border-radius: 24px;
   background-color: var(--primary-def);
   color: var(--gray-white);
+  font-weight: 300;
 }
 
 .userInfo-button {
     color: var(--ngray900);
     border: 1px solid #A5ADA4;
     font-weight: 400;
+}
+
+.danger-button {
+  background-color: var( --system-danger);
+  color: var(--gray-white);
 }
 </style>

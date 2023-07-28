@@ -52,7 +52,8 @@
                 <p class="box2-3-text2">010-****-1234</p>
                 <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">휴대전화 변경</Btn>
             </div>
-            <p class="red-text1">회원 탈퇴</p>
+            <Modal v-if="modalOpen" @close-modal="modalOpen = false"></Modal>
+            <p class="red-text1" @click="modalOpen=true">회원 탈퇴</p>
         </div>
         <Footer></Footer>
     </div>
@@ -62,13 +63,20 @@
 <script>
 import Sidebar from '../../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../../common/components/Btn.vue';
-import Footer from '../../../common/main/footer/Footer.vue'
+import Footer from '../../../common/main/footer/Footer.vue';
+import Modal from '../../../common/components/Modal1.vue';
 
     export default {
         components: {
             Sidebar,
             Btn,
             Footer,
+            Modal,
+        },
+        data() {
+            return {
+                modalOpen: false,
+            }
         }
     }
 </script>

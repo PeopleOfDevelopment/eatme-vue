@@ -1,13 +1,13 @@
 <template>
-    <button @click="modalOpen = true">모달창테스트</button>
-    <div class="black-bg" v-if="modalOpen === true">
+    <div class="black-bg" @click="$emit('close-modal')">
     <div class="modal1">
         <p class="t1">정말 탈퇴하시겠어요?</p>
         <p class="t2">탈퇴할 시, 계정은 삭제되며 복구되지 않습니다.</p>
-        <Buttons color="#D13125" text="탈퇴" fontColor="#fff" borderColor="solid 1px #D13125"
-            style="padding: 10px 40px 10px 40px; margin-right: 100px;"></Buttons>
-        <Buttons color="#DDE5DB" text="취소" fontColor="#717971" borderColor="solid 1px #DDE5DB"
-        style="padding: 10px 40px 10px 40px;" @click="modalOpen = false"></Buttons>
+        <Buttons btntype="danger" style="width: 120px; height: 25px; padding: 15px;
+        border-radius: 10px; float: left; margin-left: 32%; margin-top: 40px;">탈퇴</Buttons>
+        <Buttons btntype="solid" style="width: 120px; height: 25px; padding: 15px; color: #717971;
+        background-color: #DDE5DB; border-radius: 10px; float: right; margin-right: 32%;
+        margin-top: 40px;" @click="modalOpen = false">취소</Buttons>
     </div>
     </div>
 </template> 
@@ -24,7 +24,7 @@ import Buttons from './Btn.vue';
                 modalOpen: false,
             }
         }
-    }
+    } 
 </script>
 
 <style scoped>
@@ -32,18 +32,21 @@ import Buttons from './Btn.vue';
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
-    position: fixed;
     padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
 }
 
 .modal1 {
-    width: 1000px;
-    height: 392px;
+    width: 60%;
+    height: 40%;
     background-color: white;
     border: solid 1px #DDE5DB;
     border-radius: 10px;
     margin: auto;
     font-family: Pretendard;
+    margin-top: 15%;
 }
 
 .t1 {
@@ -51,11 +54,15 @@ import Buttons from './Btn.vue';
     padding-top: 40px;
     font-weight: bold;
     font-size: 34px;
+    margin: 0 auto;
+    margin-top: 40px;
 }
 
 .t2 {
     color: #2B322C;
     padding-bottom: 24px;
     font-size: 20px;
+    margin: 0 auto;
+    margin-top: 40px;
 }
 </style>
