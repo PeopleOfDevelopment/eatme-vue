@@ -19,6 +19,8 @@ const btnClass = computed(() => {
       return 'solid-button';
     case 'ghost':
       return 'ghost-button';
+    case 'ghostGray':
+      return 'ghost-gray-button';
     case 'outline':
       return 'outline-button';
     case 'outlineGray':
@@ -39,9 +41,9 @@ const btnClass = computed(() => {
       return 'chip-green';
     case 'chipRed':
       return 'chip-red';
-    case 'userInfo' :
+    case 'userInfo':
       return 'userInfo-button';
-    case 'danger' :
+    case 'danger':
       return 'danger-button';
     default:
       return '';
@@ -62,15 +64,20 @@ const btnClass = computed(() => {
   color: var(--gray-white);
 }
 .ghost-button {
-  background-color: var(--gray-white);
   color: var(--primary-def);
   border: 1px solid var(--primary-def);
 }
+.ghost-gray-button {
+  color: var(--ngray600);
+  border: 1px solid var(--ngray300);
+}
 .outline-button {
+  background-color: var(--gray-white);
   color: var(--primary-def);
   border: 1px solid var(--ngray300);
 }
 .outline-gray-button {
+  background-color: var(--gray-white);
   color: var(--ngray600);
   border: 1px solid var(--ngray300);
 }
@@ -88,29 +95,6 @@ const btnClass = computed(() => {
   color: var(--ngray600);
   font-weight: 500;
 }
-
-.outline-green-button {
-  width: 90%;
-  color: #00a664;
-  background-color: white;
-  border: solid 1px #00a664;
-}
-
-.green-background-button {
-  width: 100%;
-  color: white;
-  background-color: #00a664;
-  border: solid 1px #00a664;
-  padding: 15px;
-}
-
-.outline-gray-button {
-  width: 90%;
-  color: #00a664;
-  background-color: white;
-  border: solid 1px #a5ada4;
-}
-
 .outline-gray-small-button {
   width: 60px;
   height: 12px;
@@ -141,13 +125,13 @@ const btnClass = computed(() => {
 }
 
 .userInfo-button {
-    color: var(--ngray900);
-    border: 1px solid #A5ADA4;
-    font-weight: 400;
+  color: var(--ngray900);
+  border: 1px solid #a5ada4;
+  font-weight: 400;
 }
 
 .danger-button {
-  background-color: var( --system-danger);
+  background-color: var(--system-danger);
   color: var(--gray-white);
 }
 </style>

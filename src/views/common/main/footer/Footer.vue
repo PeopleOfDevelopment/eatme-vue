@@ -6,8 +6,8 @@
     </div>
     <div class="eatme-info-wrap">
       <div class="eatme-cs">
-        <Btn btntype="outlineGray">EAT ME 고객센터</Btn>
-        <Btn btntype="outlineGray">가맹 신청하기</Btn>
+        <Btn btntype="ghostGray">EAT ME 고객센터</Btn>
+        <Btn btntype="ghostGray">가맹 신청하기</Btn>
       </div>
       <div class="eatme-info">
         <Btn btntype="textGrayThin">사업자정보확인</Btn>
