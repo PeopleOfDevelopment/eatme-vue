@@ -4,9 +4,9 @@
         <div class="box1">
             <p class="box1-text1">이번 달 내가 구한 음식 수는?</p>
             <div class="box1-btns1">
-                <Btn btntype="chip" style="width: 40px; margin-left: 20px; color: #000; font-weight: 300; background-color: #dde5db;">3월</Btn>
-                <Btn btntype="chip" style="width: 40px; margin-left: 20px; color: #000; font-weight: 300; background-color: #dde5db;">4월</Btn>
-                <Btn btntype="chipGreen" style="width: 40px; margin-left: 20px; color: #000; font-weight: 300;">5월</Btn>
+                <button class="btnbox" @click="change_btn">3월</button>
+                <button class="btnbox" @click="change_btn">4월</button>
+                <button class="btnbox active" @click="change_btn">5월</button>
             </div>
             <p class="box1-text2">총 구매횟수</p>
             <p class="box1-text3">5회</p>
@@ -121,6 +121,21 @@ import Footer from '../../common/main/footer/Footer.vue';
             Sidebar,
             Btn,
             Footer,
+        },
+
+        methods: {
+            change_btn: function(e) {
+                var btns = document.querySelectorAll(".btnbox");
+                btns.forEach(function(btn, i) {
+                    if(e.currentTarget == btn) {
+                        btn.classList.add("active");
+                    }
+                    else {
+                        btn.classList.remove("active");
+                    }
+                });
+                console.log(e.currentTarget);
+            }
         }
     }
 </script>
@@ -155,9 +170,27 @@ import Footer from '../../common/main/footer/Footer.vue';
 
 .box1-btns1 {
     display: flex;
-    margin-left: 41%;
+    margin-left: 38%;
     margin-top: 20px;
     margin-bottom: 0px;
+}
+
+.btnbox {
+    width: 90px;
+    height: 50px;
+    margin-left: 30px;
+    color: #000;
+    background-color: #dde5db;
+    padding: 8px 18px;
+    border-radius: 24px;
+    font-weight: 300;
+    border: 0px;
+    font-size: 18px;
+    font-family: Pretendard;
+}
+
+.btnbox:hover, .btnbox.active {
+    background-color: var(--primary-def);
 }
 
 .box2 {
