@@ -43,6 +43,8 @@ const btnClass = computed(() => {
       return 'chip-red';
     case 'userInfo':
       return 'userInfo-button';
+    case 'slideNav':
+      return 'slide-nav-button';
     case 'danger':
       return 'danger-button';
     default:
@@ -58,6 +60,8 @@ const btnClass = computed(() => {
   font-weight: 700;
   font-size: 18px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 }
 .solid-button {
   background-color: var(--primary-def);
@@ -129,7 +133,10 @@ const btnClass = computed(() => {
   border: 1px solid #a5ada4;
   font-weight: 400;
 }
-
+.slide-nav-button {
+  background-color: rgba(25, 28, 26, 0.2);
+  color: var(--gray-white);
+}
 .danger-button {
   background-color: var(--system-danger);
   color: var(--gray-white);
