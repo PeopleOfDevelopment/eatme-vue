@@ -1,5 +1,5 @@
 <template>
-  <div id="top-nav" v-if="navType == 'location'" class="nav-location">
+  <div id="top-nav" v-if="navType === 'location'" class="nav-location">
     <div class="location-box" @click="toggleModal">
       <span class="material-symbols-rounded location-icon">location_on</span>
       <Btn btntype="textGray" class="user-location">{{ userLocation }}</Btn>
@@ -9,12 +9,12 @@
       <Btn btntype="textGray" class="location-filter">{{ locationFilter }}</Btn>
     </div>
   </div>
-  <div id="top-nav" v-else-if="navType == 'tabs'" class="nav-tabs">
+  <div id="top-nav" v-else-if="navType === 'tabs'" class="nav-tabs">
     <Btn v-for="tab in tabs" :key="tab" btntype="textGray" class="tab-button">
       {{ tab }}
     </Btn>
   </div>
-  <div id="top-nav" v-else-if="navType == 'title'" class="nav-title"></div>
+  <div id="top-nav" v-else-if="navType === 'title'" class="nav-title"></div>
   <div v-else></div>
   <SelectLocation v-if="modalOpen" />
 </template>
