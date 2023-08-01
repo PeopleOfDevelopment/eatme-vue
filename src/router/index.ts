@@ -9,6 +9,7 @@ import PurchaseHistory from '../views/purchase/purchase-history/PurchaseHistory.
 import SellerReg from '../views/seller/seller-reg/Seller-Reg.vue';
 import Mypage from '../views/user/mypage/Mypage.vue';
 import ChangeInfo from '../views/user/mypage/change-user-info/ChangeUserInfo.vue';
+import HistoryDetail from '../views/purchase/purchase-history-detail/PurchaseHistoryDetail.vue';
 
 //라우터설계(경로랑 컴포넌트 배열로 입력)
 const routes = [
@@ -20,6 +21,7 @@ const routes = [
   { path: '/seller-reg', component: SellerReg },
   { path: '/mypage', component: Mypage },
   { path: '/changeinfo', component: ChangeInfo },
+  { path: '/detail', component: HistoryDetail},
 ];
 
 //라우터생성

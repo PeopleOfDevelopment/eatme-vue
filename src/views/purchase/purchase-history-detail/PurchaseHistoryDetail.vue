@@ -1,0 +1,442 @@
+<template>
+    <Sidebar></Sidebar>
+    <div id="main-wrapper">
+        <p class="text1">주문서</p>
+        <div class="goods-box">
+            <div class="text-box1">
+                <p class="goods-text1">주문상품</p>
+                <span class="material-symbols-rounded"
+                style="margin-left: auto; height: 30px;
+                margin-top: 40px;" @click="toggleBtn1">expand_more</span>
+            </div>
+            <div id="hidden1">
+                <div class="goods-menu" v-for="(item, idx) in goods">
+                <div class="img1"></div>
+                <div class="menu-name">{{ item.name }}</div>
+            </div>
+            </div>
+        </div>
+        <div class="goods-box">
+            <div class="text-box1" style="margin-top: 40px;">
+                <p class="goods-text1">주문자 정보</p>
+                <span class="material-symbols-rounded"
+                style="margin-left: auto; height: 30px;
+                margin-top: 40px;" @click="toggleBtn2">expand_more</span>
+            </div>
+            <div id="hidden2">
+                <div class="person-text-box1">
+                    <p class="person-text1">주문자</p>
+                    <p class="person-text2">주문자 이름</p>
+                </div>
+                <div class="person-text-box1">
+                    <p class="person-text1">휴대폰</p>
+                <p class="person-text2">010-xxxx-xxxx</p>
+                </div>
+                <div class="person-text-box1">
+                    <p class="person-text1">이메일</p>
+                    <p class="person-text2">adsedff134@naver.com</p>
+                </div>
+            </div>
+        </div>
+        <div class="goods-box">
+            <div class="text-box1" style="margin-top: 40px;">
+                <p class="goods-text1">수령 방법</p>
+                <span class="material-symbols-rounded"
+                style="margin-left: auto; height: 30px;
+                margin-top: 40px;" @click="toggleBtn3">expand_more</span>
+            </div>
+            <div id="hidden3">
+                <div class="btn-box1">
+                    <button class="btnbox active" @click="change_btn">직접 수령</button>
+                    <button class="btnbox" @click="change_btn">배달</button>
+                </div>
+                <div id="hidden3-1">
+                    <div style="display: flex;">
+                        <p class="hidden3-1-text1">픽업 시간 입력</p>
+                    </div>
+                    <div class="time-select-box">
+                        <input type="time" class="time-select">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="goods-box">
+            <div class="text-box1" style="margin-top: 40px;">
+                <p class="goods-text1">결제 수단</p>
+                <span class="material-symbols-rounded"
+                style="margin-left: auto; height: 30px;
+                margin-top: 40px;" @click="toggleBtn4">expand_more</span>
+            </div>
+            <div id="hidden4">
+                <div class="payment-select">
+                    <p class="select-text1">결제 수단 선택</p>
+                    <div class="btn-box2">
+                    <button class="btnbox2 active" @click="change_btn2"
+                    style="border-radius: 4px 0px 0px 4px; border-right: 0px;">신용카드</button>
+                    <button class="btnbox2" @click="change_btn2">간편결제</button>
+                    <button class="btnbox2" @click="change_btn2"
+                    style="border-radius: 0px 4px 4px 0px; border-left: 0px;">간편결제</button>
+                </div>
+                <div class="card-select-box">
+                    <select class="card-select">
+                    <option value="">카드를 선택해주세요</option>
+                    <option value="1">현대카드</option>
+                    <option value="2">우리카드</option>
+                    <option value="3">국민카드</option>
+                    </select>
+                </div>
+                <div class="card-select-box2">
+                    <select class="card-select2">
+                    <option value="">할부를 선택해주세요</option>
+                    <option value="3">3개월</option>
+                    <option value="6">6개월</option>
+                    <option value="9">9개월</option>
+                    </select>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="goods-box">
+            <div class="text-box1" style="margin-top: 40px;">
+                <p class="goods-text1">개인 정보 수집/제공</p>
+                <span class="material-symbols-rounded"
+                style="margin-left: auto; height: 30px;
+                margin-top: 40px;" @click="toggleBtn5">expand_more</span>
+            </div>
+            <div id="hidden5" style="margin-top: 30px;">
+                <div class="agree-text-box">
+                    <p class="agree-text1">개인정보 수집/이용 및 처리 동의</p>
+                    <p class="agree-text2">보기</p>
+                </div>
+                <div class="agree-text-box">
+                    <p class="agree-text1">결제 대행 서비스 약관 동의</p>
+                    <p class="agree-text2">보기</p>
+                </div>
+                <div class="agree-text-box">
+                    <input type="checkbox">
+                    <p class="agree-text3">위 내용을 확인하였으며 결제에 동의합니다.</p>
+                </div>
+            </div>
+        </div>
+        <Btn btntype="solid" class="total-btn1">6,675원 결제하기</Btn>
+    </div>
+</template>
+
+<script>
+import Btn from '../../common/components/Btn.vue';
+import Sidebar from '../../common/main/sidebar/Sidebar.vue';
+
+export default {
+    components: {
+        Btn,
+        Sidebar,
+    },
+
+    data() {
+        return {
+            goods: [
+                { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
+                { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
+                { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
+            ]
+        }
+    },
+
+    methods: {
+        toggleBtn1: function() {
+            const toggle1 = document.getElementById('hidden1');
+
+            if(toggle1.style.display !== 'none') {
+                toggle1.style.display = 'none';
+            }
+            else {
+                toggle1.style.display = 'block';
+            }
+        },
+
+        toggleBtn2: function() {
+            const toggle2 = document.getElementById('hidden2');
+
+            if(toggle2.style.display !== 'none') {
+                toggle2.style.display = 'none';
+            }
+            else {
+                toggle2.style.display = 'block';
+            }
+        },
+
+        toggleBtn3: function() {
+            const toggle3 = document.getElementById('hidden3');
+
+            if(toggle3.style.display !== 'none') {
+                toggle3.style.display = 'none';
+            }
+            else {
+                toggle3.style.display = 'block';
+            }
+        },
+
+        toggleBtn4: function() {
+            const toggle4 = document.getElementById('hidden4');
+
+            if(toggle4.style.display !== 'none') {
+                toggle4.style.display = 'none';
+            }
+            else {
+                toggle4.style.display = 'block';
+            }
+        },
+
+        toggleBtn5: function() {
+            const toggle5 = document.getElementById('hidden5');
+
+            if(toggle5.style.display !== 'none') {
+                toggle5.style.display = 'none';
+            }
+            else {
+                toggle5.style.display = 'block';
+            }
+        },
+
+        change_btn: function(e) {
+                var btns = document.querySelectorAll(".btnbox");
+                btns.forEach(function(btn, i) {
+                    if(e.currentTarget == btn) {
+                        btn.classList.add("active");
+                    }
+                    else {
+                        btn.classList.remove("active");
+                    }
+                });
+                console.log(e.currentTarget);
+        },
+
+        change_btn2: function(e) {
+                var btns = document.querySelectorAll(".btnbox2");
+                btns.forEach(function(btn, i) {
+                    if(e.currentTarget == btn) {
+                        btn.classList.add("active");
+                    }
+                    else {
+                        btn.classList.remove("active");
+                    }
+                });
+                console.log(e.currentTarget);
+        },
+    }
+}
+</script>
+
+<style scoped>
+.text1 {
+    font-weight: bold;
+    font-size: 34px;
+    float: left;
+    margin-left: 80px;
+    margin-top: 50px;
+}
+
+.goods-box {
+    width: 1500px;
+    margin: 0 auto;
+}
+
+.text-box1 {
+    font-weight: bold;
+    font-size: 28px;
+    border-bottom: solid 2px #2B322C;
+    margin-top: 150px;
+    display: flex;
+}
+
+.goods-text1 {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.goods-menu {
+    margin: auto;
+    border-bottom: solid 1px #dde5db;
+    display: flex;
+    margin-top: 10px;
+}
+
+.img1 {
+    width: 104px;
+    height: 133px;
+    background-color: #000;
+    margin-bottom: 10px;
+}
+
+.menu-name {
+    font-size : 20px;
+    margin-left: 50px;
+    margin-top: 50px;
+}
+
+.person-text-box1 {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.agree-text-box {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.person-text1 {
+    font-size: 20px;
+    margin-right: 100px;
+}
+
+.agree-text1 {
+    font-size: 20px;
+    margin-right: 100px;
+}
+
+.person-text2 {
+    font-size: 20px;
+}
+
+.agree-text2 {
+    font-size: 20px;
+    margin-left: auto;
+    margin-right: 10px;
+    color: var(--gray300);
+}
+
+.agree-text3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.btn-box1 {
+    margin-top: 20px;
+    display: flex;
+}
+
+.btn-box2 {
+    margin-top: 30px;
+    display: flex;
+    margin-left: 180px;
+}
+
+.btnbox {
+    width: 47%;
+    margin-left: 30px;
+    background-color: var(--secondary-l5);
+    color: var(--primary-d2);
+    font-family: Pretendard;
+    font-size: 18px;
+    border: solid 1px var(--primary-d2);
+    padding: 15px 18px;
+    border-radius: 4px;
+}
+
+.btnbox2 {
+    width: 140px;
+    background-color: var(--secondary-l5);
+    color: var(--gray200);
+    font-family: Pretendard;
+    font-size: 18px;
+    border: solid 1px var(--gray200);
+    padding: 15px 18px;
+}
+
+.btnbox:hover, .btnbox.active {
+    background-color: var(--primary-d2);
+    color: #fff;
+    border: 0px;
+}
+
+.btnbox2:hover, .btnbox2.active {
+    background-color: var(--primary-d2);
+    color: #fff;
+    border: 0px;
+}
+
+.hidden3-1-text1{
+    font-size: 20px;
+    margin-left: 30px;
+    margin-top: 40px;
+    margin-right: auto;
+}
+
+.time-select {
+    margin-right: auto;
+    border: none;
+    width: 100%;
+    color: #A5ADA4;
+    font-weight: bold;
+}
+
+.time-select-box{
+    display: flex;
+    border-radius: 4px;
+    border: solid 1px #C1C9BF;
+    margin-left: 34px;
+    width: 94%;
+    padding: 10px;
+}
+
+.select-text1 {
+    float: left;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
+
+.card-select-box {
+    display: flex;
+    border-radius: 4px;
+    border: solid 1px #C1C9BF;
+    margin-left: 180px;
+    margin-top: 30px;
+    width: 26.5%;
+    padding: 20px 10px;
+}
+
+.card-select{
+    margin-right: auto;
+    border: none;
+    width: 100%;
+    color: #414941;
+    font-weight: bold;
+    font-size: 18px;
+
+}
+
+.card-select-box2 {
+    display: flex;
+    border-radius: 4px;
+    border: solid 1px #C1C9BF;
+    background-color: var(--gray50);
+    margin-left: 180px;
+    margin-top: 10px;
+    width: 26.5%;
+    padding: 20px 10px;
+}
+
+.card-select2{
+    margin-right: auto;
+    border: none;
+    width: 100%;
+    color: var(--ngray300);
+    font-weight: bold;
+    font-size: 18px;
+    background-color: var(--gray50);
+
+}
+
+.total-btn1 {
+    width: 40%;
+    margin: 0 auto;
+    padding: 15px 18px;
+    margin-top: 80px;
+    background-color: var(--primary-d2);
+}
+</style>
