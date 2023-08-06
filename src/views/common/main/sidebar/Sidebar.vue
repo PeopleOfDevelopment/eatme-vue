@@ -33,7 +33,7 @@
         <span class="material-symbols-rounded">home</span>
         홈
       </p>
-      <p>
+      <p @click="goPage('wishlist')" :class="{ clicked: clickedItem === 'wishlist' }">
         <span class="material-symbols-rounded">favorite</span>
         찜목록
       </p>

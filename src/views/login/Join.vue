@@ -89,46 +89,36 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import placeHolder from '../common/components/PlaceHolder.vue';
 import Btns from '../common/components/Btn.vue';
 
-export default {
-  components: {
-    placeHolder,
-    Btns,
-  },
-  data() {
-    return {
-      input1: '아이디',
-      input2: '닉네임(6자 이내)',
-      input3: '비밀번호',
-      input4: '비밀번호 확인',
-      input5: '이메일',
-      input6: '전화번호',
-    };
-  },
+const input1 = '아이디';
+const input2 = '닉네임(6자 이내)';
+const input3 = '비밀번호';
+const input4 = '비밀번호 확인';
+const input5 = '이메일';
+const input6 = '전화번호';
 
-  methods: {
-    test: function () {
-      var p1 = document.getElementById('password1').value;
-      var p2 = document.getElementById('password2').value;
+const test = () => {
+    var p1 = document.getElementById('password1').value;
+    var p2 = document.getElementById('password2').value;
 
-      if (p1.length < 8) {
-        alert('입력한 글자가 8글자 이상이어야 합니다.');
-        return false;
-      }
+    if (p1.length < 8) {
+      alert('입력한 글자가 8글자 이상이어야 합니다.');
+      return false;
+    }
 
-      if (p1 != p2) {
-        alert('비밀번호를 다시 한 번 확인해주세요.');
-        return false;
-      } else {
-        alert('비밀번호일치확인용문구');
-        return true;
-      }
-    },
+    if (p1 != p2) {
+      alert('비밀번호를 다시 한 번 확인해주세요.');
+      return false;
+    } else {
+      alert('비밀번호일치확인용문구');
+      return true;
+    }
+};
 
-    pw_check: function () {
+const pw_check = () => {
       var password = document.querySelector('#password1');
       var password_msg = document.querySelector('#password_msg');
       var pwValidation = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
@@ -140,8 +130,6 @@ export default {
         password_msg.innerHTML = '올바르지 않은 형식입니다.';
         password_msg.style.color = '#d13125'
       }
-    }
-  },
 };
 </script>
 

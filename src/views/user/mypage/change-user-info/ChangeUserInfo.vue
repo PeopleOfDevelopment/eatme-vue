@@ -1,6 +1,10 @@
 <template>
     <Sidebar></Sidebar>
     <div id="main-wrapper">
+        <TopNav
+        navType="tabs"
+        :tabList="['나의 기록', '개인 정보 변경']"
+        :currentTab="currentTab"></TopNav>
         <div class="box1">
             <div class="round1">
                 <svg width="160" height="160" viewBox="-15 -15 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,25 +64,14 @@
     
 </template>
 
-<script>
+<script setup>
 import Sidebar from '../../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../../common/components/Btn.vue';
 import Footer from '../../../common/main/footer/Footer.vue';
 import Modal from '../../../common/components/Modal1.vue';
+import TopNav from '../../../common/components/TopNav.vue';
 
-    export default {
-        components: {
-            Sidebar,
-            Btn,
-            Footer,
-            Modal,
-        },
-        data() {
-            return {
-                modalOpen: false,
-            }
-        }
-    }
+modalOpen: false;        
 </script>
 
 <style scoped>

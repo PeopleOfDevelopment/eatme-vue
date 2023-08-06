@@ -2,18 +2,19 @@
   <Sidebar></Sidebar>
   <div id="main-wrapper" class="all">
     <p class="p-text1">구매내역</p>
-    <div class="p-menus1" v-for="(a, i) in goods" :key="i">
+    <div class="p-menus1" v-for="(item, idx) in goods">
       <div class="p-img1"></div>
       <div class="p-menus2">
-        <p class="m-name1">{{ goods[i].martName }}</p>
-        <p class="g-name1">{{ goods[i].title }}</p>
-        <p class="d-text1">{{ goods[i].discount }}%</p>
-        <p class="t-text1">{{ goods[i].price }}원</p>
+        <p class="m-name1">{{ item.martName }}</p>
+        <p class="g-name1">{{ item.title }}</p>
+        <p class="d-text1">{{ item.discount }}%</p>
+        <p class="t-text1">{{ item.price }}원</p>
         <p class="o-text2">8000원</p>
       </div>
       <div class="p-menus3">
-        <p class="d-text2">{{ goods[i].day }}</p>
-        <Btn class="t-btn1" btntype="outline" style="width: 136px">
+        <p class="d-text2">{{ item.day }}</p>
+        <Btn class="t-btn1" btntype="outline" style="width: 136px"
+        @click="query">
           리뷰 작성
         </Btn>
       </div>
@@ -21,22 +22,69 @@
   </div>
 </template>
 
-<script>
-import data from './goods.ts';
+<script setup>
 import Btn from '../../common/components/Btn.vue';
-import Sidebar from '../../common/main/sidebar/Sidebar.vue'
+import Sidebar from '../../common/main/sidebar/Sidebar.vue';
+import { ref, watchEffect } from 'vue';
 
-export default {
-  components: {
-    Btn,
-    Sidebar,
-  },
-  data() {
-    return {
-      goods: data,
-    };
-  },
-};
+const goods = ref([
+    {
+      id: 0,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
+      price: 6675,
+      discount: 25,
+      day: "2023.05.29",
+      martName: "gs25 영통한아름점",
+    },
+    {
+      id: 1,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 4봉",
+      price: 6675,
+      discount: 25,
+      day: "2023.05.29",
+      martName: "gs25 영통한아름점",
+    },
+    {
+      id: 2,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
+      price: 6675,
+      discount: 25,
+      day: "2023.05.29",
+      martName: "gs25 영통한아름점",
+    },
+    {
+      id: 3,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 2봉",
+      price: 6675,
+      discount: 25,
+      day: "2023.05.29",
+      martName: "gs25 영통한아름점",
+    },
+    {
+      id: 4,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 2봉",
+      price: 6675,
+      discount: 25,
+      day: "2023.05.29",
+      martName: "gs25 영통한아름점",
+    },
+    {
+      id: 5,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 1봉",
+      price: 6675,
+      discount: 25,
+      day: "2023.05.29",
+      martName: "gs25 영통한아름점",
+    },
+]);
+
+const selectAll = ref(true);
+
+watchEffect(() => {
+  const allSelected = goods.value.every((item) => item.checked);
+  selectAll.value = allSelected;
+});
+
 </script>
 
 <style scoped>

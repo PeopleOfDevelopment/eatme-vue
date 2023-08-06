@@ -71,22 +71,12 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import Btn from '../common/components/Btn.vue';
 import Ph from '../common/components/PlaceHolder.vue';
 
-export default {
-  components: {
-    Btn,
-    Ph,
-  },
-  data() {
-    return {
-      id: '아이디',
-      pw: '비밀번호',
-    };
-  },
-};
+const id = '아이디';
+const pw = '비밀번호';
 </script>
 
 <style scoped>
