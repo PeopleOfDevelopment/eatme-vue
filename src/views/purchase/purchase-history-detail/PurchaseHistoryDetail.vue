@@ -47,7 +47,7 @@
             </div>
             <div id="hidden3">
                 <div class="btn-box1">
-                    <button class="btnbox active" @click="change_btn">직접 수령</button>
+                    <button class="btnbox" @click="change_btn">직접 수령</button>
                     <button class="btnbox" @click="change_btn">배달</button>
                 </div>
                 <div id="hidden3-1">
@@ -56,6 +56,14 @@
                     </div>
                     <div class="time-select-box">
                         <input type="time" class="time-select">
+                    </div>
+                </div>
+                <div id="hidden3-1">
+                    <div style="display: flex;">
+                        <p class="hidden3-1-text1">배달 장소 입력</p>
+                    </div>
+                    <div class="time-select-box">
+                        <input type="text" class="time-select">
                     </div>
                 </div>
             </div>
@@ -71,27 +79,29 @@
                 <div class="payment-select">
                     <p class="select-text1">결제 수단 선택</p>
                     <div class="btn-box2">
-                    <button class="btnbox2 active" @click="change_btn2"
+                    <button class="btnbox2" @click="change_btn2"
                     style="border-radius: 4px 0px 0px 4px; border-right: 0px;">신용카드</button>
                     <button class="btnbox2" @click="change_btn2">간편결제</button>
                     <button class="btnbox2" @click="change_btn2"
-                    style="border-radius: 0px 4px 4px 0px; border-left: 0px;">간편결제</button>
+                    style="border-radius: 0px 4px 4px 0px; border-left: 0px;">소액결제</button>
                 </div>
-                <div class="card-select-box">
-                    <select class="card-select">
-                    <option value="">카드를 선택해주세요</option>
-                    <option value="1">현대카드</option>
-                    <option value="2">우리카드</option>
-                    <option value="3">국민카드</option>
-                    </select>
-                </div>
-                <div class="card-select-box2">
-                    <select class="card-select2">
-                    <option value="">할부를 선택해주세요</option>
-                    <option value="3">3개월</option>
-                    <option value="6">6개월</option>
-                    <option value="9">9개월</option>
-                    </select>
+                <div v-if="isUseCard === true">
+                    <div class="card-select-box">
+                        <select class="card-select">
+                        <option value="">카드를 선택해주세요</option>
+                        <option value="1">현대카드</option>
+                        <option value="2">우리카드</option>
+                        <option value="3">국민카드</option>
+                        </select>
+                    </div>
+                    <div class="card-select-box2">
+                        <select class="card-select2">
+                        <option value="">할부를 선택해주세요</option>
+                        <option value="3">3개월</option>
+                        <option value="6">6개월</option>
+                        <option value="9">9개월</option>
+                        </select>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -122,29 +132,26 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
+import { ref, watchEffect } from 'vue';
 
-export default {
-    components: {
-        Btn,
-        Sidebar,
-    },
+const goods = ref([
+    { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
+    { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
+    { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
+]);
 
-    data() {
-        return {
-            goods: [
-                { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
-                { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
-                { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
-            ]
-        }
-    },
+const selectAll = ref(true);
 
-    methods: {
-        toggleBtn1: function() {
-            const toggle1 = document.getElementById('hidden1');
+watchEffect(() => {
+  const allSelected = goods.value.every((item) => item.checked);
+  selectAll.value = allSelected;
+});
+
+const toggleBtn1 = () => {
+    const toggle1 = document.getElementById('hidden1');
 
             if(toggle1.style.display !== 'none') {
                 toggle1.style.display = 'none';
@@ -152,10 +159,10 @@ export default {
             else {
                 toggle1.style.display = 'block';
             }
-        },
+};
 
-        toggleBtn2: function() {
-            const toggle2 = document.getElementById('hidden2');
+const toggleBtn2 = () => {
+    const toggle2 = document.getElementById('hidden2');
 
             if(toggle2.style.display !== 'none') {
                 toggle2.style.display = 'none';
@@ -163,10 +170,10 @@ export default {
             else {
                 toggle2.style.display = 'block';
             }
-        },
+};
 
-        toggleBtn3: function() {
-            const toggle3 = document.getElementById('hidden3');
+const toggleBtn3 = () => {
+    const toggle3 = document.getElementById('hidden3');
 
             if(toggle3.style.display !== 'none') {
                 toggle3.style.display = 'none';
@@ -174,10 +181,10 @@ export default {
             else {
                 toggle3.style.display = 'block';
             }
-        },
+};
 
-        toggleBtn4: function() {
-            const toggle4 = document.getElementById('hidden4');
+const toggleBtn4 = () => {
+    const toggle4 = document.getElementById('hidden4');
 
             if(toggle4.style.display !== 'none') {
                 toggle4.style.display = 'none';
@@ -185,10 +192,10 @@ export default {
             else {
                 toggle4.style.display = 'block';
             }
-        },
+};
 
-        toggleBtn5: function() {
-            const toggle5 = document.getElementById('hidden5');
+const toggleBtn5 = () => {
+    const toggle5 = document.getElementById('hidden5');
 
             if(toggle5.style.display !== 'none') {
                 toggle5.style.display = 'none';
@@ -196,34 +203,32 @@ export default {
             else {
                 toggle5.style.display = 'block';
             }
-        },
+};
 
-        change_btn: function(e) {
-                var btns = document.querySelectorAll(".btnbox");
-                btns.forEach(function(btn, i) {
-                    if(e.currentTarget == btn) {
-                        btn.classList.add("active");
-                    }
-                    else {
-                        btn.classList.remove("active");
-                    }
-                });
-                console.log(e.currentTarget);
-        },
+const change_btn = (e) => {
+    var btns = document.querySelectorAll(".btnbox");
+        btns.forEach(function(btn, i) {
+        if(e.currentTarget == btn) {
+            btn.classList.add("active");
+        }
+        else {
+            btn.classList.remove("active");
+        }
+    });
+    console.log(e.currentTarget);
+};
 
-        change_btn2: function(e) {
-                var btns = document.querySelectorAll(".btnbox2");
-                btns.forEach(function(btn, i) {
-                    if(e.currentTarget == btn) {
-                        btn.classList.add("active");
-                    }
-                    else {
-                        btn.classList.remove("active");
-                    }
-                });
-                console.log(e.currentTarget);
-        },
-    }
+const change_btn2 = (e) => {
+    var btns = document.querySelectorAll(".btnbox2");
+        btns.forEach(function(btn, i) {
+        if(e.currentTarget == btn) {
+            btn.classList.add("active");
+        }
+        else {
+            btn.classList.remove("active");
+        }
+    });
+    console.log(e.currentTarget);
 }
 </script>
 

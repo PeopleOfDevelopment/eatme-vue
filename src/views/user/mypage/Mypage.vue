@@ -1,6 +1,10 @@
 <template>
     <Sidebar></Sidebar>
     <div id="main-wrapper">
+        <TopNav
+        navType="tabs"
+        :tabList="['나의 기록', '개인 정보 변경']"
+        :currentTab="currentTab"></TopNav>
         <div class="box1">
             <p class="box1-text1">이번 달 내가 구한 음식 수는?</p>
             <div class="box1-btns1">
@@ -111,21 +115,14 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
 import Footer from '../../common/main/footer/Footer.vue';
+import TopNav from '../../common/components/TopNav.vue';
 
-    export default {
-        components: {
-            Sidebar,
-            Btn,
-            Footer,
-        },
-
-        methods: {
-            change_btn: function(e) {
-                var btns = document.querySelectorAll(".btnbox");
+const change_btn = (e) => {
+    var btns = document.querySelectorAll(".btnbox");
                 btns.forEach(function(btn, i) {
                     if(e.currentTarget == btn) {
                         btn.classList.add("active");
@@ -135,9 +132,7 @@ import Footer from '../../common/main/footer/Footer.vue';
                     }
                 });
                 console.log(e.currentTarget);
-            }
-        }
-    }
+};
 </script>
 
 <style scoped>
