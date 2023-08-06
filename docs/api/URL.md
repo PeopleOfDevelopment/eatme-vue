@@ -31,6 +31,19 @@
   URL: '/api/sellerReg/insert'
   파라미터: 회사코드, 회사명, 사업자등록번호, 아이디, 회사주소, 회사소개
 
+# 마이페이지
+유저정보 조회: 
+  URL: '/api/mypage/query'
+  파라미터: 유저아이디, 유저이름(혹시 몰라서 넣어놨음)
+
+유저정보 변경
+  URL: '/api/mypage/changeUser'
+  파라미터: 유저비밀번호, 닉네임, 이메일, 주소
+
+회원탈퇴
+  URL: '/api/mypage/exit'
+  파라미터: 유저아이디, 유저이름(혹시 몰라서 넣어놨음)
+
 // 회원가입 예시 테스트코드
 import { ApiUtils } from './views/common/utils/ApiUtils';
 
