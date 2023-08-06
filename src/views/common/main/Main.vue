@@ -1,8 +1,9 @@
 <template>
   <Sidebar></Sidebar>
   <div id="main-wrapper">
-    <TopNav state="location"></TopNav>
+    <TopNav navType="location"></TopNav>
     <div id="sub-wrapper">
+      <Slide></Slide>
       <div class="list-container">
         <div class="list-section">
           <SubTitle title="내 주변 할인 매장"></SubTitle>
@@ -25,6 +26,7 @@
 <script setup>
 import Sidebar from './sidebar/Sidebar.vue';
 import TopNav from '../components/TopNav.vue';
+import Slide from './slide/Slide.vue';
 import SubTitle from '../components/SubTitle.vue';
 import Card from '../components/Card.vue';
 import Footer from './footer/Footer.vue';
