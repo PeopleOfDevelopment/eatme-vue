@@ -10,7 +10,13 @@
     </div>
   </div>
   <div id="top-nav" v-else-if="navType === 'tabs'" class="nav-tabs">
-    <Btn v-for="tab in tabs" :key="tab" btntype="textGray" class="tab-button">
+    <Btn
+      v-for="(tab, index) in tabList"
+      :key="index"
+      btntype="textGray"
+      class="tab-button"
+      @click.prevent="currentTab = index"
+      :class="{ clicked: currentTab === index }">
       {{ tab }}
     </Btn>
   </div>
@@ -20,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, watch } from 'vue';
 import Btn from './Btn.vue';
 import SelectLocation from '../../purchase/select-location/SelectLocation.vue';
 
@@ -33,10 +39,14 @@ const props = defineProps({
     type: String,
     default: 'location',
   },
-  tabs: {
+  tabList: {
     type: Array,
   },
+  currentTab: {
+    type: Number,
+  },
 });
+const currentTab = ref(props.currentTab);
 
 const toggleModal = () => {
   modalOpen.value = !modalOpen.value;

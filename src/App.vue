@@ -5,7 +5,7 @@
     <Basket></Basket>
     <Footer></Footer>
   </div> -->
-  <div id="app" class="main-wrapper">
+  <div id="app">
     <router-view></router-view>
   </div>
   <!-- <Join></Join> -->
@@ -33,7 +33,6 @@ import Mypage from './views/user/mypage/Mypage.vue';
 import ChangeInfo from './views/user/mypage/change-user-info/ChangeUserInfo.vue';
 import './assets/style.css';
 
-
 @Options({
   components: {
     HelloWorld,
@@ -60,10 +59,6 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  display: flex;
-}
-.main-wrapper {
-  flex: 1 0 0;
   display: flex;
   flex-direction: column;
 }
