@@ -12,6 +12,7 @@ import ChangeInfo from '../views/user/mypage/change-user-info/ChangeUserInfo.vue
 import HistoryDetail from '../views/purchase/purchase-history-detail/PurchaseHistoryDetail.vue';
 import WishList from '../views/user/wish-list/WishList.vue';
 import ItemReg from '../views/seller/item-reg/ItemReg.vue';
+import ItemInfo from '../views/purchase/item-info/ItemInfo.vue';
 
 //라우터설계(경로랑 컴포넌트 배열로 입력)
 const routes = [
@@ -26,6 +27,7 @@ const routes = [
   { path: '/detail', component: HistoryDetail },
   { path: '/wishlist', component: WishList },
   { path: '/itemreg', component: ItemReg},
+  { path: '/iteminfo', component: ItemInfo},
 ];
 
 //라우터생성
