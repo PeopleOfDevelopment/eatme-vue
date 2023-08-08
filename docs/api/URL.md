@@ -44,6 +44,20 @@
   URL: '/api/mypage/exit'
   파라미터: 유저아이디, 유저이름(혹시 몰라서 넣어놨음)
 
+# 찜목록
+찜목록 조회
+  URL: '/api/wishList/query'
+  파라미터: 유저아이디, 회사코드  
+
+찜목록 삽입
+  URL: '/api/wishList/insert'
+  파라미터: 유저아이디, 회사코드  
+
+찜목록 삭제
+  URL: '/api/wishList/delete'
+  파라미터: 유저아이디, 회사코드 
+
+ 
 // 회원가입 예시 테스트코드
 import { ApiUtils } from './views/common/utils/ApiUtils';
 
