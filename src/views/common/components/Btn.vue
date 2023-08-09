@@ -47,6 +47,8 @@ const btnClass = computed(() => {
       return 'slide-nav-button';
     case 'danger':
       return 'danger-button';
+    case 'opacityBlack':
+      return 'opacity-black-button';
     default:
       return '';
   }
@@ -140,5 +142,14 @@ const btnClass = computed(() => {
 .danger-button {
   background-color: var(--system-danger);
   color: var(--gray-white);
+}
+.opacity-black-button {
+  width: 118px;
+  height: 36px;
+  color: #fff;
+  background-color: rgba(25, 28, 26, 0.2);
+  padding-bottom: 0px;
+  font-weight: 200;
+  border-radius: 20px;
 }
 </style>
