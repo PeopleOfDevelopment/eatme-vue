@@ -46,6 +46,7 @@ const locationList = ref([
   position: fixed;
   top: 65px;
   padding-inline: 75px;
+  z-index: 99;
 }
 .modal {
   background-color: var(--gray-white);

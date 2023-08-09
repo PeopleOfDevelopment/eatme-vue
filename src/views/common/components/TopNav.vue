@@ -15,8 +15,8 @@
       :key="index"
       btntype="textGray"
       class="tab-button"
-      @click.prevent="currentTab = index"
-      :class="{ clicked: currentTab === index }">
+      :class="{ clicked: currentTab === index }"
+      @click="changeTab(index)">
       {{ tab }}
     </Btn>
   </div>
@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import Btn from './Btn.vue';
 import SelectLocation from '../../purchase/select-location/SelectLocation.vue';
 
@@ -45,8 +45,8 @@ const props = defineProps({
   currentTab: {
     type: Number,
   },
+  changeTab: Function,
 });
-const currentTab = ref(props.currentTab);
 
 const toggleModal = () => {
   modalOpen.value = !modalOpen.value;
@@ -96,9 +96,11 @@ const toggleModal = () => {
 .tab-button {
   padding: 20px 0 19px;
   border-radius: 0;
+  margin-bottom: 2px;
 }
 .clicked {
   color: var(--ngray800);
   border-bottom: 2px solid var(--primary-def);
+  margin-bottom: 0;
 }
 </style>
