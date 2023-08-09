@@ -33,7 +33,9 @@
         <span class="material-symbols-rounded">home</span>
         홈
       </p>
-      <p @click="goPage('wishlist')" :class="{ clicked: clickedItem === 'wishlist' }">
+      <p
+        @click="goPage('wishlist')"
+        :class="{ clicked: clickedItem === 'wishlist' }">
         <span class="material-symbols-rounded">favorite</span>
         찜목록
       </p>
@@ -80,6 +82,7 @@ const goPage = (page) => {
   position: fixed;
   display: flex;
   flex-direction: column;
+  z-index: 999;
 }
 
 .eatMe {

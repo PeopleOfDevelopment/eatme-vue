@@ -4,7 +4,8 @@
     <TopNav
       navType="tabs"
       :tabList="['상품', '매장']"
-      :currentTab="currentTab"></TopNav>
+      :currentTab="currentTab"
+      :changeTab="changeTab"></TopNav>
     <div id="sub-wrapper">
       <div class="content-section">
         <h2 class="page-title">{{ pageContents[currentTab].title }}</h2>
@@ -97,7 +98,13 @@ const pageContents = ref([
   { title: '내가 찜한 상품', list: productList },
   { title: '내가 찜한 매장', list: placeList },
 ]);
+
+// 탭 버튼 관련
 const currentTab = ref(0);
+
+const changeTab = (index) => {
+  currentTab.value = index;
+};
 </script>
 
 <style scoped>
