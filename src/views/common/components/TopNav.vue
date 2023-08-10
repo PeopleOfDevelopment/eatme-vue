@@ -20,7 +20,12 @@
       {{ tab }}
     </Btn>
   </div>
-  <div id="top-nav" v-else-if="navType === 'title'" class="nav-title"></div>
+  <div id="top-nav" v-else-if="navType === 'title'" class="nav-title">
+    <div class="subpage-title-container">
+      <span class="material-symbols-rounded">chevron_left</span>
+      <span class="subpage-title"></span>
+    </div>
+  </div>
   <div v-else></div>
   <SelectLocation v-if="modalOpen" />
 </template>

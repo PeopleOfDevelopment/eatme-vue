@@ -1,5 +1,5 @@
 <template>
-  <div class="sideBar">
+  <div class="sideBar" :class="{ seller: isSeller }">
     <p class="eatMe">EAT ME</p>
     <div class="user">
       <div class="circle1">
@@ -19,38 +19,97 @@
         로그인
       </p>
     </div>
-
-    <div class="search">
+    <div v-if="!isSeller" class="search">
       <span class="material-symbols-rounded">search</span>
       <input
         class="search_input"
         type="text"
         placeholder="제품 혹은 매장 검색" />
     </div>
-
-    <div class="menus">
-      <p @click="goPage('home')" :class="{ clicked: clickedItem === 'home' }">
-        <span class="material-symbols-rounded">home</span>
-        홈
-      </p>
-      <p
-        @click="goPage('wishlist')"
-        :class="{ clicked: clickedItem === 'wishlist' }">
-        <span class="material-symbols-rounded">favorite</span>
-        찜목록
-      </p>
-      <p
-        @click="goPage('purchase-history')"
-        :class="{ clicked: clickedItem === 'purchase-history' }">
-        <span class="material-symbols-rounded">list_alt</span>
-        구매내역
-      </p>
+    <div v-if="!isSeller" class="menu-container">
+      <div class="menus">
+        <p @click="goPage('home')" :class="{ clicked: clickedItem === 'home' }">
+          <span class="material-symbols-rounded">home</span>
+          홈
+        </p>
+        <p
+          @click="goPage('wishlist')"
+          :class="{ clicked: clickedItem === 'wishlist' }">
+          <span class="material-symbols-rounded">favorite</span>
+          찜목록
+        </p>
+        <p
+          @click="goPage('purchase-history')"
+          :class="{ clicked: clickedItem === 'purchase-history' }">
+          <span class="material-symbols-rounded">list_alt</span>
+          구매내역
+        </p>
+      </div>
+      <Btns @click="goPage('basket')" btntype="ghost" style="margin-top: 10px">
+        <span class="material-symbols-rounded">shopping_cart</span>
+        장바구니
+      </Btns>
+      <Btns
+        btntype="outline"
+        style="margin-top: 10px"
+        @click="goPage('dashboard')">
+        판매 관리
+      </Btns>
     </div>
-    <Btns @click="goPage('basket')" btntype="ghost" style="margin-top: 10px">
-      <span class="material-symbols-rounded">shopping_cart</span>
-      장바구니
-    </Btns>
-    <Btns btntype="outline" style="margin-top: 10px">판매 관리</Btns>
+    <!--판매자 페이지: 부모 파일에 isSeller="true" 추가-->
+    <div v-else class="menu-container">
+      <div class="menus">
+        <p
+          @click="goPage('dashboard')"
+          :class="{ clicked: clickedItem === 'dashboard' }">
+          <span class="material-symbols-rounded">dashboard</span>
+          대시보드
+        </p>
+        <p
+          @click="goPage('wishlist')"
+          :class="{ clicked: clickedItem === 'wishlist' }">
+          <span class="material-symbols-rounded">shopping_cart</span>
+          상품관리
+        </p>
+        <p
+          @click="goPage('purchase-history')"
+          :class="{ clicked: clickedItem === 'purchase-history' }">
+          <span class="material-symbols-rounded">insert_chart</span>
+          통계
+        </p>
+        <p
+          @click="goPage('purchase-history')"
+          :class="{ clicked: clickedItem === 'purchase-history' }">
+          <span class="material-symbols-rounded">payments</span>
+          정산
+        </p>
+        <p
+          @click="goPage('purchase-history')"
+          :class="{ clicked: clickedItem === 'purchase-history' }">
+          <span class="material-symbols-rounded">settings</span>
+          정보 관리
+        </p>
+        <p
+          @click="goPage('purchase-history')"
+          :class="{ clicked: clickedItem === 'purchase-history' }">
+          <span class="material-symbols-rounded">notifications_active</span>
+          공지사항
+        </p>
+      </div>
+      <Btns
+        @click="goPage('basket')"
+        btntype="ghostDark"
+        style="margin-top: 10px">
+        <span class="material-symbols-rounded">barcode_scanner</span>
+        제품 등록
+      </Btns>
+      <Btns
+        @click="goPage('home')"
+        btntype="ghostWhite"
+        style="margin-top: 10px">
+        나가기
+      </Btns>
+    </div>
   </div>
 </template>
 
@@ -66,6 +125,13 @@ const goPage = (page) => {
   else router.push('/' + page);
   clickedItem.value = page;
 };
+
+const props = defineProps({
+  isSeller: {
+    type: Boolean,
+    default: false,
+  },
+});
 </script>
 
 <style scoped>
@@ -83,6 +149,7 @@ const goPage = (page) => {
   display: flex;
   flex-direction: column;
   z-index: 999;
+  color: #717971;
 }
 
 .eatMe {
@@ -150,9 +217,6 @@ const goPage = (page) => {
 .menus svg {
   padding-right: 8px;
 }
-.menus {
-  color: #717971;
-}
 .menus p {
   text-align: left;
   font-weight: bold;
@@ -175,6 +239,18 @@ const goPage = (page) => {
   align-items: center;
   gap: 8px;
   justify-content: center;
+}
+
+/* 판매자 페이지 */
+.seller {
+  background-color: var(--ngray700);
+  color: var(--ngray100);
+  & .eatMe {
+    color: var(--ngray100);
+  }
+  & .clicked {
+    color: var(--primary-l3);
+  }
 }
 @media screen and (max-width: 768px) {
   .sideBar {
