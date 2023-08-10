@@ -1,18 +1,16 @@
 <template>
   <div class="slide-section">
-    <transition name="slide">
-      <div class="slides">
-        <div
-          v-for="(item, index) in state.items"
-          :key="index"
-          class="slide-item"
-          :style="{
-            transform: `translateX(${slideTranslateX(index)}%)`,
-          }">
-          <img alt="메인 배너" :src="require(`@/assets/img/${item}.jpg`)" />
-        </div>
+    <div class="slides">
+      <div
+        v-for="(item, index) in state.items"
+        :key="index"
+        class="slide-item"
+        :style="{
+          transform: `translateX(${slideTranslateX(index)}%)`,
+        }">
+        <img alt="메인 배너" :src="require(`@/assets/img/${item}.jpg`)" />
       </div>
-    </transition>
+    </div>
     <div class="slide-button-container">
       <Btn btntype="slideNav" @click="prevSlide" class="prev-button">
         <span class="material-symbols-rounded">chevron_left</span>
@@ -43,14 +41,11 @@ const state = reactive({
 const prevSlide = () => {
   state.currentIndex =
     (state.currentIndex + state.items.length - 1) % state.items.length;
-  console.log('prevSlide: ' + state.currentIndex);
 };
 const nextSlide = () => {
   state.currentIndex = (state.currentIndex + 1) % state.items.length;
-  console.log('nextSlide: ' + state.currentIndex);
 };
 const slideTranslateX = (index) => {
-  console.log('index - current: ' + (index - state.currentIndex));
   return (index - state.currentIndex) * 100;
 };
 </script>

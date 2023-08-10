@@ -21,6 +21,10 @@ const btnClass = computed(() => {
       return 'ghost-button';
     case 'ghostGray':
       return 'ghost-gray-button';
+    case 'ghostDark':
+      return 'ghost-dark-button';
+    case 'ghostWhite':
+      return 'ghost-white-button';
     case 'outline':
       return 'outline-button';
     case 'outlineGray':
@@ -76,6 +80,14 @@ const btnClass = computed(() => {
 .ghost-gray-button {
   color: var(--ngray600);
   border: 1px solid var(--ngray300);
+}
+.ghost-dark-button {
+  color: var(--primary-l3);
+  border: 1px solid var(--primary-l3);
+}
+.ghost-white-button {
+  color: var(--ngray100);
+  border: 1px solid var(--ngray100);
 }
 .outline-button {
   background-color: var(--gray-white);
