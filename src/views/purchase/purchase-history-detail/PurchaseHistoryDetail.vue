@@ -79,13 +79,13 @@
                 <div class="payment-select">
                     <p class="select-text1">결제 수단 선택</p>
                     <div class="btn-box2">
-                    <button class="btnbox2" @click="change_btn2"
-                    style="border-radius: 4px 0px 0px 4px; border-right: 0px;">신용카드</button>
-                    <button class="btnbox2" @click="change_btn2">간편결제</button>
-                    <button class="btnbox2" @click="change_btn2"
+                    <button class="btnbox2" style="border-radius: 4px 0px 0px 4px; border-right: 0px;"
+                    :class="{ active: activeButton2 === 'button3' }" @click="toggleButton2('button3')">신용카드</button>
+                    <button class="btnbox2" :class="{ active: activeButton2 === 'button4' }" @click="toggleButton2('button4')">간편결제</button>
+                    <button class="btnbox2" :class="{ active: activeButton2 === 'button5' }" @click="toggleButton2('button5')"
                     style="border-radius: 0px 4px 4px 0px; border-left: 0px;">소액결제</button>
                 </div>
-                <div>
+                <div v-if="activeButton2 === 'button3'" class="content2 active">
                     <div class="card-select-box">
                         <select class="card-select">
                         <option value="">카드를 선택해주세요</option>
@@ -138,6 +138,7 @@ import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import { ref, watchEffect } from 'vue';
 
 const activeButton = ref(null);
+const activeButton2 = ref(null);
 
 const goods = ref([
     { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
@@ -207,8 +208,24 @@ const toggleBtn5 = () => {
             }
 };
 
-// const change_btn = (e) => {
-//     var btns = document.querySelectorAll(".btnbox");
+const toggleButton = (button) => {
+    if (activeButton.value === button) {
+        activeButton.value = null;
+    } else {
+        activeButton.value = button;
+    }
+};
+
+const toggleButton2 = (button) => {
+    if (activeButton2.value === button) {
+        activeButton2.value = null;
+    } else {
+        activeButton2.value = button;
+    }
+};
+
+// const change_btn2 = (e) => {
+//     var btns = document.querySelectorAll(".btnbox2");
 //         btns.forEach(function(btn, i) {
 //         if(e.currentTarget == btn) {
 //             btn.classList.add("active");
@@ -218,28 +235,7 @@ const toggleBtn5 = () => {
 //         }
 //     });
 //     console.log(e.currentTarget);
-// };
-
-const toggleButton = (button) => {
-    if (activeButton.value === button) {
-        activeButton.value = null;
-    } else {
-        activeButton.value = button;
-    }
-};
-
-const change_btn2 = (e) => {
-    var btns = document.querySelectorAll(".btnbox2");
-        btns.forEach(function(btn, i) {
-        if(e.currentTarget == btn) {
-            btn.classList.add("active");
-        }
-        else {
-            btn.classList.remove("active");
-        }
-    });
-    console.log(e.currentTarget);
-}
+// }
 </script>
 
 <style scoped>
@@ -459,6 +455,14 @@ const change_btn2 = (e) => {
 }
 
 .content.active {
+    display: block;
+}
+
+.content2 {
+    display: none;
+}
+
+.content2.active {
     display: block;
 }
 </style>
