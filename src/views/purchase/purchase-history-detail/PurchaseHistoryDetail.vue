@@ -47,10 +47,10 @@
             </div>
             <div id="hidden3">
                 <div class="btn-box1">
-                    <button class="btnbox" @click="change_btn">직접 수령</button>
-                    <button class="btnbox" @click="change_btn">배달</button>
+                    <button class="btnbox" :class="{ active: activeButton === 'button1' }" @click="toggleButton('button1')">직접 수령</button>
+                    <button class="btnbox" :class="{ active: activeButton === 'button2' }" @click="toggleButton('button2')">배달</button>
                 </div>
-                <div id="hidden3-1">
+                <div v-if="activeButton === 'button1'" class="content active">
                     <div style="display: flex;">
                         <p class="hidden3-1-text1">픽업 시간 입력</p>
                     </div>
@@ -58,7 +58,7 @@
                         <input type="time" class="time-select">
                     </div>
                 </div>
-                <div id="hidden3-1">
+                <div v-else-if="activeButton === 'button2'" class="content active">
                     <div style="display: flex;">
                         <p class="hidden3-1-text1">배달 장소 입력</p>
                     </div>
@@ -85,7 +85,7 @@
                     <button class="btnbox2" @click="change_btn2"
                     style="border-radius: 0px 4px 4px 0px; border-left: 0px;">소액결제</button>
                 </div>
-                <div v-if="isUseCard === true">
+                <div>
                     <div class="card-select-box">
                         <select class="card-select">
                         <option value="">카드를 선택해주세요</option>
@@ -136,6 +136,8 @@
 import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import { ref, watchEffect } from 'vue';
+
+const activeButton = ref(null);
 
 const goods = ref([
     { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
@@ -205,17 +207,25 @@ const toggleBtn5 = () => {
             }
 };
 
-const change_btn = (e) => {
-    var btns = document.querySelectorAll(".btnbox");
-        btns.forEach(function(btn, i) {
-        if(e.currentTarget == btn) {
-            btn.classList.add("active");
-        }
-        else {
-            btn.classList.remove("active");
-        }
-    });
-    console.log(e.currentTarget);
+// const change_btn = (e) => {
+//     var btns = document.querySelectorAll(".btnbox");
+//         btns.forEach(function(btn, i) {
+//         if(e.currentTarget == btn) {
+//             btn.classList.add("active");
+//         }
+//         else {
+//             btn.classList.remove("active");
+//         }
+//     });
+//     console.log(e.currentTarget);
+// };
+
+const toggleButton = (button) => {
+    if (activeButton.value === button) {
+        activeButton.value = null;
+    } else {
+        activeButton.value = button;
+    }
 };
 
 const change_btn2 = (e) => {
@@ -443,5 +453,12 @@ const change_btn2 = (e) => {
     padding: 15px 18px;
     margin-top: 80px;
     background-color: var(--primary-d2);
+}
+.content {
+    display: none;
+}
+
+.content.active {
+    display: block;
 }
 </style>
