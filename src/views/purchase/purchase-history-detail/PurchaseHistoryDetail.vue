@@ -6,10 +6,10 @@
             <div class="text-box1">
                 <p class="goods-text1">주문상품</p>
                 <span class="material-symbols-rounded"
-                style="margin-left: auto; height: 30px;
-                margin-top: 40px;" @click="toggleBtn1">expand_more</span>
+                style="margin-left: auto; height: 30px; margin-top: 40px; cursor: pointer;"
+                :class="{ active: isClicked1 === 'Clicked1' }" @click="toggleBtn1('Clicked1')">expand_more</span>
             </div>
-            <div id="hidden1">
+            <div v-if="isClicked1 === 'Clicked1', showDiv1" class="content active">
                 <div class="goods-menu" v-for="(item, idx) in goods">
                 <div class="img1"></div>
                 <div class="menu-name">{{ item.name }}</div>
@@ -20,10 +20,10 @@
             <div class="text-box1" style="margin-top: 40px;">
                 <p class="goods-text1">주문자 정보</p>
                 <span class="material-symbols-rounded"
-                style="margin-left: auto; height: 30px;
-                margin-top: 40px;" @click="toggleBtn2">expand_more</span>
+                style="margin-left: auto; height: 30px; margin-top: 40px; cursor: pointer;"
+                :class="{ active: isClicked2 === 'Clicked1' }" @click="toggleBtn2('Clicked2')">expand_more</span>
             </div>
-            <div id="hidden2">
+            <div v-if="isClicked2 === 'Clicked2', showDiv2" class="content active">
                 <div class="person-text-box1">
                     <p class="person-text1">주문자</p>
                     <p class="person-text2">주문자 이름</p>
@@ -42,10 +42,10 @@
             <div class="text-box1" style="margin-top: 40px;">
                 <p class="goods-text1">수령 방법</p>
                 <span class="material-symbols-rounded"
-                style="margin-left: auto; height: 30px;
-                margin-top: 40px;" @click="toggleBtn3">expand_more</span>
+                style="margin-left: auto; height: 30px; margin-top: 40px; cursor: pointer;"
+                :class="{ active: isClicked3 === 'Clicked3' }" @click="toggleBtn3('Clicked3')">expand_more</span>
             </div>
-            <div id="hidden3">
+            <div v-if="isClicked3 === 'Clicked3', showDiv3" class="content active">
                 <div class="btn-box1">
                     <button class="btnbox" :class="{ active: activeButton === 'button1' }" @click="toggleButton('button1')">직접 수령</button>
                     <button class="btnbox" :class="{ active: activeButton === 'button2' }" @click="toggleButton('button2')">배달</button>
@@ -72,10 +72,10 @@
             <div class="text-box1" style="margin-top: 40px;">
                 <p class="goods-text1">결제 수단</p>
                 <span class="material-symbols-rounded"
-                style="margin-left: auto; height: 30px;
-                margin-top: 40px;" @click="toggleBtn4">expand_more</span>
+                style="margin-left: auto; height: 30px; margin-top: 40px; cursor: pointer;" 
+                :class="{ active: isClicked4 === 'Clicked4' }" @click="toggleBtn4('Clicked4')">expand_more</span>
             </div>
-            <div id="hidden4">
+            <div v-if="isClicked4 === 'Clicked4', showDiv4" class="content active">
                 <div class="payment-select">
                     <p class="select-text1">결제 수단 선택</p>
                     <div class="btn-box2">
@@ -110,10 +110,10 @@
             <div class="text-box1" style="margin-top: 40px;">
                 <p class="goods-text1">개인 정보 수집/제공</p>
                 <span class="material-symbols-rounded"
-                style="margin-left: auto; height: 30px;
-                margin-top: 40px;" @click="toggleBtn5">expand_more</span>
+                style="margin-left: auto; height: 30px; margin-top: 40px; cursor: pointer;" 
+                :class="{ active: isClicked5 === 'Clicked5' }" @click="toggleBtn5('Clicked5')">expand_more</span>
             </div>
-            <div id="hidden5" style="margin-top: 30px;">
+            <div style="margin-top: 30px;" v-if="isClicked5 === 'Clicked5', showDiv5" class="content active">
                 <div class="agree-text-box">
                     <p class="agree-text1">개인정보 수집/이용 및 처리 동의</p>
                     <p class="agree-text2">보기</p>
@@ -140,6 +140,18 @@ import { ref, watchEffect } from 'vue';
 const activeButton = ref(null);
 const activeButton2 = ref(null);
 
+const isClicked1 = ref(null);
+const isClicked2 = ref(null);
+const isClicked3 = ref(null);
+const isClicked4 = ref(null);
+const isClicked5 = ref(null);
+
+const showDiv1 = ref(true);
+const showDiv2 = ref(true);
+const showDiv3 = ref(true);
+const showDiv4 = ref(true);
+const showDiv5 = ref(true);
+
 const goods = ref([
     { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
     { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
@@ -153,59 +165,54 @@ watchEffect(() => {
   selectAll.value = allSelected;
 });
 
-const toggleBtn1 = () => {
-    const toggle1 = document.getElementById('hidden1');
-
-            if(toggle1.style.display !== 'none') {
-                toggle1.style.display = 'none';
-            }
-            else {
-                toggle1.style.display = 'block';
-            }
+const toggleBtn1 = (button) => {
+    if (isClicked1.value === button) {
+        isClicked1.value = null;
+        showDiv1.value = true;
+    } else {
+        isClicked1.value = button;
+        showDiv1.value = false;
+    }
 };
 
-const toggleBtn2 = () => {
-    const toggle2 = document.getElementById('hidden2');
-
-            if(toggle2.style.display !== 'none') {
-                toggle2.style.display = 'none';
-            }
-            else {
-                toggle2.style.display = 'block';
-            }
+const toggleBtn2 = (button) => {
+    if (isClicked2.value === button) {
+        isClicked2.value = null;
+        showDiv2.value = true;
+    } else {
+        isClicked2.value = button;
+        showDiv2.value = false;
+    }
 };
 
-const toggleBtn3 = () => {
-    const toggle3 = document.getElementById('hidden3');
-
-            if(toggle3.style.display !== 'none') {
-                toggle3.style.display = 'none';
-            }
-            else {
-                toggle3.style.display = 'block';
-            }
+const toggleBtn3 = (button) => {
+    if (isClicked3.value === button) {
+        isClicked3.value = null;
+        showDiv3.value = true;
+    } else {
+        isClicked3.value = button;
+        showDiv3.value = false;
+    }
 };
 
-const toggleBtn4 = () => {
-    const toggle4 = document.getElementById('hidden4');
-
-            if(toggle4.style.display !== 'none') {
-                toggle4.style.display = 'none';
-            }
-            else {
-                toggle4.style.display = 'block';
-            }
+const toggleBtn4 = (button) => {
+    if (isClicked4.value === button) {
+        isClicked4.value = null;
+        showDiv4.value = true;
+    } else {
+        isClicked4.value = button;
+        showDiv4.value = false;
+    }
 };
 
-const toggleBtn5 = () => {
-    const toggle5 = document.getElementById('hidden5');
-
-            if(toggle5.style.display !== 'none') {
-                toggle5.style.display = 'none';
-            }
-            else {
-                toggle5.style.display = 'block';
-            }
+const toggleBtn5 = (button) => {
+    if (isClicked5.value === button) {
+        isClicked5.value = null;
+        showDiv5.value = true;
+    } else {
+        isClicked5.value = button;
+        showDiv5.value = false;
+    }
 };
 
 const toggleButton = (button) => {
@@ -223,19 +230,6 @@ const toggleButton2 = (button) => {
         activeButton2.value = button;
     }
 };
-
-// const change_btn2 = (e) => {
-//     var btns = document.querySelectorAll(".btnbox2");
-//         btns.forEach(function(btn, i) {
-//         if(e.currentTarget == btn) {
-//             btn.classList.add("active");
-//         }
-//         else {
-//             btn.classList.remove("active");
-//         }
-//     });
-//     console.log(e.currentTarget);
-// }
 </script>
 
 <style scoped>
@@ -448,6 +442,7 @@ const toggleButton2 = (button) => {
     margin: 0 auto;
     padding: 15px 18px;
     margin-top: 80px;
+    margin-bottom: 80px;
     background-color: var(--primary-d2);
 }
 .content {

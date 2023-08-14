@@ -46,15 +46,15 @@
     <placeHolder
       :placeholder="input3"
       type="password"
-      id="password1" @input="pw_check"></placeHolder>
-    <p class="join-text4" id="password_msg">
-      ※문자, 숫자를 조합하여 8자리 이상 길이로 구성해주세요.
+      v-model="password" @input="pw_check"></placeHolder>
+    <p class="join-text4" :class="passwordCorrectClass">
+      {{ passwordCorrect }}
     </p>
 
     <placeHolder
       :placeholder="input4"
       type="password"
-      id="password2"></placeHolder>
+      v-model="password2"></placeHolder>
     <placeHolder :placeholder="input5"></placeHolder>
     <placeHolder :placeholder="input6"></placeHolder>
 
@@ -92,6 +92,7 @@
 <script setup>
 import placeHolder from '../common/components/PlaceHolder.vue';
 import Btns from '../common/components/Btn.vue';
+import { ref } from 'vue';
 
 const input1 = '아이디';
 const input2 = '닉네임(6자 이내)';
@@ -100,37 +101,38 @@ const input4 = '비밀번호 확인';
 const input5 = '이메일';
 const input6 = '전화번호';
 
+const password = ref('');
+const password2 = ref('');
+const passwordCorrect = ref('※문자, 숫자를 조합하여 8자리 이상 길이로 구성해주세요.');
+const passwordCorrectClass = ref('');
+
 const test = () => {
-    var p1 = document.getElementById('password1').value;
-    var p2 = document.getElementById('password2').value;
+  if (password.value.length < 8) {
+    alert('입력한 글자가 8글자 이상이어야 합니다.');
+    return false;
+  }
 
-    if (p1.length < 8) {
-      alert('입력한 글자가 8글자 이상이어야 합니다.');
-      return false;
-    }
-
-    if (p1 != p2) {
-      alert('비밀번호를 다시 한 번 확인해주세요.');
-      return false;
-    } else {
-      alert('비밀번호일치확인용문구');
-      return true;
-    }
-};
+  if (password.value != password2.value) {
+    alert('비밀번호를 다시 한 번 확인해주세요.');
+    return false;
+  } else {
+    alert('비밀번호일치확인용');
+    return true;
+  }
+}
 
 const pw_check = () => {
-      var password = document.querySelector('#password1');
-      var password_msg = document.querySelector('#password_msg');
-      var pwValidation = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+  var pwValidation = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-      if(pwValidation.test(password.value)) {
-          password_msg.innerHTML = '올바른 비밀번호입니다.';
-          password_msg.style.color = '#00a664';
-      } else {
-        password_msg.innerHTML = '올바르지 않은 형식입니다.';
-        password_msg.style.color = '#d13125'
-      }
+  if (pwValidation.test(password.value)) { //수정
+    passwordCorrect.value = '올바른 비밀번호입니다.';
+    passwordCorrectClass.value = 'correct-password';
+  } else {
+    passwordCorrect.value = '올바르지 않은 형식입니다.';
+    passwordCorrectClass.value = 'non-password';
+  }
 };
+
 </script>
 
 <style scoped>
@@ -197,5 +199,13 @@ const pw_check = () => {
   margin: 0 auto;
   margin-top: -5px;
   margin-bottom: -10px;
+}
+
+.non-password {
+  color : #d13125;
+}
+
+.correct-password {
+  color : #00a664;
 }
 </style>
