@@ -1,10 +1,5 @@
 <template>
-    <Sidebar></Sidebar>
-    <div id="main-wrapper">
-        <TopNav
-        navType="tabs"
-        :tabList="['나의 기록', '개인 정보 변경']"
-        :currentTab="currentTab"></TopNav>
+    <div>
         <div class="box1">
             <div class="round1">
                 <svg width="160" height="160" viewBox="-15 -15 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,22 +51,20 @@
                 <p class="box2-3-text2">010-****-1234</p>
                 <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">휴대전화 변경</Btn>
             </div>
-            <Modal v-if="modalOpen" @close-modal="modalOpen = false"></Modal>
-            <p class="red-text1" @click="modalOpen=true">회원 탈퇴</p>
+            <p class="red-text1" @click="modalOpen = true">회원 탈퇴</p>
+            <div v-if="modalOpen === true">
+                <Modal></Modal>
+            </div>
         </div>
-        <Footer></Footer>
     </div>
     
 </template>
 
 <script setup>
-import Sidebar from '../../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../../common/components/Btn.vue';
-import Footer from '../../../common/main/footer/Footer.vue';
 import Modal from '../../../common/components/Modal1.vue';
-import TopNav from '../../../common/components/TopNav.vue';
 
-modalOpen: false;        
+const modalOpen = false;        
 </script>
 
 <style scoped>
