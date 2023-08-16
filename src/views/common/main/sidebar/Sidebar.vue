@@ -115,7 +115,7 @@
 </template>
 
 <script setup>
-import { router } from '@/router'; //사이드바 사라지는 문제 -> 이코드 보충하면 된다!!
+import { router } from '@/router';
 import Btns from '../../components/Btn.vue';
 import { ref } from 'vue';
 

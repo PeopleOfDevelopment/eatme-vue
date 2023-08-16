@@ -15,6 +15,8 @@ import ItemReg from '../views/seller/item-reg/ItemReg.vue';
 import ItemInfo from '../views/purchase/item-info/ItemInfo.vue';
 import Dashboard from '../views/seller/dashboard/Dashboard.vue';
 import BarcodeReg from '../views/seller/barcode-reg/BarcodeReg.vue';
+import BarcodeRegList from '../views/seller/barcode-reg/BarcodeRegList.vue';
+import ItemManagement from '../views/seller/management/ItemManagement.vue';
 
 //라우터설계(경로랑 컴포넌트 배열로 입력)
 const routes = [
@@ -32,6 +34,8 @@ const routes = [
   { path: '/iteminfo', component: ItemInfo },
   { path: '/dashboard', component: Dashboard },
   { path: '/barcodereg', component: BarcodeReg },
+  { path: '/barcodereg-list', component: BarcodeRegList },
+  { path: '/itemmanage', component: ItemManagement },
 ];
 
 //라우터생성
