@@ -17,6 +17,8 @@ const btnClass = computed(() => {
   switch (props.btntype) {
     case 'solid':
       return 'solid-button';
+    case 'LightSolid':
+      return 'light-solid-button';
     case 'ghost':
       return 'ghost-button';
     case 'ghostGray':
@@ -53,6 +55,8 @@ const btnClass = computed(() => {
       return 'danger-button';
     case 'opacityBlack':
       return 'opacity-black-button';
+    case 'Disabled':
+      return 'disabled-button';
     default:
       return '';
   }
@@ -72,6 +76,10 @@ const btnClass = computed(() => {
 .solid-button {
   background-color: var(--primary-def);
   color: var(--gray-white);
+}
+.light-solid-button {
+  background-color: var(--ngray100);
+  color: var(--primary-def);
 }
 .ghost-button {
   color: var(--primary-def);
@@ -163,5 +171,10 @@ const btnClass = computed(() => {
   padding-bottom: 0px;
   font-weight: 200;
   border-radius: 20px;
+}
+.disabled-button {
+  background-color: var(--ngray100);
+  color: var(--gray-white);
+  cursor: inherit;
 }
 </style>

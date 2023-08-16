@@ -1,4 +1,5 @@
 <template>
+  <!--판매자 페이지: <Sidebar isSeller="true"></Sidebar>-->
   <div class="sideBar" :class="{ seller: isSeller }">
     <p class="eatMe">EAT ME</p>
     <div class="user">
@@ -97,7 +98,7 @@
         </p>
       </div>
       <Btns
-        @click="goPage('basket')"
+        @click="goPage('barcodereg')"
         btntype="ghostDark"
         style="margin-top: 10px">
         <span class="material-symbols-rounded">barcode_scanner</span>
@@ -234,7 +235,8 @@ const props = defineProps({
 .clicked .material-symbols-rounded {
   font-variation-settings: 'FILL' 1;
 }
-.ghost-button {
+.ghost-button,
+.ghost-dark-button {
   display: flex;
   align-items: center;
   gap: 8px;

@@ -9,6 +9,10 @@
       <Btn btntype="textGray" class="location-filter">{{ locationFilter }}</Btn>
     </div>
   </div>
+  <!--탭 버튼 예시
+    <TopNav navType="tabs" :tabList="['상품', '매장']"
+    :currentTab="currentTab" :changeTab="changeTab"></TopNav>
+    currentTab 값을 이용해서 v-if로 보여질 페이지를 결정-->
   <div id="top-nav" v-else-if="navType === 'tabs'" class="nav-tabs">
     <Btn
       v-for="(tab, index) in tabList"
@@ -20,11 +24,16 @@
       {{ tab }}
     </Btn>
   </div>
+  <!--하위 페이지 예시
+    <TopNav navType="title" subtitle="하위 페이지" buttonShow="Disabled" buttonText="확인"></TopNav>-->
   <div id="top-nav" v-else-if="navType === 'title'" class="nav-title">
-    <div class="subpage-title-container">
+    <div class="subtitle-container">
       <span class="material-symbols-rounded">chevron_left</span>
-      <span class="subpage-title"></span>
+      <span class="subtitle-text">{{ subtitle }}</span>
     </div>
+    <Btn v-if="buttonShow !== 'none'" :btntype="buttonShow">
+      {{ buttonText }}
+    </Btn>
   </div>
   <div v-else></div>
   <SelectLocation v-if="modalOpen" />
@@ -51,6 +60,18 @@ const props = defineProps({
     type: Number,
   },
   changeTab: Function,
+  subtitle: {
+    type: String,
+    default: '하위 페이지 제목',
+  },
+  buttonShow: {
+    type: String,
+    default: 'none',
+  },
+  buttonText: {
+    type: String,
+    default: '등록하기',
+  },
 });
 
 const toggleModal = () => {
@@ -93,6 +114,7 @@ const toggleModal = () => {
 .filter-icon {
   color: var(--ngray500);
 }
+/*탭 버튼*/
 .nav-tabs {
   display: flex;
   justify-content: center;
@@ -107,5 +129,23 @@ const toggleModal = () => {
   color: var(--ngray800);
   border-bottom: 2px solid var(--primary-def);
   margin-bottom: 0;
+}
+/*하위 페이지 제목*/
+.subtitle-container {
+  color: var(--ngray800);
+  flex: 1 0 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.subtitle-container .material-symbols-rounded {
+  font-size: 40px;
+  padding: 10px;
+}
+.subtitle-text {
+  font-size: 28px;
+  font-weight: 700;
+  padding: 10px;
 }
 </style>
