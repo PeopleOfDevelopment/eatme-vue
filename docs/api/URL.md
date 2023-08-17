@@ -57,7 +57,16 @@
   URL: '/api/wishList/delete'
   파라미터: 유저아이디, 회사코드 
 
- 
+# 품목등록
+품목 삽입
+  URL: '/api/itemReg/insert'
+  파라미터: 품목코드, 회사코드, 품목명, 품목바코드, 품목가격 사용여부(true로 넣어서 보낼것)
+
+품목 조회
+  URL: '/api/itemReg/query'
+  파라미터: 품목코드명(itemCdNm), 회사코드, 품목바코드
+
+
 // 회원가입 예시 테스트코드
 import { ApiUtils } from './views/common/utils/ApiUtils';
 
