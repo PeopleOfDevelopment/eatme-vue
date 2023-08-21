@@ -89,10 +89,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import placeHolder from '../common/components/PlaceHolder.vue';
 import Btns from '../common/components/Btn.vue';
 import { ref } from 'vue';
+import { ApiUtils } from '../common/utils/ApiUtils';
 
 const input1 = '아이디';
 const input2 = '닉네임(6자 이내)';
@@ -133,6 +134,36 @@ const pw_check = () => {
   }
 };
 
+const apiUtils = new ApiUtils;
+
+interface UserInfo {
+  userNm: string
+  userId: string
+  userPw: string
+  userEmail: string
+  userNick: string
+  userAddr: string
+}
+
+const testData: UserInfo = {
+  userNm: '테스트이름2',
+  userId: 'testID2',
+  userPw: 'testPW2',
+  userEmail: 'testemail@gmail.com',
+  userNick: 'testNick2',
+  userAddr: 'testADDR'
+}
+
+join(testData)
+
+async function join(param: UserInfo) {
+  const result = await apiUtils.post('/api/join/insert', testData)
+  if(result === 1) {
+    console.log('회원가입 성공')
+  }else {
+    console.log('회원가입 실패')
+  }
+}
 </script>
 
 <style scoped>

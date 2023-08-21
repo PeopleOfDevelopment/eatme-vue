@@ -42,7 +42,7 @@
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 
 const goods = ref([
     {
@@ -79,13 +79,6 @@ const goods = ref([
       quantity: 1,
     },
 ]);
-
-const selectAll = ref(true);
-
-watchEffect(() => {
-  const allSelected = goods.value.every((item) => item.checked);
-  selectAll.value = allSelected;
-});
 </script>
 
 <style scoped>

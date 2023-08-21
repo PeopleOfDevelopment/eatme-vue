@@ -13,8 +13,7 @@
       </div>
       <div class="p-menus3">
         <p class="d-text2">{{ item.day }}</p>
-        <Btn class="t-btn1" btntype="outline" style="width: 136px"
-        @click="query">
+        <Btn class="t-btn1" btntype="outline" style="width: 136px">
           리뷰 작성
         </Btn>
       </div>
@@ -22,10 +21,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
+import { ApiUtils } from '../../common/utils/ApiUtils';
 
 const goods = ref([
     {
@@ -78,12 +78,12 @@ const goods = ref([
     },
 ]);
 
-const selectAll = ref(true);
+const apiUtils = new ApiUtils();
 
-watchEffect(() => {
-  const allSelected = goods.value.every((item) => item.checked);
-  selectAll.value = allSelected;
-});
+async function query() {
+  const result = await apiUtils.post('/api/purchaseHistory/query')
+  console.log(result.data)
+}
 
 </script>
 
