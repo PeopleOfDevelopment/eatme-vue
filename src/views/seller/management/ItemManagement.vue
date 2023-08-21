@@ -11,13 +11,13 @@
                <p style="margin-left: 195px;">용량</p>
                <p style="margin-left: 65px;">수량</p>
                <p style="margin-left: 70px;">유통기한</p>
-               <p style="margin-left: 100px;">원가</p>
+               <p style="margin-left: 95px;">원가</p>
                <p style="margin-left: 90px;">할인율</p>
-               <p style="margin-left: 85px;">판매가</p>
+               <p style="margin-left: 90px;">판매가</p>
                <p style="margin-left: 90px;">상태</p>
            </div>
-           <div class="menu-list">
-               <div class="menu-info" v-for="(item, idx) in goods">
+           <div class="menu-list" v-if="shouldShow(currentTab)">
+               <div class="menu-info" v-for="(item, index) in goods" :key="index">
                    <p style="flex-basis: 90px;">{{ item.code }}</p>
                    <div class="menu-img"></div>
                    <p style="flex-basis: 296px;">{{ item.title }}</p>
@@ -36,9 +36,9 @@
    
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import Btn from '../../common/components/Btn.vue';
 import { ref, watchEffect } from 'vue';
 import Topnav from '../../common/components/TopNav.vue';
+import ItemInfo from '@/views/purchase/item-info/ItemInfo.vue';
    
 const goods = ref([
     {
@@ -90,19 +90,23 @@ const goods = ref([
         ispickup: '배송 예정'
     },
 ]);
-   
-const selectAll = ref(true);
-   
-watchEffect(() => {
-    const allSelected = goods.value.every((item) => item.checked);
-    selectAll.value = allSelected;
-});
 
 const currentTab = ref(0);
 
 const changeTab = (index) => {
   currentTab.value = index;
 };
+
+const shouldShow = (currentTab) => {
+    if(currentTab === 0) {
+        return goods.value;
+    } else if (currentTab === 1) {
+        return goods.value;
+    } else {
+        return goods.value;
+    }
+}
+
 </script>
    
 <style scoped>  

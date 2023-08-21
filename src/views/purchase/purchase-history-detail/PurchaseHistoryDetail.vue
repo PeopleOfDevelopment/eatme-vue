@@ -135,7 +135,7 @@
 <script setup>
 import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import { ref, watchEffect } from 'vue';
+import { ref } from 'vue';
 
 const activeButton = ref(null);
 const activeButton2 = ref(null);
@@ -157,13 +157,6 @@ const goods = ref([
     { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
     { name: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉" },
 ]);
-
-const selectAll = ref(true);
-
-watchEffect(() => {
-  const allSelected = goods.value.every((item) => item.checked);
-  selectAll.value = allSelected;
-});
 
 const toggleBtn1 = (button) => {
     if (isClicked1.value === button) {
