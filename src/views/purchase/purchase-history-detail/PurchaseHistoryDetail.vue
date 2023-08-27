@@ -103,6 +103,11 @@
                         </select>
                     </div>
                 </div>
+                <div v-if="activeButton2 === 'button4'" class="content2 active">
+                    <div class="simple-box">
+                        <p class="simple-text1">간편결제계좌연결</p>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -452,5 +457,16 @@ const toggleButton2 = (button) => {
 
 .content2.active {
     display: block;
+}
+
+.simple-box {
+    display: flex;
+    margin-left: 180px;
+    margin-top: 20px;
+}
+
+.simple-text1 {
+    font-size: 20px;
+    font-weight: bold;
 }
 </style>
