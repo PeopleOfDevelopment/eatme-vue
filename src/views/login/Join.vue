@@ -83,7 +83,7 @@
     <Btns
       btntype="solid"
       style="margin-top: 10px; margin-left: 10px; width: 92%"
-      @click="test">
+      @click="check_join">
       회원가입
     </Btns>
   </div>
@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import placeHolder from '../common/components/PlaceHolder.vue';
 import Btns from '../common/components/Btn.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { ApiUtils } from '../common/utils/ApiUtils';
 
 const input1 = '아이디';
@@ -107,7 +107,7 @@ const password2 = ref('');
 const passwordCorrect = ref('※문자, 숫자를 조합하여 8자리 이상 길이로 구성해주세요.');
 const passwordCorrectClass = ref('');
 
-const test = () => {
+const check_join = () => {
   if (password.value.length < 8) {
     alert('입력한 글자가 8글자 이상이어야 합니다.');
     return false;
@@ -123,9 +123,9 @@ const test = () => {
 }
 
 const pw_check = () => {
-  var pwValidation = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+  const pwValidation = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-  if (pwValidation.test(password.value)) { //수정
+  if (pwValidation.test(password.value)) { 
     passwordCorrect.value = '올바른 비밀번호입니다.';
     passwordCorrectClass.value = 'correct-password';
   } else {

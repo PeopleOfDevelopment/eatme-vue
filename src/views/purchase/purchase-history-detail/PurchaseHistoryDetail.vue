@@ -81,9 +81,8 @@
                     <div class="btn-box2">
                     <button class="btnbox2" style="border-radius: 4px 0px 0px 4px; border-right: 0px;"
                     :class="{ active: activeButton2 === 'button3' }" @click="toggleButton2('button3')">신용카드</button>
-                    <button class="btnbox2" :class="{ active: activeButton2 === 'button4' }" @click="toggleButton2('button4')">간편결제</button>
-                    <button class="btnbox2" :class="{ active: activeButton2 === 'button5' }" @click="toggleButton2('button5')"
-                    style="border-radius: 0px 4px 4px 0px; border-left: 0px;">소액결제</button>
+                    <button class="btnbox2" :class="{ active: activeButton2 === 'button4' }" @click="toggleButton2('button4')"
+                    style="border-radius: 0px 4px 4px 0px;">간편결제</button>
                 </div>
                 <div v-if="activeButton2 === 'button3'" class="content2 active">
                     <div class="card-select-box">
@@ -101,6 +100,47 @@
                         <option value="6">6개월</option>
                         <option value="9">9개월</option>
                         </select>
+                    </div>
+                </div>
+                <div v-if="activeButton2 === 'button4'" class="content2 active">
+                    <div class="simple-box">
+                        <p class="simple-text1">결제 방식 선택</p>
+                        <div class="table-box1">
+                            <table class="simple-select-box">
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <label>
+                                            <input type="radio" value="kakao" name="contact"/>
+                                            <span style="margin-left: 10px;">카카오페이</span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label style="padding-left: 20px; padding-right: 20px;">
+                                            <input type="radio" value="toss" name="contact"/>
+                                            <span style="margin-left: 10px;">토스</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <label>
+                                            <input type="radio" value="naver" name="contact"/>
+                                            <span style="margin-left: 10px;">네이버페이</span>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label >
+                                            <input type="radio" value="samsung" name="contact"/>
+                                            <span style="margin-left: 10px;">삼성페이</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 </div>
@@ -452,5 +492,58 @@ const toggleButton2 = (button) => {
 
 .content2.active {
     display: block;
+}
+
+.simple-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.simple-text1 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: auto;
+    margin-left: 180px;
+}
+
+.simple-select-box {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 420px;
+    margin-left: 180px;
+    border-style: hidden;
+    box-shadow: 0 0 0 1px #000;
+    border-radius: 10px;
+}
+
+.simple-box td {
+    border: solid 1px #000;
+    padding: 50px 0px 50px 0px;
+}
+
+.simple-box tr {
+    font-size: 20px;
+}
+
+label {
+    font-size: 20px;
+}
+
+[type="radio"], span {
+    vertical-align: middle;
+}
+
+[type="radio"] {
+    appearance: none;
+    border: max(2px, 0.1em) solid gray;
+    border-radius: 50%;
+    width: 1.25em;
+    height: 1.25em;
+    transition: border 0.5s ease-in-out;
+}
+
+[type="radio"]:checked {
+    border: 0.4em solid #00a664;
 }
 </style>

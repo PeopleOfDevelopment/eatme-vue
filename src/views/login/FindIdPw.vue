@@ -42,7 +42,7 @@ const changeTab = (index) => {
 <style scoped>
 #find-box {
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: 90px;
     width: 700px;
 }
 
@@ -69,7 +69,7 @@ const changeTab = (index) => {
     border-bottom: solid 1px #dde5db;
     padding-bottom: 70px;
     margin-top: 70px;
-    margin-bottom: 70px;
+    margin-bottom: 60px;
 }
 
 .email-text1 {
@@ -91,7 +91,7 @@ const changeTab = (index) => {
     border-bottom: solid 1px #dde5db;
     padding-bottom: 70px;
     margin-top: 70px;
-    margin-bottom: 70px;
+    margin-bottom: 60px;
 }
 
 .id-text1 {
