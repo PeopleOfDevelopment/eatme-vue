@@ -72,6 +72,7 @@ const btnClass = computed(() => {
   cursor: pointer;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .solid-button {
   background-color: var(--primary-def);

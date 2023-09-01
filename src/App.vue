@@ -23,7 +23,6 @@ import HelloWorld from './components/HelloWorld.vue';
 import SideBar from './views/common/main/sidebar/Sidebar.vue';
 import Buttons from './views/common/components/Btn.vue';
 import Join from './views/login/Join.vue';
-import modal1 from './views/common/components/Modal1.vue';
 import history1 from './views/purchase/purchase-history/PurchaseHistory.vue';
 import Main from './views/common/main/Main.vue';
 import Basket from './views/purchase/basket/Basket.vue';
@@ -39,7 +38,6 @@ import './assets/style.css';
     SideBar,
     Buttons,
     Join,
-    modal1,
     history1,
     Main,
     Footer,
