@@ -1,7 +1,12 @@
 <template>
   <footer id="footer">
     <div class="notice-wrap">
-      <div class="notice-title">공지사항</div>
+      <Btn
+        class="notice-title"
+        btntype="textGrayThin"
+        @click="noticeOpen = true">
+        공지사항
+      </Btn>
       <Btn btntype="textGray">사이트 점검 안내</Btn>
     </div>
     <div class="eatme-info-wrap">
@@ -16,10 +21,14 @@
       </div>
     </div>
   </footer>
+  <Modal v-if="noticeOpen" @close="noticeOpen = false"></Modal>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import Btn from '../../components/Btn.vue';
+import Modal from '../../components/Modal.vue';
+const noticeOpen = ref(false);
 </script>
 
 <style scoped>

@@ -20,6 +20,7 @@
       </div>
       <Footer></Footer>
     </div>
+    <NonModal></NonModal>
   </div>
 </template>
 
@@ -30,6 +31,7 @@ import Slide from './slide/Slide.vue';
 import SubTitle from '../components/SubTitle.vue';
 import Card from '../components/Card.vue';
 import Footer from './footer/Footer.vue';
+import NonModal from '../components/NonModal.vue';
 import { ref } from 'vue';
 
 const placeList = ref([
