@@ -1,50 +1,107 @@
 <template>
- <Sidebar isSeller="true"></Sidebar>
- <div id="main-wrapper">
-    <p class="title-text1">제품 등록</p>
-    <div v-if="goodCount === 0">
-        <span class="material-symbols-rounded">barcode_scanner</span>
-        <p class="barcode-scan-text1">상품의 바코드를 스캔해주세요</p>
-    </div>
-
-    <div v-if="goodCount > 0">
-        <div class="menu-list-topbox1">
-            <div class="search">
-                <span class="material-symbols-rounded2">search</span>
-                <input
-                    class="search_input"
-                    type="text"
-                    placeholder="상품 코드 혹은 제품명 검색" />
-            </div>
-            <Btn btntype="ghostWhite" class="list_btn2">데이터 추가</Btn>
+    <Sidebar isSeller="true"></Sidebar>
+    <div id="main-wrapper">
+        <p class="title-text1">제품 등록</p>
+        <div v-if="goodCount === 0">
+            <span class="material-symbols-rounded" 
+            style="font-size: 225px; color: var(--ngray200);
+             margin-top: 350px; margin-right: 190px;">barcode_scanner</span>
+            <p class="barcode-scan-text1">상품의 바코드를 스캔해주세요</p>
         </div>
-        <div class="menu-box">
-            <div class="menu-top-box">
-                <p style="margin-left: 90px;">상품코드</p>
-                <p style="margin-left: 360px;">제품명</p>
-                <p style="margin-left: 355px;">용량</p>
-                <p style="margin-left: 210px;">원가</p>
-                <p style="margin-left: 195px;">추가</p>
+
+        <div v-if="goodCount > 0">
+            <div class="menu-list-topbox1">
+                <div class="search">
+                    <span class="material-symbols-rounded">search</span>
+                    <input
+                        class="search_input"
+                        type="text"
+                        placeholder="상품 코드 혹은 제품명 검색" />
+                </div>
+                <Btn btntype="ghostWhite" class="list_btn2" style="color: #000; font-weight: 300;">
+                    데이터 편집</Btn>
             </div>
-            <div class="menu-list">
-                <div class="menu-info" v-for="(item, idx) in goods">
-                    <p style="flex-basis: 90px;">{{ item.code }}</p>
-                    <p style="flex-basis: 400px;">{{ item.title }}</p>
-                    <p style="flex-basis: 100px;">{{ item.capacity }}</p>
-                    <p style="flex-basis: 80px;">{{ item.price }}원</p>
-                    <Btn btntype="LightSolid" class="list-btn1">추가</Btn>
+            <div class="menu-box">
+                <div class="menu-top-box">
+                    <p style="margin-left: 95px;">상품코드</p>
+                    <p style="margin-left: 360px;">제품명</p>
+                    <p style="margin-left: 345px;">용량</p>
+                    <p style="margin-left: 210px;">원가</p>
+                    <p style="margin-left: 195px;">추가</p>
+                </div>
+                <div class="menu-list">
+                    <div class="menu-info" v-for="(item, idx) in goods">
+                        <p style="flex-basis: 90px;">{{ item.code }}</p>
+                        <p style="flex-basis: 400px;">{{ item.title }}</p>
+                        <p style="flex-basis: 100px;">{{ item.capacity }}</p>
+                        <p style="flex-basis: 80px;">{{ item.price }}원</p>
+                        <Btn btntype="LightSolid" class="list-btn1">추가</Btn>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="scan-text-box1">
+        <div class="scan-text-box1">
             <p class="barcode-scan-text2">스캔이 되지 않는 경우</p>
             <p class="barcode-scan-text3">문제 해결</p>
             <p class="barcode-scan-text2">혹은</p>
             <p class="barcode-scan-text3">바코드 입력</p>
         </div>
- </div>
+
+        <div>
+            
+        </div>
+
+        <div class="popup-box">
+            <span @click="showPopup" class="material-symbols-rounded"
+            style="font-size: 40px; color: var(--primary-def); cursor: pointer;">expand_less</span>
+
+            <Transition name="slide">
+                <div v-if="showingPopup" class="popup">
+                    <span @click="hidePopup" class="material-symbols-rounded"
+                    style="font-size: 40px; color: var(--primary-def); cursor: pointer;">expand_more</span>
+                    <div class="popup-top">
+                        <p class="popup-top-text1">추가된 상품</p>
+                    </div>
+                    <div class="popup-top2">
+                        <p class="top-text1">총 상품 수</p>
+                        <p class="top-text2">{{ selectCount }}개</p>
+                        <p class="top-text1">판매가 합계</p>
+                        <p class="top-text2">{{ totalPrice }}원</p>
+                    </div>
+                    <div class="menu-box">
+                        <div class="menu-top-box">
+                            <p style="margin-left: 40px;">상품코드</p>
+                            <p style="margin-left: 80px;">사진</p>
+                            <p style="margin-left: 250px;">제품명</p>
+                            <p style="margin-left: 240px;">용량</p>
+                            <p style="margin-left: 85px;">수량</p>
+                            <p style="margin-left: 70px;">원가</p>
+                            <p style="margin-left: 84px;">할인율</p>
+                            <p style="margin-left: 75px;">판매가</p>
+                            <p style="margin-left: 75px;">수정</p>
+                            <p style="margin-left: 75px;">삭제</p>
+                        </div>
+                        <div class="menu-list">
+                            <div class="menu-info" v-for="(item, idx) in select_goods">
+                                <p style="flex-basis: 90px;">{{ item.code }}</p>
+                                <div style="width: 60px; height: 60px; margin: 5px; background-color: #000;"></div>
+                                <p style="flex-basis: 400px;">{{ item.title }}</p>
+                                <p style="flex-basis: 100px;">{{ item.capacity }}</p>
+                                <p style="flex-basis: 50px;">{{ item.quantity }}</p>
+                                <p style="flex-basis: 80px;">{{ item.price }}원</p>
+                                <p style="flex-basis: 80px;">{{ item.discount }}%</p>
+                                <p style="flex-basis: 80px;">{{ item.discountprice }}원</p>
+                                <Btn btntype="LightSolid" class="list-btn1">수정</Btn>
+                                <Btn btntype="LightSolid" class="list-btn3">삭제</Btn>
+                            </div>
+                        </div>
+                    </div>
+                    <Btn btntype="solid" class="list-btn4">등록하기</Btn>
+                </div>
+            </Transition>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -53,6 +110,30 @@ import Btn from '../../common/components/Btn.vue';
 import { ref, computed } from 'vue';
 
 const goods = ref([
+    {
+      id: 0,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
+      price: 8900,
+      code: "154203215",
+      capacity: "55g X 5",
+    },
+    {
+      id: 1,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
+      price: 8900,
+      code: "154203215",
+      capacity: "55g X 5",
+    },
+    {
+      id: 2,
+     title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
+      price: 8900,
+      code: "154203215",
+      capacity: "55g X 5",
+    },
+]);
+
+const select_goods = ref([
     {
       id: 0,
       title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
@@ -75,20 +156,24 @@ const goods = ref([
       capacity: "55g X 5",
       quantity: 1,
     },
-    {
-      id: 2,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-      price: 8900,
-      discountprice: 6675,
-      discount: 25,
-      day: "2023-05-29",
-      code: "154203215",
-      capacity: "55g X 5",
-      quantity: 1,
-    },
 ]);
 
 const goodCount = computed(() => goods.value.length);
+const selectCount = computed(() => select_goods.value.length);
+const totalPrice = computed(() => {
+    const priceData = select_goods.value.map(item => item.discountprice);
+    return priceData.reduce((accmulator, currentValue) => accmulator + currentValue, 0);
+});
+
+const showingPopup = ref(false);
+
+const showPopup = () => {
+    showingPopup.value = true;
+};
+
+const hidePopup = () => {
+    showingPopup.value = false;
+}
 </script>
 
 <style scoped>
@@ -147,6 +232,29 @@ const goodCount = computed(() => goods.value.length);
     margin-top: 150px;
 }
 
+.list-btn3 {
+    width: 56px;
+    height: 35px;
+    padding: 0px;
+    padding-top: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 10px;
+    color: var(--system-danger);
+}
+
+.list-btn4 {
+    width: 150px;
+    height: 35px;
+    padding: 0px;
+    padding-top: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 10px;
+    float: right;
+    margin-right: 90px;
+}
+
 .title-text1 {
     font-size: 28px;
     font-weight: bold;
@@ -156,14 +264,6 @@ const goodCount = computed(() => goods.value.length);
 }
 
 .material-symbols-rounded {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  font-size: 225px;
-  color: var(--ngray200);
-  margin-top: 350px;
-  margin-right: 190px;
-}
-
-.material-symbols-rounded2 {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
@@ -177,7 +277,7 @@ const goodCount = computed(() => goods.value.length);
 
 .scan-text-box1 {
     display: flex;
-    margin-top: 350px;
+    margin-top: 100px;
     justify-content: center;
 }
 
@@ -220,5 +320,60 @@ const goodCount = computed(() => goods.value.length);
   border: none;
   width: 90%;
   outline: none;
+}
+
+.popup {
+    position: fixed;
+    height: 600px;
+    width: 1670px;
+    bottom: 0;
+    right: 0;
+    background-color: #fff;
+    border-top: solid 1px #ccc;
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.slide-enter-active, .slide-leave-active {
+    transition: transform 0.3s ease;
+}
+
+.slide-enter, .slide-leave-to {
+    transform: translateY(100%);
+}
+
+.popup-box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 250px;
+    height: 80px;
+    border-top: solid 1px #ccc;
+}
+
+.popup-top {
+    display: flex;
+}
+
+.popup-top-text1 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: auto;
+    margin-left: 100px;
+}
+
+.popup-top2 {
+    display: flex;
+    margin-left: 1250px;
+    margin-bottom: -10px;
+}
+
+.top-text1 {
+    margin-left: 30px;
+    color: var(--ngray600);
+}
+
+.top-text2 {
+    margin-left: 20px;
+    font-weight: bold;
 }
 </style>
