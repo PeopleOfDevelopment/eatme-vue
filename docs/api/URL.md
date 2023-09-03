@@ -1,7 +1,7 @@
 # 구매 URL
 구매내역 조회 :
   URL: '/api/purchaseHistory/query'
-  파라미터 : 주문자명 (주문자 닉네임..)
+  파라미터 : 주문자명(ordererName) (주문자 닉네임..)
 
 # 장바구니 URL
 장바구니 조회 :
@@ -10,62 +10,69 @@
 
 장바구니 삽입 : 
   URL: '/api/basket/insert'
-  파라미터: 회사코드, 상품코드, 판매가, 유통기한, 유저아이디, 구매상태(구매전, 구매후 등등..), 상품 수량, 상품명
+  파라미터: 회사코드(corpCd), 상품코드(itemCd), 판매가(salePrc), 유통기한(itemExpdate), 유저아이디(userId), 구매상태(purchaseSt, 구매전이 디폴트), 상품수량(itemQty), 상품명(itemNm)            
 
 장바구니 수정 :
   URL: '/api/basket/update'
-  파라미터: 회사코드, 유저아이디, 상품코드, 상품수량
+  파라미터: 회사코드(corpCd), 유저아이디(userId), 상품코드(itemCd), 상품수량(itemQty), 구매상태(purchaseSt)
 
 장바구니 삭제 :
   URL: '/api/basket/delete'
-  파라미터: 회사코드, 유저아이디, 상품코드
-
+  파라미터: 회사코드(corpCd), 유저아이디(userId), 상품코드(itemCd)
 
 # 회원가입 URL
 유저 정보 삽입 :
   URL: '/api/join/insert'
-  파라미터 : 이름, 아이디, 비밀번호, 닉네임, 주소, 이메일
+  파라미터 : 이름(userNm), 아이디(userId), 비밀번호(userPw), 닉네임(userNick), 주소(userAddr), 이메일(userEmail)
 
 # 가맹점 URL
 가맹점 등록 :
   URL: '/api/sellerReg/insert'
-  파라미터: 회사코드, 회사명, 사업자등록번호, 아이디, 회사주소, 회사소개
+  파라미터: 회사코드(corpCd), 회사명(corpNm), 사업자등록번호(corpRegNo), 아이디(userId), 회사주소(corpAddr), 회사소개(corpDesc)
 
 # 마이페이지
 유저정보 조회: 
   URL: '/api/mypage/query'
-  파라미터: 유저아이디, 유저이름(혹시 몰라서 넣어놨음)
+  파라미터: 유저아이디(userId), 유저이름(userNm, 혹시 몰라서 넣어놨음)
 
 유저정보 변경
   URL: '/api/mypage/changeUser'
-  파라미터: 유저비밀번호, 닉네임, 이메일, 주소
+  파라미터: 유저비밀번호(userPw), 닉네임(userNick), 이메일(userEmail), 주소(userAddr)
 
 회원탈퇴
   URL: '/api/mypage/exit'
-  파라미터: 유저아이디, 유저이름(혹시 몰라서 넣어놨음)
+  파라미터: 유저아이디(userId), 유저이름(userNm, 혹시 몰라서 넣어놨음)
 
 # 찜목록
 찜목록 조회
   URL: '/api/wishList/query'
-  파라미터: 유저아이디, 회사코드  
+  파라미터: 유저아이디(userId), 회사코드(corpCd) 
 
 찜목록 삽입
   URL: '/api/wishList/insert'
-  파라미터: 유저아이디, 회사코드  
+  파라미터: 유저아이디(userId), 회사코드(corpCd)  
 
 찜목록 삭제
   URL: '/api/wishList/delete'
-  파라미터: 유저아이디, 회사코드 
+  파라미터: 유저아이디(userId), 회사코드(corpCd)
 
 # 품목등록
 품목 삽입
   URL: '/api/itemReg/insert'
-  파라미터: 품목코드, 회사코드, 품목명, 품목바코드, 품목가격 사용여부(true로 넣어서 보낼것)
+  파라미터: 품목코드(itemCd), 회사코드(corpCd), 품목명(itemNm), 품목바코드품목바코드(itemBarcode), 품목가격(itemPrc) 사용여부(useYn)
 
 품목 조회
   URL: '/api/itemReg/query'
-  파라미터: 품목코드명(itemCdNm), 회사코드, 품목바코드
+  파라미터: 품목코드명(itemCdNm), 회사코드(corpCd), 품목바코드(itemBarcode)
 
+# 메인페이지
+주변 할인판매 업장
+  URL: '/api/query/corp'
+  파라미터: 유저아이디(userId), 유저 주소(userAddr), 현재 주소(curAddr)
+
+주변 할인품목
+  URL: '/api/query/item'
+  파라미터: 유저아이디(userId), 유저 주소(userAddr), 현재 주소(curAddr)
 
 // 회원가입 예시 테스트코드
 import { ApiUtils } from './views/common/utils/ApiUtils';
