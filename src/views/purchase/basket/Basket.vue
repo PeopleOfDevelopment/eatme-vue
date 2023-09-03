@@ -42,7 +42,12 @@
               <Btn @click="increase(basket)" btntype="textGray">+</Btn>
             </div>
             <div class="cart-price">
-              {{ basket.price * basket.quantity }} 원
+              <span class="price">{{ basket.price * basket.quantity }} 원</span>
+              <br />
+              <span class="discount-price">
+                {{ basket.price * (1 - basket.discountRate) * basket.quantity }}
+                원
+              </span>
             </div>
           </div>
         </div>
@@ -51,16 +56,16 @@
         <div class="price-table">
           <div class="price-tr">
             <span class="price-label">상품 금액</span>
-            <span class="price-value">8,900 원</span>
+            <span class="price-value">{{ total }} 원</span>
           </div>
           <div class="price-tr">
             <span class="price-label">상품 할인 금액</span>
-            <span class="price-value">2,225 원</span>
+            <span class="price-value">{{ totalDiscount }} 원</span>
           </div>
           <div class="total-line"></div>
           <div class="price-tr total">
-            <span class="price-label">상품 할인 금액</span>
-            <span class="price-value">2,225 원</span>
+            <span class="price-label">결제 예상 금액</span>
+            <span class="price-value">{{ total - totalDiscount }} 원</span>
           </div>
         </div>
         <Btn btntype="solid">주문하기</Btn>
@@ -72,28 +77,38 @@
 <script setup>
 import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import { ref, watchEffect } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 
 const basketList = ref([
   {
     name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
     quantity: 1,
-    price: 1000,
+    price: 2000,
+    discountRate: 0.25,
     checked: true,
   },
   {
     name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
     quantity: 2,
     price: 2000,
+    discountRate: 0.25,
     checked: true,
   },
   {
     name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
     quantity: 1,
     price: 3000,
+    discountRate: 0.25,
     checked: true,
   },
 ]);
+
+const total = computed(() =>
+  basketList.value.reduce((acc, cur) => acc + cur.price, 0)
+);
+const totalDiscount = computed(() =>
+  basketList.value.reduce((acc, cur) => acc + cur.price * cur.discountRate, 0)
+);
 
 const decrease = (basket) => {
   if (basket.quantity > 0) basket.quantity -= 1;
@@ -240,6 +255,11 @@ input[type='number']::-webkit-outer-spin-button {
   justify-content: space-between;
   gap: 10px;
   padding-inline: 4px;
+}
+.price {
+  color: var(--ngray200);
+  text-decoration: line-through;
+  font-size: 14px;
 }
 .total-line {
   height: 1px;
