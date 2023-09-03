@@ -26,9 +26,12 @@
             <div class="notice-date">{{ notice.date }}</div>
           </div>
         </div>
-        <div v-if="selectedNotice !== -1">
+        <div class="notice-contents" v-if="selectedNotice !== -1">
           <div class="title-container">
-            {{ selectedNotice.title }}
+            <div class="notice-title">{{ selectedNotice.title }}</div>
+            <div class="notice-date">
+              {{ selectedNotice.date }}　{{ selectedNotice.time }}
+            </div>
           </div>
           <div class="selected-contents">
             {{ selectedNotice.contents }}
@@ -81,13 +84,16 @@ const showContents = (index) => {
   background-color: white;
   position: fixed;
   padding: 10px;
-  width: 600px;
+  width: 100%;
   height: 600px;
+  max-width: 600px;
+  color: var(--ngray800);
 }
 .title-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-weight: 700;
 }
 .contents-wrapper {
   padding: 18px 20px;
@@ -98,6 +104,30 @@ const showContents = (index) => {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--ngray200);
+  cursor: pointer;
+}
+.notice-contents {
+  color: var(--ngray600);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.title-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.notice-contents .notice-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+.notice-date {
+  color: var(--ngray400);
+}
+.selected-contents {
+  line-height: 28px;
+  text-align: left;
 }
 @media screen and (max-width: 768px) {
   .dimmed {
