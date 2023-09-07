@@ -35,7 +35,8 @@
                         <p style="flex-basis: 400px;">{{ item.title }}</p>
                         <p style="flex-basis: 100px;">{{ item.capacity }}</p>
                         <p style="flex-basis: 80px;">{{ item.price }}원</p>
-                        <Btn btntype="LightSolid" class="list-btn1">추가</Btn>
+                        <Btn btntype="LightSolid" class="list-btn1"
+                        @click="moveToDestination(item)">추가</Btn>
                     </div>
                 </div>
             </div>
@@ -83,7 +84,7 @@
                             <p style="margin-left: 75px;">삭제</p>
                         </div>
                         <div class="menu-list">
-                            <div class="menu-info" v-for="(item, idx) in select_goods">
+                            <div class="menu-info" v-for="item in select_goods" :key="item.id">
                                 <p style="flex-basis: 90px;">{{ item.code }}</p>
                                 <div style="width: 60px; height: 60px; margin: 5px; background-color: #000;"></div>
                                 <p style="flex-basis: 400px;">{{ item.title }}</p>
@@ -93,7 +94,8 @@
                                 <p style="flex-basis: 80px;">{{ item.discount }}%</p>
                                 <p style="flex-basis: 80px;">{{ item.discountprice }}원</p>
                                 <Btn btntype="LightSolid" class="list-btn1">수정</Btn>
-                                <Btn btntype="LightSolid" class="list-btn3">삭제</Btn>
+                                <Btn btntype="LightSolid" class="list-btn3"
+                                @click="removeItem(item)">삭제</Btn>
                             </div>
                         </div>
                     </div>
@@ -110,53 +112,42 @@ import Btn from '../../common/components/Btn.vue';
 import { ref, computed } from 'vue';
 
 const goods = ref([
-    {
+{
       id: 0,
       title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
       price: 8900,
+      discountprice: 6675,
+      discount: 25,
+      day: "2023-05-29",
       code: "154203215",
       capacity: "55g X 5",
+      quantity: 1,
     },
     {
       id: 1,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 4봉",
       price: 8900,
+      discountprice: 6675,
+      discount: 25,
+      day: "2023-05-29",
       code: "154203215",
       capacity: "55g X 5",
+      quantity: 1,
     },
     {
       id: 2,
-     title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
       price: 8900,
+      discountprice: 6675,
+      discount: 25,
+      day: "2023-05-29",
       code: "154203215",
       capacity: "55g X 5",
+      quantity: 1,
     },
 ]);
 
-const select_goods = ref([
-    {
-      id: 0,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-      price: 8900,
-      discountprice: 6675,
-      discount: 25,
-      day: "2023-05-29",
-      code: "154203215",
-      capacity: "55g X 5",
-      quantity: 1,
-    },
-    {
-      id: 1,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-      price: 8900,
-      discountprice: 6675,
-      discount: 25,
-      day: "2023-05-29",
-      code: "154203215",
-      capacity: "55g X 5",
-      quantity: 1,
-    },
-]);
+const select_goods = ref([]);
 
 const goodCount = computed(() => goods.value.length);
 const selectCount = computed(() => select_goods.value.length);
@@ -173,6 +164,18 @@ const showPopup = () => {
 
 const hidePopup = () => {
     showingPopup.value = false;
+}
+
+const moveToDestination = (item) => {
+    select_goods.value.push({ ...item });
+};
+
+const removeItem = (item) => {
+    const index = select_goods.value.indexOf(item);
+
+    if (index !== -1) {
+        select_goods.value.splice(index, 1);
+    }
 }
 </script>
 
@@ -216,10 +219,7 @@ const hidePopup = () => {
 .list-btn1 {
     width: 56px;
     height: 35px;
-    padding: 0px;
-    padding-top: 12px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px;
     margin-top: 10px;
 }
 
@@ -235,10 +235,7 @@ const hidePopup = () => {
 .list-btn3 {
     width: 56px;
     height: 35px;
-    padding: 0px;
-    padding-top: 12px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px;
     margin-top: 10px;
     color: var(--system-danger);
 }
@@ -246,10 +243,7 @@ const hidePopup = () => {
 .list-btn4 {
     width: 150px;
     height: 35px;
-    padding: 0px;
-    padding-top: 12px;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px;
     margin-top: 10px;
     float: right;
     margin-right: 90px;
@@ -328,6 +322,7 @@ const hidePopup = () => {
     width: 1670px;
     bottom: 0;
     right: 0;
+    left: 225px;
     background-color: #fff;
     border-top: solid 1px #ccc;
     padding: 20px;
