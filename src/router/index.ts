@@ -18,6 +18,7 @@ import BarcodeReg from '../views/seller/barcode-reg/BarcodeReg.vue';
 import BarcodeRegList from '../views/seller/barcode-reg/BarcodeRegList.vue';
 import ItemManagement from '../views/seller/management/ItemManagement.vue';
 import FindIdPw from '../views/login/FindIdPw.vue';
+import Faq from '../views/user/faq/Faq.vue';
 
 //라우터설계(경로랑 컴포넌트 배열로 입력)
 const routes = [
@@ -38,6 +39,7 @@ const routes = [
   { path: '/barcodereg-list', component: BarcodeRegList },
   { path: '/itemmanage', component: ItemManagement },
   { path: '/find-idpw', component: FindIdPw },
+  { path: '/faq', component: Faq},
 ];
 
 //라우터생성

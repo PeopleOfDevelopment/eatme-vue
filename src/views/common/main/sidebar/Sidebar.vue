@@ -16,7 +16,7 @@
             fill="#8B938A" />
         </svg>
       </div>
-      <p style="float: left; margin-left: 10px" onclick="location.href='login'">
+      <p style="float: left; margin-left: 10px; cursor: pointer;" onclick="location.href='login'">
         로그인
       </p>
     </div>

@@ -13,11 +13,13 @@
       </div>
       <div class="p-menus3">
         <p class="d-text2">{{ item.day }}</p>
-        <Btn class="t-btn2" btntype="outline" style="width: 136px;">
-          문의하기</Btn>
-        <Btn class="t-btn1" btntype="outline" style="width: 136px">
-          리뷰 작성
+        <div class="btn-box1">
+          <Btn class="t-btn2" btntype="outline" style="width: 136px;">
+            리뷰 작성</Btn>
+          <Btn class="t-btn1" btntype="outlineGray" style="width: 136px">
+            문의하기
         </Btn>
+      </div>
       </div>
     </div>
   </div>
@@ -26,7 +28,7 @@
 <script setup lang="ts">
 import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { ApiUtils } from '../../common/utils/ApiUtils';
 
 const goods = ref([
@@ -84,8 +86,12 @@ const apiUtils = new ApiUtils();
 
 async function query() {
   const result = await apiUtils.post('/api/purchaseHistory/query')
-  console.log(result.data)
-}
+  console.log(result);
+};
+
+// onMounted(() => {
+//   query();
+// });
 
 </script>
 
@@ -132,6 +138,7 @@ async function query() {
   height: 150px;
   margin: 20px;
   margin-right: auto;
+  margin-left: 100px;
 }
 
 .m-name1 {
@@ -180,20 +187,25 @@ async function query() {
 .d-text2 {
   text-align: right;
   float: left;
-  margin-left: 150px;
+  margin-left: 200px;
   padding-top: 15px;
   color: #757874;
 }
 
 .t-btn1 {
   float: right;
-  margin-right: 50px;
-  margin-top: 18px;
+  margin-left: 250px;
+  margin-top: 10px;
 }
 
 .t-btn2 {
-  margin-left: 120px;
-  margin-top: 18px;
-  float: left;
+  float: right;
+  margin-left: 250px;
+  margin-top: -10px;
+}
+
+.btn-box1 {
+  display: flex;
+  flex-direction: column;
 }
 </style>

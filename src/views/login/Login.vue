@@ -62,9 +62,9 @@
         </div>
 
         <div class="b-text7">
-          <p onclick="location.href='join'">회원가입</p>
+          <p onclick="location.href='join'" style="cursor: pointer;">회원가입</p>
           <p>|</p>
-          <p>비밀번호 찾기</p>
+          <p onclick="location.href='find-idpw'" style="cursor: pointer;">비밀번호 찾기</p>
         </div>
       </div>
     </div>
