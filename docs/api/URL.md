@@ -74,6 +74,26 @@
   URL: '/api/query/item'
   파라미터: 유저아이디(userId), 유저 주소(userAddr), 현재 주소(curAddr)
 
+# 대시보드
+매출액 조회
+  URL: '/api/dashboard/selling'
+  파라미터: 회사코드(corpCd), 조회시작일(frDt), 조회종료일(toDt)
+
+QnA리스트 조회
+  URL: '/api/dashboard/qnaList'
+  파라미터: 회사코드(corpCd)
+
+QnA상세내용 조회
+  URL: '/api/dashboard/qnaDetail'
+  파라미터: 문의번호(QnaNo) 회사코드(corpCd)
+
+QnA답변작성
+  URL: '/api/dashboard/updateQnaAns'
+  파라미터: 회사코드(corpCd), 문의답변(qnaAns), 문의번호(QnaNo)
+
+
+
+```
 // 회원가입 예시 테스트코드
 import { ApiUtils } from './views/common/utils/ApiUtils';
 
@@ -142,3 +162,4 @@ async function join(param: CorpInfo) {
     console.log('가맹점가입 실패')
   }
 }
+```
