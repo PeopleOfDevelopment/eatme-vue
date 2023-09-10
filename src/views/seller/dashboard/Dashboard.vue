@@ -287,6 +287,9 @@ const noticeList = ref([
 #main-wrapper {
   background-color: var(--ngray50);
 }
+</style>
+
+<style>
 .dash-wrapper {
   padding: 12px;
   display: flex;

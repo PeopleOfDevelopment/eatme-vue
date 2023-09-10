@@ -16,20 +16,41 @@
     </div>
     <div class="nm-close-container">
       <div class="hide-nm-24-container">
-        <input type="checkbox" id="hide-nm-24" name="hide-nm-24" />
+        <input
+          type="checkbox"
+          id="hide-nm-24"
+          name="hide-nm-24"
+          v-model="hideModal" />
         <label class="hide-nm-24-label" for="hide-nm-24">
           오늘 하루동안 보지 않기
         </label>
       </div>
-      <Btn btntype="textGrayThin" @click="modalOpen = false">닫기</Btn>
+      <Btn btntype="textGrayThin" @click="closeModal">닫기</Btn>
     </div>
   </div>
 </template>
 <script setup>
 import Btn from './Btn.vue';
 import { ref } from 'vue';
-
 const modalOpen = ref(true);
+const hideModal = ref(false);
+
+const setCookie = (name, val, exp) => {
+  let date = new Date();
+  date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+
+  console.log(name + '=' + val + ';expires=' + date.toUTCString() + ';path=/');
+
+  document.cookie = name + '=' + val + ';expires=' + date.toUTCString() + ';';
+};
+
+const closeModal = () => {
+  modalOpen.value = false;
+  console.log('closeModal');
+  if (hideModal.value) {
+    setCookie('today', 'y', 1);
+  }
+};
 </script>
 <style scoped>
 .nonmodal-box {
