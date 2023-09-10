@@ -20,7 +20,7 @@
       </div>
       <Footer></Footer>
     </div>
-    <NonModal></NonModal>
+    <NonModal v-if="showNm"></NonModal>
   </div>
 </template>
 
@@ -32,6 +32,20 @@ import SubTitle from '../components/SubTitle.vue';
 import Card from '../components/Card.vue';
 import Footer from './footer/Footer.vue';
 import NonModal from '../components/NonModal.vue';
+
+/*논모달 오늘 하루 보지 않기 확인*/
+let showNm = true;
+const getCookie = (name) => {
+  const value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return value ? value[2] : null;
+};
+const todayCookie = getCookie('today');
+if (todayCookie) {
+  showNm = false;
+} else {
+  showNm = true;
+}
+
 import { ref } from 'vue';
 
 const placeList = ref([
