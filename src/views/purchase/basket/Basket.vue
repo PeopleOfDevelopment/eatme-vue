@@ -27,7 +27,7 @@
               type="checkbox"
               v-model="basket.checked" />
             <div class="cart-img"></div>
-            <div class="cart-text">{{ basket.name }}</div>
+            <div class="cart-text">{{ basket.itemNm }}</div>
             <div class="cart-quantity-box">
               <Btn
                 @click="decrease(basket)"
@@ -38,14 +38,14 @@
               <input
                 class="cart-quantity"
                 type="number"
-                v-model="basket.quantity" />
+                v-model="basket.itemQty" />
               <Btn @click="increase(basket)" btntype="textGray">+</Btn>
             </div>
             <div class="cart-price">
-              <span class="price">{{ basket.price * basket.quantity }} 원</span>
+              <span class="price">{{ basket.itemPrc * basket.itemQty }} 원</span>
               <br />
               <span class="discount-price">
-                {{ basket.price * (1 - basket.discountRate) * basket.quantity }}
+                {{ basket.itemPrc * (1 - basket.discountRat) * basket.itemQty }}
                 원
               </span>
             </div>
@@ -68,7 +68,7 @@
             <span class="price-value">{{ total - totalDiscount }} 원</span>
           </div>
         </div>
-        <Btn btntype="solid">주문하기</Btn>
+        <Btn btntype="solid" @click="getBasket()">주문하기</Btn>
       </div>
     </div>
   </div>
@@ -77,37 +77,32 @@
 <script setup>
 import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import { ref, computed, watchEffect } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import { ref, computed, watchEffect, onMounted } from 'vue';
 
-const basketList = ref([
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    quantity: 1,
-    price: 2000,
-    discountRate: 0.25,
-    checked: true,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    quantity: 2,
-    price: 2000,
-    discountRate: 0.25,
-    checked: true,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    quantity: 1,
-    price: 3000,
-    discountRate: 0.25,
-    checked: true,
-  },
-]);
+const basketList = ref([]);
+const apiUtils = new ApiUtils;
+
+const testData = {
+  userId: 'testID2'
+}
+
+async function getBasket() {
+  const result = await apiUtils.post('/api/basket/query',testData)
+  basketList.value = result.data
+  console.log(basketList.value)
+}
+
+onMounted(() => {
+  getBasket()
+})
+
 
 const total = computed(() =>
-  basketList.value.reduce((acc, cur) => acc + cur.price, 0)
+  basketList.value.reduce((acc, cur) => acc + cur.itemPrc, 0)
 );
 const totalDiscount = computed(() =>
-  basketList.value.reduce((acc, cur) => acc + cur.price * cur.discountRate, 0)
+  basketList.value.reduce((acc, cur) => acc + cur.itemPrc * cur.discountRat, 0)
 );
 
 const decrease = (basket) => {
