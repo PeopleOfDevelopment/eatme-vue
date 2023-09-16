@@ -13,7 +13,7 @@
                <p style="margin-left: 70px;">유통기한</p>
                <p style="margin-left: 95px;">원가</p>
                <p style="margin-left: 90px;">할인율</p>
-               <p style="margin-left: 90px;">판매가</p>
+               <p style="margin-left: 82px;">판매가</p>
                <p style="margin-left: 90px;">상태</p>
            </div>
            <div class="menu-list" v-if="shouldShow(currentTab)">

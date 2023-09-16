@@ -13,13 +13,13 @@
       </div>
       <div class="p-menus3">
         <p class="d-text2">{{ item.day }}</p>
-        <div class="btn-box1">
-          <Btn class="t-btn2" btntype="outline" style="width: 136px;">
-            리뷰 작성</Btn>
-          <Btn class="t-btn1" btntype="outlineGray" style="width: 136px">
-            문의하기
-        </Btn>
-      </div>
+          <div class="btn-box1">
+            <Btn class="t-btn2" btntype="outline" style="width: 136px;">
+              리뷰 작성</Btn>
+            <Btn class="t-btn1" btntype="outlineGray" style="width: 136px">
+              문의하기
+            </Btn>
+          </div>
       </div>
     </div>
   </div>
@@ -85,13 +85,11 @@ const goods = ref([
 const apiUtils = new ApiUtils();
 
 async function query() {
-  const result = await apiUtils.post('/api/purchaseHistory/query')
+  const result = await apiUtils.post('/api/purchaseHistory/query');
   console.log(result);
 };
 
-// onMounted(() => {
-//   query();
-// });
+query();
 
 </script>
 
@@ -138,7 +136,7 @@ async function query() {
   height: 150px;
   margin: 20px;
   margin-right: auto;
-  margin-left: 100px;
+  margin-left: 80px;
 }
 
 .m-name1 {
@@ -187,20 +185,20 @@ async function query() {
 .d-text2 {
   text-align: right;
   float: left;
-  margin-left: 200px;
+  margin-left: 250px;
   padding-top: 15px;
   color: #757874;
 }
 
 .t-btn1 {
   float: right;
-  margin-left: 250px;
+  margin-left: 200px;
   margin-top: 10px;
 }
 
 .t-btn2 {
   float: right;
-  margin-left: 250px;
+  margin-left: 200px;
   margin-top: -10px;
 }
 
