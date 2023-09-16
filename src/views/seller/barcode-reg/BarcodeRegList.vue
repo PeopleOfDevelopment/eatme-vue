@@ -145,6 +145,28 @@ const goods = ref([
       capacity: "55g X 5",
       quantity: 1,
     },
+    {
+      id: 3,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
+      price: 8900,
+      discountprice: 6675,
+      discount: 25,
+      day: "2023-05-29",
+      code: "154203215",
+      capacity: "55g X 5",
+      quantity: 1,
+    },
+    {
+      id: 4,
+      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
+      price: 8900,
+      discountprice: 6675,
+      discount: 25,
+      day: "2023-05-29",
+      code: "154203215",
+      capacity: "55g X 5",
+      quantity: 1,
+    },
 ]);
 
 const select_goods = ref([]);
@@ -273,6 +295,7 @@ const removeItem = (item) => {
     display: flex;
     margin-top: 100px;
     justify-content: center;
+    z-index: 1;
 }
 
 .barcode-scan-text2 {
@@ -317,16 +340,17 @@ const removeItem = (item) => {
 }
 
 .popup {
-    position: fixed;
+    position: absolute;
     height: 600px;
     width: 1670px;
     bottom: 0;
     right: 0;
-    left: 225px;
     background-color: #fff;
     border-top: solid 1px #ccc;
     padding: 20px;
     transition: transform 0.3s ease;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    z-index: 99;
 }
 
 .slide-enter-active, .slide-leave-active {
@@ -340,9 +364,14 @@ const removeItem = (item) => {
 .popup-box {
     display: flex;
     flex-direction: column;
-    margin-top: 250px;
     height: 80px;
+    width: 1670px;
     border-top: solid 1px #ccc;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+    z-index: 98;
 }
 
 .popup-top {

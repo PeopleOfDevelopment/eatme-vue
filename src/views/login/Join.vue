@@ -28,7 +28,7 @@
         <placeHolder
           :placeholder="input2"
           style="width: 91%; float: left"
-          maxlength="5"></placeHolder>
+          maxlength="10"></placeHolder>
       </div>
       <Btns
         btntype="ghost"
@@ -83,7 +83,7 @@
     <Btns
       btntype="solid"
       style="margin-top: 10px; margin-left: 10px; width: 92%"
-      @click="check_join">
+      @click="join(testData)">
       회원가입
     </Btns>
   </div>
@@ -142,7 +142,7 @@ interface UserInfo {
   userPw: string
   userEmail: string
   userNick: string
-  userAddr: string
+  userPhoneNumber: string
 }
 
 const testData: UserInfo = {
@@ -151,10 +151,8 @@ const testData: UserInfo = {
   userPw: 'testPW2',
   userEmail: 'testemail@gmail.com',
   userNick: 'testNick2',
-  userAddr: 'testADDR'
+  userPhoneNumber: '01011111111',
 }
-
-join(testData)
 
 async function join(param: UserInfo) {
   const result = await apiUtils.post('/api/join/insert', testData)

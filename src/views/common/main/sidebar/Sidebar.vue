@@ -67,8 +67,8 @@
           대시보드
         </p>
         <p
-          @click="goPage('wishlist')"
-          :class="{ clicked: clickedItem === 'wishlist' }">
+          @click="goPage('itemmanage')"
+          :class="{ clicked: clickedItem === 'itemmanage' }">
           <span class="material-symbols-rounded">shopping_cart</span>
           상품관리
         </p>
@@ -98,7 +98,7 @@
         </p>
       </div>
       <Btns
-        @click="goPage('barcodereg')"
+        @click="goPage('barcodereg-list')"
         btntype="ghostDark"
         style="margin-top: 10px">
         <span class="material-symbols-rounded">barcode_scanner</span>
