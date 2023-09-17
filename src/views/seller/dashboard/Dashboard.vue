@@ -1,5 +1,5 @@
 <template>
-  <Sidebar isSeller="true"></Sidebar>
+  <Sidebar pageType="seller"></Sidebar>
   <div id="main-wrapper">
     <div class="notif-wrapper">
       <Btn btntype="solid">
@@ -333,6 +333,7 @@ const noticeList = ref([
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-height: 250px;
 }
 .dash-title-container {
   display: flex;

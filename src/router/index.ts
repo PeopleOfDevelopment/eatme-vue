@@ -20,6 +20,9 @@ import ItemManagement from '../views/seller/management/ItemManagement.vue';
 import FindIdPw from '../views/login/FindIdPw.vue';
 import Faq from '../views/user/faq/Faq.vue';
 import Admin from '../views/admin/admin/Admin.vue';
+import QnaWork from '../views/admin/admin/qna-work/QnaWork.vue';
+import Report from '../views/admin/admin/report/Report.vue';
+import NoticeList from '../views/admin/admin/notice-list/NoticeList.vue';
 import Qna from '../views/user/qna/QnaReg.vue';
 import Ecostatus from '../views/user/eco-status/EcoStatus.vue';
 
@@ -44,8 +47,11 @@ const routes = [
   { path: '/find-idpw', component: FindIdPw },
   { path: '/faq', component: Faq },
   { path: '/admin', component: Admin },
+  { path: '/qna-work', component: QnaWork },
+  { path: '/report', component: Report },
+  { path: '/notice-list', component: NoticeList },
   { path: '/qna', component: Qna },
-  { path: '/ecostatus', component:Ecostatus },
+  { path: '/ecostatus', component: Ecostatus },
 ];
 
 //라우터생성

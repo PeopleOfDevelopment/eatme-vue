@@ -1,6 +1,7 @@
 <template>
-  <!--판매자 페이지: <Sidebar isSeller="true"></Sidebar>-->
-  <div class="sideBar" :class="{ seller: isSeller }">
+  <!--판매자 페이지: <Sidebar pageType="seller"></Sidebar>
+  관리자 페이지: <Sidebar pageType="admin"></Sidebar>-->
+  <div class="sideBar" :class="{ seller: pageType !== 'user' }">
     <p class="eatMe">EAT ME</p>
     <div class="user">
       <div class="circle1">
@@ -16,18 +17,20 @@
             fill="#8B938A" />
         </svg>
       </div>
-      <p style="float: left; margin-left: 10px; cursor: pointer;" onclick="location.href='login'">
+      <p
+        style="float: left; margin-left: 10px; cursor: pointer"
+        onclick="location.href='login'">
         로그인
       </p>
     </div>
-    <div v-if="!isSeller" class="search">
+    <div v-if="pageType === 'user'" class="search">
       <span class="material-symbols-rounded">search</span>
       <input
         class="search_input"
         type="text"
         placeholder="제품 혹은 매장 검색" />
     </div>
-    <div v-if="!isSeller" class="menu-container">
+    <div v-if="pageType === 'user'" class="menu-container">
       <div class="menus">
         <p @click="goPage('home')" :class="{ clicked: clickedItem === 'home' }">
           <span class="material-symbols-rounded">home</span>
@@ -57,8 +60,8 @@
         판매 관리
       </Btns>
     </div>
-    <!--판매자 페이지: 부모 파일에 isSeller="true" 추가-->
-    <div v-else class="menu-container">
+    <!--판매자 페이지-->
+    <div v-if="pageType === 'seller'" class="menu-container">
       <div class="menus">
         <p
           @click="goPage('dashboard')"
@@ -111,6 +114,61 @@
         나가기
       </Btns>
     </div>
+    <!--관리자 페이지-->
+    <div v-if="pageType === 'admin'" class="menu-container">
+      <div class="menus">
+        <p
+          @click="goPage('admin')"
+          :class="{ clicked: clickedItem === 'admin' }">
+          <span class="material-symbols-rounded">dashboard</span>
+          대시보드
+        </p>
+        <p
+          @click="goPage('notice-list')"
+          :class="{ clicked: clickedItem === 'notice-list' }">
+          <span class="material-symbols-rounded">notifications_active</span>
+          공지사항
+        </p>
+        <p
+          @click="goPage('qna-work')"
+          :class="{ clicked: clickedItem === 'qna-work' }">
+          <span class="material-symbols-rounded">
+            production_quantity_limits
+          </span>
+          고객문의
+        </p>
+        <p
+          @click="goPage('report')"
+          :class="{ clicked: clickedItem === 'report' }">
+          <span class="material-symbols-rounded">report</span>
+          신고내역
+        </p>
+        <p
+          @click="goPage('purchase-history')"
+          :class="{ clicked: clickedItem === 'purchase-history' }">
+          <span class="material-symbols-rounded">payments</span>
+          정산신청
+        </p>
+        <p
+          @click="goPage('purchase-history')"
+          :class="{ clicked: clickedItem === 'purchase-history' }">
+          <span class="material-symbols-rounded">edit_square</span>
+          판매자 공지
+        </p>
+        <p
+          @click="goPage('purchase-history')"
+          :class="{ clicked: clickedItem === 'purchase-history' }">
+          <span class="material-symbols-rounded">help</span>
+          판매자 문의
+        </p>
+      </div>
+      <Btns
+        @click="goPage('home')"
+        btntype="ghostWhite"
+        style="margin-top: 10px">
+        나가기
+      </Btns>
+    </div>
   </div>
 </template>
 
@@ -128,9 +186,9 @@ const goPage = (page) => {
 };
 
 const props = defineProps({
-  isSeller: {
-    type: Boolean,
-    default: false,
+  pageType: {
+    type: String,
+    default: 'user',
   },
 });
 </script>

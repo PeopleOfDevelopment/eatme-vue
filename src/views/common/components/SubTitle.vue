@@ -30,6 +30,7 @@ const props = defineProps({
   font-size: 28px;
   font-weight: 700;
   padding: 10px;
+  color: var(--ngray800);
 }
 .showmore {
   font-size: 20px;
