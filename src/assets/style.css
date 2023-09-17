@@ -79,3 +79,19 @@ body {
     margin-left: inherit;
   }
 }
+
+.page-title {
+  font-size: 28px;
+  margin: 0;
+  padding: 10px;
+}
+.table-header {
+  display: flex;
+  background-color: var(--gray10);
+  border-top: 1px solid var(--ngray200);
+  border-bottom: 1px solid var(--ngray200);
+  color: var(--ngray800);
+}
+.table-header div {
+  padding: 6px 10px;
+}
