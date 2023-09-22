@@ -3,28 +3,33 @@
     <div id="main-wrapper">
         <TopNav navType="tabs" :tabList="['고객센터 문의', '자주 묻는 질문']"
             :currentTab="currentTab" :changeTab="changeTab"></TopNav>
-
-        <div class="search">
-            <span class="material-symbols-rounded">search</span>
-            <input
-                class="search_input"
-                type="text"
-                placeholder="검색어를 입력하세요" />
-        </div>
-        <div class="qna-list">
-            <div class="qna-box1" v-for="posts in paginatedPosts" :key="posts.id">
-                <p class="qna-text1">{{ posts.title }}</p>
-                <p class="qna-day1">{{ posts.day }}</p>
+        <div v-if="currentTab === 0">
+            <div class="search">
+                <span class="material-symbols-rounded">search</span>
+                <input
+                    class="search_input"
+                    type="text"
+                    placeholder="검색어를 입력하세요" />
+            </div>
+            <div class="qna-list">
+                <div class="qna-box1" v-for="posts in paginatedPosts" :key="posts.id">
+                    <p class="qna-text1">{{ posts.id }}</p>
+                    <p class="qna-text2">{{ posts.title }}</p>
+                    <p class="qna-day1">{{ posts.day }}</p>
+                </div>
+            </div>
+            <div class="pagination">
+                <span class="material-symbols-rounded" @click="prevPage"
+                style="cursor: pointer; font-size: 20px;">
+                    arrow_back_ios</span>
+                <span style="font-size: 20px;">{{ currentPage }} / {{ totalPages }}</span>
+                <span class="material-symbols-rounded" @click="nextPage"
+                style="cursor: pointer; font-size: 20px;">
+                    arrow_forward_ios</span>
             </div>
         </div>
-        <div class="pagination">
-            <span class="material-symbols-rounded" @click="prevPage"
-            style="cursor: pointer; font-size: 20px;">
-                arrow_back_ios</span>
-            <span style="font-size: 20px;">{{ currentPage }} / {{ totalPages }}</span>
-            <span class="material-symbols-rounded" @click="nextPage"
-            style="cursor: pointer; font-size: 20px;">
-                arrow_forward_ios</span>
+        <div v-if="currentTab === 1">
+            <Faq></Faq>
         </div>
     </div>
 </template>
@@ -32,6 +37,7 @@
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import TopNav from '../../common/components/TopNav.vue';
+import Faq from '../faq/Faq.vue';
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -177,6 +183,12 @@ const updateRoute = () => {
 }
 
 .qna-text1 {
+    font-size: 20px;
+    margin-left: 50px;
+    cursor: pointer;
+}
+
+.qna-text2 {
     font-size: 20px;
     margin-left: 50px;
     cursor: pointer;

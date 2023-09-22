@@ -54,6 +54,7 @@ const faq_data = ref([
 .title-box1 {
     display: flex;
     margin: 0 auto;
+    justify-content: center;
 }
 .eatme-text {
     font-size: 32px;

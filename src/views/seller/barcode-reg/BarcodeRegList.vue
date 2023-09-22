@@ -10,7 +10,7 @@
         </div>
 
         <div v-if="goodCount > 0">
-            <div class="menu-list-topbox1">
+            <div class="menu-list-topbox1" v-if="DataModify === false">
                 <div class="search">
                     <span class="material-symbols-rounded">search</span>
                     <input
@@ -18,10 +18,11 @@
                         type="text"
                         placeholder="상품 코드 혹은 제품명 검색" />
                 </div>
-                <Btn btntype="ghostWhite" class="list_btn2" style="color: #000; font-weight: 300;">
+                <Btn btntype="ghostWhite" class="list_btn2" style="color: #000; font-weight: 300;"
+                @click="showModify">
                     데이터 편집</Btn>
             </div>
-            <div class="menu-box">
+            <div class="menu-box" v-if="DataModify === false">
                 <div class="menu-top-box">
                     <p style="margin-left: 95px;">상품코드</p>
                     <p style="margin-left: 360px;">제품명</p>
@@ -40,6 +41,51 @@
                     </div>
                 </div>
             </div>
+
+            <div class="menu-list-topbox1" v-if="DataModify === true">
+                <div class="search">
+                    <span class="material-symbols-rounded">search</span>
+                    <input
+                        class="search_input"
+                        type="text"
+                        placeholder="상품 코드 혹은 제품명 검색" />
+                </div>
+                    <Btn btntype="textGray" class="list_btn1-2" style="font-weight: 500;"
+                    @click="deleteChecked">
+                        삭제</Btn>
+                    <Btn btntype="solid" class="list_btn2-1" style="font-weight: 500;"
+                    @click="hideModify">
+                        확인</Btn>
+            </div>
+            <div class="menu-box" v-if="DataModify === true">
+                <div class="menu-top-box">
+                    <input style="margin-left: 52px;"
+                        type="checkbox"
+                        v-model="selectAll"
+                        @change="toggleSelectAll" />
+                    <p style="margin-left: 115px;">상품코드</p>
+                    <p style="margin-left: 310px;">제품명</p>
+                    <p style="margin-left: 285px;">용량</p>
+                    <p style="margin-left: 155px;">원가</p>
+                    <p style="margin-left: 135px;">수정</p>
+                    <p style="margin-left: 130px;">삭제</p>
+                </div>
+                <div class="menu-list">
+                    <div class="menu-info" v-for="(item, idx) in goods">
+                        <input style="flex-basis: 5px;"
+                            type="checkbox"
+                            v-model="item.checked" />
+                        <p style="flex-basis: 90px;">{{ item.code }}</p>
+                        <p style="flex-basis: 400px;">{{ item.title }}</p>
+                        <p style="flex-basis: 100px;">{{ item.capacity }}</p>
+                        <p style="flex-basis: 80px;">{{ item.price }}원</p>
+                        <Btn btntype="LightSolid" class="list-btn1"
+                        @click="goPage('itemreg')">수정</Btn>
+                        <Btn btntype="LightSolid" class="list-btn3" 
+                        @click="removeItem2(Item)">삭제</Btn>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="scan-text-box1">
@@ -47,10 +93,6 @@
             <p class="barcode-scan-text3">문제 해결</p>
             <p class="barcode-scan-text2">혹은</p>
             <p class="barcode-scan-text3">바코드 입력</p>
-        </div>
-
-        <div>
-            
         </div>
 
         <div class="popup-box">
@@ -109,7 +151,8 @@
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
-import { ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
+import { router } from '@/router';
 
 const goods = ref([
 {
@@ -199,6 +242,49 @@ const removeItem = (item) => {
         select_goods.value.splice(index, 1);
     }
 }
+
+const removeItem2 = (item) => {
+    const index = goods.value.indexOf(item);
+
+    if (index !== -1) {
+        goods.value.splice(index, 1);
+    }
+}
+
+const DataModify = ref(false);
+
+const showModify = () => {
+    DataModify.value = true;
+}
+
+const hideModify = () => {
+    DataModify.value = false;
+}
+
+const selectAll = ref(true);
+
+const toggleSelectAll = () => {
+  goods.value.forEach((good) => {
+    good.checked = selectAll.value;
+  });
+};
+
+watchEffect(() => {
+  const allSelected = goods.value.every((good) => good.checked);
+  selectAll.value = allSelected;
+});
+
+const deleteChecked = () => {
+  goods.value = goods.value.filter((good) => !good.checked);
+};
+
+const clickedItem = ref(window.location.pathname.substring(1) || 'home');
+
+const goPage = (page) => {
+  if (page === 'home') router.push('/');
+  else router.push('/' + page);
+  clickedItem.value = page;
+};
 </script>
 
 <style scoped>
@@ -245,13 +331,28 @@ const removeItem = (item) => {
     margin-top: 10px;
 }
 
+.list_btn1-2 {
+    width: 100px;
+    height: 20px;
+    margin-left: 700px;
+    margin-top: 150px;
+    margin-right: auto;
+}
+
 .list_btn2 {
     width: 100px;
     height: 20px;
-    margin-left: auto;
     margin-right: 100px;
-    margin-left: 900px;
     margin-top: 150px;
+    margin-left: auto;
+}
+
+.list_btn2-1 {
+    width: 100px;
+    height: 20px;
+    margin-right: 100px;
+    margin-top: 150px;
+    margin-left: auto;
 }
 
 .list-btn3 {
