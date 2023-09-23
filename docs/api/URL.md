@@ -89,8 +89,43 @@ QnA상세내용 조회
 
 QnA답변작성
   URL: '/api/dashboard/updateQnaAns'
-  파라미터: 회사코드(corpCd), 문의답변(qnaAns), 문의번호(QnaNo)
+  파라미터: 회사코드(corpCd), 문의답변(qnaAns), 문의번호(QnaNo), 문의상태(qnaSt, '답변완료'로 고정할 것)
 
+# 관리자페이지
+문의 조회
+  URL: '/api/admin/qna/query'
+  파라미터: 조회개수(limitNum 관리자 메인페이지에서 문의내역을 몇개 가져올지에 대한 변수, 필수아님)
+
+문의 상세조회
+  URL: '/api/admin/qna/detail'
+  파라미터: 문의번호(qnaNo)
+
+문의 답변달기
+  URL: '/api/admin/qna/update'
+  파라미터: 문의번호(qnaNo), 문의답변(qnaAns), 문의상태(qnaSt, '답변완료'로 고정할 것)
+신고 조회
+  URL: '/api/admin/report/query'
+  파라미터: 조회개수(limitNum 관리자 메인페이지에서 신고내역을 몇개 가져올지에 대한 변수, 필수아님)
+
+신고 상세 조회
+  URL: '/api/admin/report/detail'
+  파라미터: 신고번호(reportNo)
+
+공지 조회
+  URL: '/api/admin/notice/query'
+  파라미터: 조회개수(limitNum 관리자 메인페이지에서 공지내역을 몇개 가져올지에 대한 변수, 필수아님)
+
+공지 상세조회
+  URL: '/api/admin/notice/detail'
+  파라미터: 공지번호(noticeNo)
+
+공지 작성
+  URL: '/api/admin/notice/insert'
+  파라미터: 공지번호(noticeNo), 공지제목(noticeTit), 공지내용(noticeTxt), 공지시작일(noticeTodt), 공지종료일(noticeFrdt), 공지타입(noticeTp, 판매자공지일경우 '판매자', 전체일 경우 '전체')
+
+공지 수정
+  URL: '/api/admin/notice/update'
+  파라미터: 공지번호(noticeNo), 공지제목(noticeTit), 공지내용(noticeTxt), 공지시작일(noticeTodt), 공지종료일(noticeFrdt), 공지타입(noticeTp, 판매자공지일경우 '판매자', 전체일 경우 '전체')
 
 
 ```
