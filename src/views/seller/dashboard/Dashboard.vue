@@ -287,6 +287,27 @@ const noticeList = ref([
 #main-wrapper {
   background-color: var(--ngray50);
 }
+/*매출액 통계 카드*/
+.stat-info-wrapper {
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+.stat-date {
+  color: var(--ngray600);
+  font-size: 16px;
+}
+.stat-num {
+  color: var(--primary-d3);
+  font-size: 20px;
+}
 </style>
 
 <style>
@@ -385,27 +406,6 @@ const noticeList = ref([
 }
 .cs-condition {
   color: var(--primary-def);
-}
-/*매출액 통계 카드*/
-.stat-info-wrapper {
-  font-weight: 700;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-.stat-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-items: flex-start;
-}
-.stat-date {
-  color: var(--ngray600);
-  font-size: 16px;
-}
-.stat-num {
-  color: var(--primary-d3);
-  font-size: 20px;
 }
 /*할인품목 추천*/
 .table-card .cs-tr {

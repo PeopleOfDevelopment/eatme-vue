@@ -2,7 +2,7 @@
   <Sidebar pageType="admin"></Sidebar>
   <div id="main-wrapper">
     <div class="title-wrapper">
-      <h2 class="page-title">고객문의</h2>
+      <h2 class="page-title">판매자 문의</h2>
     </div>
     <div class="contents-wrapper">
       <div class="table-header">
@@ -12,7 +12,7 @@
         <div>작성일</div>
         <div>상태</div>
       </div>
-      <div v-for="(item, index) in qnaList" class="table-tr">
+      <div v-for="(item, index) in sellerqnaList" class="table-tr">
         <div class="table-number">{{ index + 1 }}</div>
         <div class="cs-title">
           {{ item.title }}
@@ -28,19 +28,19 @@
 <script setup>
 import Sidebar from '@/views/common/main/sidebar/Sidebar.vue';
 import { ref } from 'vue';
-const qnaList = ref([
+const sellerqnaList = ref([
   {
-    title: '비밀번호 잊어버렸어요',
+    title: '등록이 제대로 안 돼요',
     date: '2023.05.28',
     time: '10:20',
-    user: 'user112',
+    user: 'GS25 안서점',
     state: '답변대기',
   },
   {
-    title: '구매내역이 사라졌어요',
+    title: '픽업 요청에 시간이 제대로 안 떠요',
     date: '2023.05.27',
     time: '10:20',
-    user: 'user339',
+    user: 'GS25 안서점',
     state: '답변대기',
   },
 ]);
