@@ -2,13 +2,13 @@
   <Sidebar></Sidebar>
   <div id="main-wrapper" class="all">
     <p class="p-text1">구매내역</p>
-    <div class="p-menus1" v-for="(item, idx) in goods">
+    <div class="p-menus1" v-for="(item, idx) in goods" :key="idx">
       <div class="p-img1"></div>
       <div class="p-menus2">
         <p class="m-name1">{{ item.martName }}</p>
-        <p class="g-name1">{{ item.title }}</p>
-        <p class="d-text1">{{ item.discount }}%</p>
-        <p class="t-text1">{{ item.price }}원</p>
+        <p class="g-name1">{{ item.itemNm }}</p>
+        <p class="d-text1">{{ item.discountRat }}%</p>
+        <p class="t-text1">{{ item.salePrc }}원</p>
         <p class="o-text2">8000원</p>
       </div>
       <div class="p-menus3">
@@ -31,65 +31,23 @@ import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import { ref, onMounted } from 'vue';
 import { ApiUtils } from '../../common/utils/ApiUtils';
 
-const goods = ref([
-    {
-      id: 0,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-      price: 6675,
-      discount: 25,
-      day: "2023.05.29",
-      martName: "gs25 영통한아름점",
-    },
-    {
-      id: 1,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 4봉",
-      price: 6675,
-      discount: 25,
-      day: "2023.05.29",
-      martName: "gs25 영통한아름점",
-    },
-    {
-      id: 2,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
-      price: 6675,
-      discount: 25,
-      day: "2023.05.29",
-      martName: "gs25 영통한아름점",
-    },
-    {
-      id: 3,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 2봉",
-      price: 6675,
-      discount: 25,
-      day: "2023.05.29",
-      martName: "gs25 영통한아름점",
-    },
-    {
-      id: 4,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 2봉",
-      price: 6675,
-      discount: 25,
-      day: "2023.05.29",
-      martName: "gs25 영통한아름점",
-    },
-    {
-      id: 5,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 1봉",
-      price: 6675,
-      discount: 25,
-      day: "2023.05.29",
-      martName: "gs25 영통한아름점",
-    },
-]);
+const goods = ref([]);
 
 const apiUtils = new ApiUtils();
 
+const testData = {
+  ordererName: 'testOrdererName1'
+}
+
 async function query() {
-  const result = await apiUtils.post('/api/purchaseHistory/query');
-  console.log(result);
+  const result = await apiUtils.post('/api/purchaseHistory/query', testData);
+  goods.value = result.data
+  console.log(goods.value);
 };
 
-query();
+onMounted(() => {
+  query();
+})
 
 </script>
 
