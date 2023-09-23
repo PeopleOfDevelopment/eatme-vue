@@ -76,16 +76,10 @@
           상품관리
         </p>
         <p
-          @click="goPage('purchase-history')"
-          :class="{ clicked: clickedItem === 'purchase-history' }">
-          <span class="material-symbols-rounded">insert_chart</span>
-          통계
-        </p>
-        <p
-          @click="goPage('purchase-history')"
-          :class="{ clicked: clickedItem === 'purchase-history' }">
+          @click="goPage('payment')"
+          :class="{ clicked: clickedItem === 'payment' }">
           <span class="material-symbols-rounded">payments</span>
-          정산
+          매출 및 정산
         </p>
         <p
           @click="goPage('purchase-history')"
@@ -144,20 +138,20 @@
           신고내역
         </p>
         <p
-          @click="goPage('purchase-history')"
-          :class="{ clicked: clickedItem === 'purchase-history' }">
+          @click="goPage('payment-list')"
+          :class="{ clicked: clickedItem === 'payment-list' }">
           <span class="material-symbols-rounded">payments</span>
           정산신청
         </p>
         <p
-          @click="goPage('purchase-history')"
-          :class="{ clicked: clickedItem === 'purchase-history' }">
+          @click="goPage('seller-notice-list')"
+          :class="{ clicked: clickedItem === 'seller-notice-list' }">
           <span class="material-symbols-rounded">edit_square</span>
           판매자 공지
         </p>
         <p
-          @click="goPage('purchase-history')"
-          :class="{ clicked: clickedItem === 'purchase-history' }">
+          @click="goPage('seller-qna-work')"
+          :class="{ clicked: clickedItem === 'seller-qna-work' }">
           <span class="material-symbols-rounded">help</span>
           판매자 문의
         </p>

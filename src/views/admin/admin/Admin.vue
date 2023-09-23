@@ -60,7 +60,13 @@
             <span class="dash-title">정산신청</span>
             <span class="dash-count">3</span>
           </div>
-          <div class="dash-contents-container"></div>
+          <div class="dash-contents-container">
+            <div v-for="item in paymentList" class="cs-tr">
+              <div class="username">{{ item.user }}</div>
+              <div class="amount">{{ item.amount }} 원</div>
+              <div class="cs-detail-wrap">{{ item.date }}</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="dash-section">
@@ -85,7 +91,17 @@
             <span class="dash-title">판매자 문의</span>
             <span class="dash-count">3</span>
           </div>
-          <div class="dash-contents-container"></div>
+          <div class="dash-contents-container">
+            <div v-for="item in sellerqnaList" class="cs-tr">
+              <div class="cs-info-container">
+                <div class="cs-title">
+                  {{ item.title }}
+                </div>
+                <div class="cs-detail-wrap">{{ item.date }}</div>
+              </div>
+              <div class="cs-condition">{{ item.state }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -149,6 +165,40 @@ const noticeListSeller = ref([
     time: '10:45',
   },
 ]);
+const paymentList = ref([
+  {
+    user: 'GS25 안서점',
+    amount: '320000',
+    date: '2023.05.25',
+    time: '10:45',
+  },
+  {
+    user: 'GS25 안서점',
+    amount: '290000',
+    date: '2023.05.25',
+    time: '10:45',
+  },
+  {
+    user: 'GS25 안서점',
+    amount: '300000',
+    date: '2023.05.25',
+    time: '10:45',
+  },
+]);
+const sellerqnaList = ref([
+  {
+    title: '등록이 제대로 안 돼요',
+    date: '2023.05.28',
+    time: '10:20',
+    state: '답변대기',
+  },
+  {
+    title: '픽업 요청에 시간이 제대로 안 떠요',
+    date: '2023.05.27',
+    time: '10:20',
+    state: '답변대기',
+  },
+]);
 </script>
 
 <style scoped>
@@ -160,5 +210,9 @@ const noticeListSeller = ref([
 <style>
 .add-btn {
   color: var(--ngray400);
+}
+.username {
+  flex: 1 0 0;
+  text-align: left;
 }
 </style>

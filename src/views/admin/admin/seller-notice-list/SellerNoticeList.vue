@@ -2,50 +2,43 @@
   <Sidebar pageType="admin"></Sidebar>
   <div id="main-wrapper">
     <div class="title-wrapper">
-      <h2 class="page-title">고객문의</h2>
+      <h2 class="page-title">판매자 공지사항</h2>
+      <div class="add-btn">
+        <span class="material-symbols-rounded">add</span>
+      </div>
     </div>
     <div class="contents-wrapper">
       <div class="table-header">
         <div>번호</div>
         <div>제목</div>
-        <div>작성자</div>
         <div>작성일</div>
-        <div>상태</div>
       </div>
-      <div v-for="(item, index) in qnaList" class="table-tr">
+      <div v-for="(item, index) in noticeListSeller" class="table-tr">
         <div class="table-number">{{ index + 1 }}</div>
         <div class="cs-title">
           {{ item.title }}
         </div>
-        <div class="user-name">{{ item.user }}</div>
-        <div class="cs-detail-wrap">{{ item.date }}</div>
-        <div class="cs-condition">{{ item.state }}</div>
+        <div class="cs-detail-wrap">{{ item.date }}　{{ item.time }}</div>
       </div>
     </div>
   </div>
 </template>
-
 <script setup>
 import Sidebar from '@/views/common/main/sidebar/Sidebar.vue';
 import { ref } from 'vue';
-const qnaList = ref([
+const noticeListSeller = ref([
   {
-    title: '비밀번호 잊어버렸어요',
-    date: '2023.05.28',
-    time: '10:20',
-    user: 'user112',
-    state: '답변대기',
+    title: '서비스 점검 안내 (2023년 5월 26일 새벽 23시 50분 ~ 00시 5분)',
+    date: '2023.05.25',
+    time: '10:45',
   },
   {
-    title: '구매내역이 사라졌어요',
-    date: '2023.05.27',
-    time: '10:20',
-    user: 'user339',
-    state: '답변대기',
+    title: '제품 등록 안내',
+    date: '2023.05.25',
+    time: '10:45',
   },
 ]);
 </script>
-
 <style scoped>
 #main-wrapper {
   padding-inline: 75px;
@@ -58,6 +51,13 @@ const qnaList = ref([
   display: flex;
   align-items: center;
 }
+.add-btn {
+  padding: 10px;
+  display: flex;
+}
+.add-btn .material-symbols-rounded {
+  font-size: 28px;
+}
 .table-header div:nth-child(1),
 .table-number {
   width: 32px;
@@ -67,16 +67,8 @@ const qnaList = ref([
   flex: 1 0 0;
 }
 .table-header div:nth-child(3),
-.user-name {
-  width: 100px;
-}
-.table-header div:nth-child(4),
 .cs-detail-wrap {
-  width: 96px;
-}
-.table-header div:nth-child(5),
-.cs-condition {
-  width: 100px;
+  width: 145px;
 }
 .cs-title {
   text-align: left;

@@ -17,12 +17,16 @@ import Dashboard from '../views/seller/dashboard/Dashboard.vue';
 import BarcodeReg from '../views/seller/barcode-reg/BarcodeReg.vue';
 import BarcodeRegList from '../views/seller/barcode-reg/BarcodeRegList.vue';
 import ItemManagement from '../views/seller/management/ItemManagement.vue';
+import Payment from '../views/seller/payment/Payment.vue';
 import FindIdPw from '../views/login/FindIdPw.vue';
 import Faq from '../views/user/faq/Faq.vue';
 import Admin from '../views/admin/admin/Admin.vue';
 import QnaWork from '../views/admin/admin/qna-work/QnaWork.vue';
 import Report from '../views/admin/admin/report/Report.vue';
 import NoticeList from '../views/admin/admin/notice-list/NoticeList.vue';
+import PaymentList from '../views/admin/admin/payment-list/PaymentList.vue';
+import SellerNoticeList from '../views/admin/admin/seller-notice-list/SellerNoticeList.vue';
+import SellerQnaWork from '../views/admin/admin/seller-qna-work/SellerQnaWork.vue';
 import Qna from '../views/user/qna/QnaReg.vue';
 import Ecostatus from '../views/user/eco-status/EcoStatus.vue';
 
@@ -44,12 +48,16 @@ const routes = [
   { path: '/barcodereg', component: BarcodeReg },
   { path: '/barcodereg-list', component: BarcodeRegList },
   { path: '/itemmanage', component: ItemManagement },
+  { path: '/payment', component: Payment },
   { path: '/find-idpw', component: FindIdPw },
   { path: '/faq', component: Faq },
   { path: '/admin', component: Admin },
   { path: '/qna-work', component: QnaWork },
   { path: '/report', component: Report },
   { path: '/notice-list', component: NoticeList },
+  { path: '/payment-list', component: PaymentList },
+  { path: '/seller-notice-list', component: SellerNoticeList },
+  { path: '/seller-qna-work', component: SellerQnaWork },
   { path: '/qna', component: Qna },
   { path: '/ecostatus', component: Ecostatus },
 ];
