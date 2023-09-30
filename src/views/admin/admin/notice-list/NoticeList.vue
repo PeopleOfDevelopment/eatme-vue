@@ -1,9 +1,9 @@
 <template>
   <Sidebar pageType="admin"></Sidebar>
-  <div id="main-wrapper">
+  <div id="main-wrapper" v-if="!regOpen">
     <div class="title-wrapper">
       <h2 class="page-title">공지사항</h2>
-      <div class="add-btn">
+      <div class="add-btn" @click="regToggle">
         <span class="material-symbols-rounded">add</span>
       </div>
     </div>
@@ -30,10 +30,14 @@
       </div>
     </div>
   </div>
+  <div v-else id="main-wrapper" class="subpage">
+    <NoticeReg @close="regToggle"></NoticeReg>
+  </div>
 </template>
 
 <script setup>
 import Sidebar from '@/views/common/main/sidebar/Sidebar.vue';
+import NoticeReg from '@/views/admin/admin/notice-reg/NoticeReg.vue';
 import { ref } from 'vue';
 const noticeList = ref([
   {
@@ -56,6 +60,12 @@ const isOpen = ref(Array(noticeList.length).fill(false));
 const toggleContents = (index) => {
   isOpen.value[index] = !isOpen.value[index];
 };
+
+const regOpen = ref(false);
+
+const regToggle = () => {
+  regOpen.value = !regOpen.value;
+};
 </script>
 
 <style scoped>
@@ -66,6 +76,9 @@ const toggleContents = (index) => {
   flex-direction: column;
   gap: 32px;
 }
+.subpage {
+  padding: 0 !important;
+}
 .title-wrapper {
   display: flex;
   align-items: center;
@@ -73,6 +86,7 @@ const toggleContents = (index) => {
 .add-btn {
   padding: 10px;
   display: flex;
+  cursor: pointer;
 }
 .add-btn .material-symbols-rounded {
   font-size: 28px;
