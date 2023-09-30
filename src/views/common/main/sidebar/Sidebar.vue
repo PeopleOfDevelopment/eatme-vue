@@ -82,14 +82,14 @@
           매출 및 정산
         </p>
         <p
-          @click="goPage('purchase-history')"
-          :class="{ clicked: clickedItem === 'purchase-history' }">
+          @click="goPage('seller-profile')"
+          :class="{ clicked: clickedItem === 'seller-profile' }">
           <span class="material-symbols-rounded">settings</span>
           정보 관리
         </p>
         <p
-          @click="goPage('purchase-history')"
-          :class="{ clicked: clickedItem === 'purchase-history' }">
+          @click="goPage('seller-notice')"
+          :class="{ clicked: clickedItem === 'seller-notice' }">
           <span class="material-symbols-rounded">notifications_active</span>
           공지사항
         </p>
