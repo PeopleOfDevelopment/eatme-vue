@@ -28,7 +28,9 @@
     <TopNav navType="title" subtitle="하위 페이지" buttonShow="Disabled" buttonText="확인"></TopNav>-->
   <div id="top-nav" v-else-if="navType === 'title'" class="nav-title">
     <div class="subtitle-container">
-      <span class="material-symbols-rounded">chevron_left</span>
+      <span class="material-symbols-rounded prev-btn" @click="$emit('close')">
+        chevron_left
+      </span>
       <span class="subtitle-text">{{ subtitle }}</span>
     </div>
     <Btn v-if="buttonShow !== 'none'" :btntype="buttonShow">
@@ -139,13 +141,14 @@ const toggleModal = () => {
   gap: 12px;
 }
 
-.subtitle-container .material-symbols-rounded {
-  font-size: 40px;
-  padding: 10px;
+.prev-btn {
+  font-size: 36px;
+  padding: 14px;
+  cursor: pointer;
 }
 .subtitle-text {
   font-size: 28px;
   font-weight: 700;
-  padding: 10px;
+  padding: 12px;
 }
 </style>

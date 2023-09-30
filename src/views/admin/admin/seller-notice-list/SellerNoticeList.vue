@@ -13,12 +13,20 @@
         <div>제목</div>
         <div>작성일</div>
       </div>
-      <div v-for="(item, index) in noticeListSeller" class="table-tr">
-        <div class="table-number">{{ index + 1 }}</div>
-        <div class="cs-title">
-          {{ item.title }}
+      <div
+        v-for="(item, index) in noticeListSeller"
+        @click="toggleContents(index)"
+        :class="{ open: isOpen[index] }">
+        <div class="table-tr">
+          <div class="table-number">{{ index + 1 }}</div>
+          <div class="cs-title">
+            {{ item.title }}
+          </div>
+          <div class="cs-detail-wrap">{{ item.date }}　{{ item.time }}</div>
         </div>
-        <div class="cs-detail-wrap">{{ item.date }}　{{ item.time }}</div>
+        <div class="table-contents-box">
+          {{ item.contents }}
+        </div>
       </div>
     </div>
   </div>
@@ -31,13 +39,20 @@ const noticeListSeller = ref([
     title: '서비스 점검 안내 (2023년 5월 26일 새벽 23시 50분 ~ 00시 5분)',
     date: '2023.05.25',
     time: '10:45',
+    contents: '서비스 점검을 실시합니다.',
   },
   {
     title: '제품 등록 안내',
     date: '2023.05.25',
     time: '10:45',
+    contents: '제품 등록 방법 안내입니다.',
   },
 ]);
+const isOpen = ref(Array(noticeListSeller.length).fill(false));
+
+const toggleContents = (index) => {
+  isOpen.value[index] = !isOpen.value[index];
+};
 </script>
 <style scoped>
 #main-wrapper {
@@ -80,5 +95,15 @@ const noticeListSeller = ref([
 }
 .table-tr div {
   padding: 8px 10px;
+}
+.table-contents-box {
+  text-align: left;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--ngray200);
+  display: none;
+  color: var(--ngray800);
+}
+.open .table-contents-box {
+  display: block;
 }
 </style>

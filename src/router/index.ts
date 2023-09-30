@@ -18,6 +18,8 @@ import BarcodeReg from '../views/seller/barcode-reg/BarcodeReg.vue';
 import BarcodeRegList from '../views/seller/barcode-reg/BarcodeRegList.vue';
 import ItemManagement from '../views/seller/management/ItemManagement.vue';
 import Payment from '../views/seller/payment/Payment.vue';
+import SellerProfile from '../views/seller/seller-profile/SellerProfile.vue';
+import SellerNotice from '../views/seller/seller-notice/SellerNotice.vue';
 import FindIdPw from '../views/login/FindIdPw.vue';
 import Faq from '../views/user/faq/Faq.vue';
 import Admin from '../views/admin/admin/Admin.vue';
@@ -49,6 +51,8 @@ const routes = [
   { path: '/barcodereg-list', component: BarcodeRegList },
   { path: '/itemmanage', component: ItemManagement },
   { path: '/payment', component: Payment },
+  { path: '/seller-profile', component: SellerProfile },
+  { path: '/seller-notice', component: SellerNotice },
   { path: '/find-idpw', component: FindIdPw },
   { path: '/faq', component: Faq },
   { path: '/admin', component: Admin },
