@@ -127,7 +127,22 @@ QnA답변작성
   URL: '/api/admin/notice/update'
   파라미터: 공지번호(noticeNo), 공지제목(noticeTit), 공지내용(noticeTxt), 공지시작일(noticeTodt), 공지종료일(noticeFrdt), 공지타입(noticeTp, 판매자공지일경우 '판매자', 전체일 경우 '전체')
 
+# 상품등록
+상품 등록
+  URL: '/api/goodsReg/insert'
+  파라미터: 회사코드(corpCd), 제품코드(itemCd), 할인율(discountRat), 판매가(salePrc), 판매개수(saleAmt), 유통기한(itemExpdate), 바코드(itemBarcode, 필수아님)
 
+상품 수정
+  URL: '/api/goodsReg/update'
+  파라미터: 회사코드(corpCd), 제품코드(itemCd), 할인율(discountRat), 판매가(salePrc), 판매개수(saleAmt), 바코드(itemBarcode, 필수아님)
+
+상품 삭제
+  URL: '/api/goodsReg/delete'
+  파라미터: 회사코드(corpCd), 제품코드(itemCd)
+
+상품 조회
+  URL: '/api/goodsReg/query'
+  파라미터: 회사코드(corpCd), 제품코드및이름(itemCdNm, 검색기능 사용시 사용하는 파라미터)
 ```
 // 회원가입 예시 테스트코드
 import { ApiUtils } from './views/common/utils/ApiUtils';
