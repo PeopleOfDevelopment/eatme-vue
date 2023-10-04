@@ -1,106 +1,116 @@
 <template>
     <Sidebar isSeller="true"></Sidebar>
     <div id="main-wrapper">
-        <p class="title-text1">제품 등록</p>
-        <div v-if="goodCount === 0">
-            <span class="material-symbols-rounded" 
-            style="font-size: 225px; color: var(--ngray200);
-             margin-top: 350px; margin-right: 190px;">barcode_scanner</span>
-            <p class="barcode-scan-text1">상품의 바코드를 스캔해주세요</p>
-        </div>
-
-        <div v-if="goodCount > 0">
-            <div class="menu-list-topbox1" v-if="DataModify === false">
-                <div class="search">
-                    <span class="material-symbols-rounded">search</span>
-                    <input
-                        class="search_input"
-                        type="text"
-                        placeholder="상품 코드 혹은 제품명 검색" />
-                </div>
-                <Btn btntype="ghostWhite" class="list_btn2" style="color: #000; font-weight: 300;"
-                @click="showModify">
-                    데이터 편집</Btn>
+        <div style="height: 850px; overflow-y: scroll;">
+            <p class="title-text1">제품 등록</p>
+            <div v-if="goodCount === 0">
+                <span class="material-symbols-rounded" 
+                style="font-size: 225px; color: var(--ngray200);
+                margin-top: 350px; margin-right: 190px;">barcode_scanner</span>
+                <p class="barcode-scan-text1">상품의 바코드를 스캔해주세요</p>
             </div>
-            <div class="menu-box" v-if="DataModify === false">
-                <div class="menu-top-box">
-                    <p style="margin-left: 95px;">상품코드</p>
-                    <p style="margin-left: 360px;">제품명</p>
-                    <p style="margin-left: 345px;">용량</p>
-                    <p style="margin-left: 210px;">원가</p>
-                    <p style="margin-left: 195px;">추가</p>
+
+            <div v-if="goodCount > 0">
+                <div class="menu-list-topbox1" v-if="DataModify === false">
+                    <div class="search">
+                        <span class="material-symbols-rounded">search</span>
+                        <input
+                            class="search_input"
+                            type="text"
+                            placeholder="상품 코드 혹은 제품명 검색" />
+                    </div>
+                    <Btn btntype="ghostWhite" class="list_btn2" style="color: #000; font-weight: 300;"
+                    @click="showModify">
+                        데이터 편집</Btn>
                 </div>
-                <div class="menu-list">
-                    <div class="menu-info" v-for="(item, idx) in goods">
-                        <p style="flex-basis: 90px;">{{ item.code }}</p>
-                        <p style="flex-basis: 400px;">{{ item.title }}</p>
-                        <p style="flex-basis: 100px;">{{ item.capacity }}</p>
-                        <p style="flex-basis: 80px;">{{ item.price }}원</p>
-                        <Btn btntype="LightSolid" class="list-btn1"
-                        @click="moveToDestination(item)">추가</Btn>
+                <div class="menu-box" v-if="DataModify === false">
+                    <div class="menu-top-box">
+                        <p style="flex-basis: 15%;">상품코드</p>
+                        <p style="flex-basis: 50%">제품명</p>
+                        <p style="flex-basis: 10%;">용량</p>
+                        <p style="flex-basis: 10%;">원가</p>
+                        <p style="flex-basis: 5%;">추가</p>
+                    </div>
+                    <div class="menu-list">
+                        <div class="menu-info" v-for="(item, idx) in goods">
+                            <p style="flex-basis: 15%;">{{ item.itemCd }}</p>
+                            <p style="flex-basis: 50%;">{{ item.itemNm }}</p>
+                            <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
+                            <p style="flex-basis: 10%;">{{ item.salePrc }}원</p>
+                            <Btn btntype="LightSolid" class="list-btn1"
+                            @click="moveToDestination(item)" style="flex-basis: 5%;">추가</Btn>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="menu-list-topbox1" v-if="DataModify === true">
-                <div class="search">
-                    <span class="material-symbols-rounded">search</span>
-                    <input
-                        class="search_input"
-                        type="text"
-                        placeholder="상품 코드 혹은 제품명 검색" />
+                <div class="menu-list-topbox1" v-if="DataModify === true">
+                    <div class="search">
+                        <span class="material-symbols-rounded">search</span>
+                        <input
+                            class="search_input"
+                            type="text"
+                            placeholder="상품 코드 혹은 제품명 검색" />
+                    </div>
+                        <Btn btntype="textGray" class="list_btn1-2" style="font-weight: 500;"
+                        @click="deleteChecked">
+                            삭제</Btn>
+                        <Btn btntype="solid" class="list_btn2-1" style="font-weight: 500;"
+                        @click="hideModify">
+                            확인</Btn>
                 </div>
-                    <Btn btntype="textGray" class="list_btn1-2" style="font-weight: 500;"
-                    @click="deleteChecked">
-                        삭제</Btn>
-                    <Btn btntype="solid" class="list_btn2-1" style="font-weight: 500;"
-                    @click="hideModify">
-                        확인</Btn>
-            </div>
-            <div class="menu-box" v-if="DataModify === true">
-                <div class="menu-top-box">
-                    <input style="margin-left: 52px;"
-                        type="checkbox"
-                        v-model="selectAll"
-                        @change="toggleSelectAll" />
-                    <p style="margin-left: 115px;">상품코드</p>
-                    <p style="margin-left: 310px;">제품명</p>
-                    <p style="margin-left: 285px;">용량</p>
-                    <p style="margin-left: 155px;">원가</p>
-                    <p style="margin-left: 135px;">수정</p>
-                    <p style="margin-left: 130px;">삭제</p>
-                </div>
-                <div class="menu-list">
-                    <div class="menu-info" v-for="(item, idx) in goods">
-                        <input style="flex-basis: 5px;"
+                <div class="menu-box" v-if="DataModify === true">
+                    <div class="menu-top-box">
+                        <input style="flex-basis: 20px;"
                             type="checkbox"
-                            v-model="item.checked" />
-                        <p style="flex-basis: 90px;">{{ item.code }}</p>
-                        <p style="flex-basis: 400px;">{{ item.title }}</p>
-                        <p style="flex-basis: 100px;">{{ item.capacity }}</p>
-                        <p style="flex-basis: 80px;">{{ item.price }}원</p>
-                        <Btn btntype="LightSolid" class="list-btn1"
-                        @click="goPage('itemreg')">수정</Btn>
-                        <Btn btntype="LightSolid" class="list-btn3" 
-                        @click="removeItem2(Item)">삭제</Btn>
+                            v-model="selectAll"
+                            @change="toggleSelectAll" />
+                        <p style="flex-basis: 10%;">상품코드</p>
+                        <p style="flex-basis: 30%;">제품명</p>
+                        <p style="flex-basis: 12%;">용량</p>
+                        <p style="flex-basis: 10%;">원가</p>
+                        <p style="flex-basis: 5%;">수정</p>
+                        <p style="flex-basis: 5%">삭제</p>
+                    </div>
+                    <div class="menu-list">
+                        <div class="menu-info" v-for="(item, idx) in goods">
+                            <input style="flex-basis: 5px;"
+                                type="checkbox"
+                                v-model="item.checked" />
+                            <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
+                            <p style="flex-basis: 30%;">{{ item.itemNm }}</p>
+                            <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
+                            <p style="flex-basis: 10%;">{{ item.salePrc }}원</p>
+                            <Btn btntype="LightSolid" class="list-btn1"
+                            @click="goPage('itemreg')">수정</Btn>
+                            <Btn btntype="LightSolid" class="list-btn3" 
+                            @click="removeItem2(Item)">삭제</Btn>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="scan-text-box1">
-            <p class="barcode-scan-text2">스캔이 되지 않는 경우</p>
-            <p class="barcode-scan-text3">문제 해결</p>
-            <p class="barcode-scan-text2">혹은</p>
-            <p class="barcode-scan-text3">바코드 입력</p>
+            <div class="scan-text-box1">
+                <p class="barcode-scan-text2">스캔이 되지 않는 경우</p>
+                <p class="barcode-scan-text3">문제 해결</p>
+                <p class="barcode-scan-text2">혹은</p>
+                <p class="barcode-scan-text3">바코드 입력</p>
+            </div>
         </div>
 
         <div class="popup-box">
             <span @click="showPopup" class="material-symbols-rounded"
             style="font-size: 40px; color: var(--primary-def); cursor: pointer;">expand_less</span>
-
+            <div class="popup-top">
+                <p class="popup-top-text1">추가된 상품</p>
+                <div class="popup-top3">
+                    <p class="top-text1">총 상품 수</p>
+                    <p class="top-text2">{{ selectCount }}개</p>
+                    <p class="top-text1">판매가 합계</p>
+                    <p class="top-text2">{{ totalPrice }}원</p>
+                </div>
+            </div>
             <Transition name="slide">
-                <div v-if="showingPopup" class="popup">
+                <div v-if="showingPopup" class="popup" style="overflow-y: scroll;">
                     <span @click="hidePopup" class="material-symbols-rounded"
                     style="font-size: 40px; color: var(--primary-def); cursor: pointer;">expand_more</span>
                     <div class="popup-top">
@@ -114,27 +124,27 @@
                     </div>
                     <div class="menu-box">
                         <div class="menu-top-box">
-                            <p style="margin-left: 40px;">상품코드</p>
-                            <p style="margin-left: 80px;">사진</p>
-                            <p style="margin-left: 250px;">제품명</p>
-                            <p style="margin-left: 240px;">용량</p>
-                            <p style="margin-left: 85px;">수량</p>
-                            <p style="margin-left: 70px;">원가</p>
-                            <p style="margin-left: 84px;">할인율</p>
-                            <p style="margin-left: 75px;">판매가</p>
-                            <p style="margin-left: 75px;">수정</p>
-                            <p style="margin-left: 75px;">삭제</p>
+                            <p style="flex-basis: 10%;">상품코드</p>
+                            <p style="flex-basis: 80px;">사진</p>
+                            <p style="flex-basis: 30%;">제품명</p>
+                            <p style="flex-basis: 5%;">용량</p>
+                            <p style="flex-basis: 5%;">수량</p>
+                            <p style="flex-basis: 5%;">원가</p>
+                            <p style="flex-basis: 5%;">할인율</p>
+                            <p style="flex-basis: 5%;">판매가</p>
+                            <p style="flex-basis: 5%;">수정</p>
+                            <p style="flex-basis: 5%;">삭제</p>
                         </div>
                         <div class="menu-list">
                             <div class="menu-info" v-for="item in select_goods" :key="item.id">
-                                <p style="flex-basis: 90px;">{{ item.code }}</p>
+                                <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
                                 <div style="width: 60px; height: 60px; margin: 5px; background-color: #000;"></div>
-                                <p style="flex-basis: 400px;">{{ item.title }}</p>
-                                <p style="flex-basis: 100px;">{{ item.capacity }}</p>
-                                <p style="flex-basis: 50px;">{{ item.quantity }}</p>
-                                <p style="flex-basis: 80px;">{{ item.price }}원</p>
-                                <p style="flex-basis: 80px;">{{ item.discount }}%</p>
-                                <p style="flex-basis: 80px;">{{ item.discountprice }}원</p>
+                                <p style="flex-basis: 30%;">{{ item.itemNm }}</p>
+                                <p style="flex-basis: 5%;">{{ item.capacity }}</p>
+                                <p style="flex-basis: 5%;">{{ item.saleAmt }}</p>
+                                <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
+                                <p style="flex-basis: 5%;">{{ item.discountRat }}%</p>
+                                <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
                                 <Btn btntype="LightSolid" class="list-btn1">수정</Btn>
                                 <Btn btntype="LightSolid" class="list-btn3"
                                 @click="removeItem(item)">삭제</Btn>
@@ -151,73 +161,35 @@
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, onMounted } from 'vue';
 import { router } from '@/router';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
 
-const goods = ref([
-{
-      id: 0,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-      price: 8900,
-      discountprice: 6675,
-      discount: 25,
-      day: "2023-05-29",
-      code: "154203215",
-      capacity: "55g X 5",
-      quantity: 1,
-    },
-    {
-      id: 1,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 4봉",
-      price: 8900,
-      discountprice: 6675,
-      discount: 25,
-      day: "2023-05-29",
-      code: "154203215",
-      capacity: "55g X 5",
-      quantity: 1,
-    },
-    {
-      id: 2,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
-      price: 8900,
-      discountprice: 6675,
-      discount: 25,
-      day: "2023-05-29",
-      code: "154203215",
-      capacity: "55g X 5",
-      quantity: 1,
-    },
-    {
-      id: 3,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
-      price: 8900,
-      discountprice: 6675,
-      discount: 25,
-      day: "2023-05-29",
-      code: "154203215",
-      capacity: "55g X 5",
-      quantity: 1,
-    },
-    {
-      id: 4,
-      title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 3봉",
-      price: 8900,
-      discountprice: 6675,
-      discount: 25,
-      day: "2023-05-29",
-      code: "154203215",
-      capacity: "55g X 5",
-      quantity: 1,
-    },
-]);
+const goods = ref([]);
+
+//데이터 조회
+const apiUtils = new ApiUtils();
+
+const testData = {
+  corpCd: '테스트가맹점코드',
+}
+
+async function query() {
+  const result = await apiUtils.post('/api/goodsReg/query', testData);
+  goods.value = result.data
+  console.log(goods.value);
+};
+
+onMounted(() => {
+  query();
+})
 
 const select_goods = ref([]);
 
 const goodCount = computed(() => goods.value.length);
 const selectCount = computed(() => select_goods.value.length);
 const totalPrice = computed(() => {
-    const priceData = select_goods.value.map(item => item.discountprice);
+    const priceData = select_goods.value.map(item => item.salePrc);
     return priceData.reduce((accmulator, currentValue) => accmulator + currentValue, 0);
 });
 
@@ -298,6 +270,7 @@ const goPage = (page) => {
     border-top: solid 1px #C1C9BF;
     border-bottom: solid 1px #C1C9BF;
     background-color: var(--gray10);
+    justify-content: space-around;
 }
 
 .menu-top-box p {
@@ -465,7 +438,7 @@ const goPage = (page) => {
 .popup-box {
     display: flex;
     flex-direction: column;
-    height: 80px;
+    height: 100px;
     width: 1670px;
     border-top: solid 1px #ccc;
     position: fixed;
@@ -490,6 +463,11 @@ const goPage = (page) => {
     display: flex;
     margin-left: 1250px;
     margin-bottom: -10px;
+}
+
+.popup-top3 {
+    display: flex;
+    margin-right: 100px;
 }
 
 .top-text1 {
