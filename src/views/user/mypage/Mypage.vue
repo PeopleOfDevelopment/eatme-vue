@@ -118,13 +118,14 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
 import Footer from '../../common/main/footer/Footer.vue';
 import TopNav from '../../common/components/TopNav.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ChangeInfo from '../mypage/change-user-info/ChangeUserInfo.vue';
+import { ApiUtils } from '../../common/utils/ApiUtils';
 
 const change_btn = (e) => {
     var btns = document.querySelectorAll(".btnbox");
@@ -144,6 +145,25 @@ const currentTab = ref(0);
 const changeTab = (index) => {
   currentTab.value = index;
 };
+
+const userInfos = ref([]);
+
+const apiUtils = new ApiUtils();
+
+const testData = {
+    userId: 'testID',
+    userNm: '테스트입니다'
+}
+
+async function myPage() {
+  const result = await apiUtils.post('/api/mypage/query', testData);
+  userInfos.value = result.data
+  console.log(userInfos.value);
+};
+
+onMounted(() => {
+  myPage();
+})
 </script>
 
 <style scoped>
