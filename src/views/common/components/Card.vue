@@ -56,6 +56,7 @@ const props = defineProps({
   align-items: flex-start;
   gap: 16px;
   max-width: 285px;
+  cursor: pointer;
 }
 .card-img {
   width: 285px;
