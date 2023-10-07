@@ -34,21 +34,17 @@
         <p class="b-text4">로그인</p>
         <p class="b-text5">계정 정보를 입력해주세요</p>
 
-        <Ph :placeholder="id" style="width: 50%"></Ph>
-        <Ph :placeholder="pw" style="width: 50%; margin-top: 20px" type="password"></Ph>
+        <!--<Ph :placeholder="id" style="width: 50%" v-model="userId"></Ph>
+        <Ph :placeholder="pw" style="width: 50%; margin-top: 20px" type="password" v-model="userPw"></Ph> -->
+        <input placeholder="아이디" class="inputInfor" style="width: 50%;" v-model="userId">
+        <input placeholder="비밀번호" class="inputInfor" style="width: 50%; margin-top: 20px;" type="password" v-model="userPw">
         <div class="b-text-box">
           <input type="checkbox" />
           <p class="b-text6">아이디 · 비밀번호 기억하기</p>
         </div>
 
-        <Btn
-          btntype="solid"
-          style="
-            width: 52%;
-            margin-top: 20px;
-            text-align: center;
-            padding: 15px;
-          ">
+        <Btn btntype="solid" style="width: 52%;margin-top: 20px;text-align: center; padding: 15px;"
+        @click="login()">
           로그인
         </Btn>
 
@@ -71,12 +67,42 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Btn from '../common/components/Btn.vue';
 import Ph from '../common/components/PlaceHolder.vue';
+import { ApiUtils } from '../common/utils/ApiUtils';
+import { ref, onMounted } from 'vue';
 
 const id = '아이디';
 const pw = '비밀번호';
+
+const userId = ref('');
+const userPw = ref('');
+const loginData = ref([]);
+
+const apiUtils = new ApiUtils();
+
+async function login() {
+  const testData = {
+    userId: userId.value,
+    userPw: userPw.value
+  };
+
+  console.log(userId.value, userPw.value);
+
+  try {
+    const result = await apiUtils.post('/api/login/generateToken', testData);
+    loginData.value = result.data;
+    alert('토큰확인성공')
+    //로그인 상태 유지 작업 추가..
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(() => {
+  login();
+});
 </script>
 
 <style scoped>
@@ -206,5 +232,20 @@ const pw = '비밀번호';
 
 .b-text7 p {
   margin-left: 90px;
+}
+
+.inputInfor {
+    width: 92%;
+    padding: 18px;
+    margin: 7px;
+    font-size: 18px;
+    border-radius: 4px;
+    border: solid 1px #C1C9BF;
+    font-weight: bold;
+    font-family: Pretendard;
+}
+
+input::placeholder {
+    color: #A5ADA4;
 }
 </style>
