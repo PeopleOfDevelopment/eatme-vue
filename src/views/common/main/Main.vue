@@ -1,32 +1,41 @@
 <template>
   <Sidebar></Sidebar>
-  <div id="main-wrapper">
+  <div id="main-wrapper" v-if="selectedItem">
+    <ItemInfo :itemInfo="selectedItem" @close="clearSelectedItem"></ItemInfo>
+  </div>
+  <div id="main-wrapper" v-else>
     <TopNav navType="location"></TopNav>
-    <div id="sub-wrapper" v-if="selectedItem === null">
+    <div id="sub-wrapper" v-if="selectedList === 'item'">
+      <AroundItem
+        :productList="productList"
+        @itemSelected="selectItem"
+        @close="clearSelectedList"></AroundItem>
+    </div>
+    <div id="sub-wrapper" v-else>
       <Slide></Slide>
       <div class="list-container">
         <div class="list-section">
           <div class="sub-title-container">
             <span class="sub-title">내 주변 할인 매장</span>
-            <Btn btntype="textThin">
+            <Btn btntype="textThin" @click="selectList('place')">
               <span class="showmore">전체보기</span>
               <span class="material-symbols-rounded">chevron_right</span>
             </Btn>
           </div>
-          <div class="itemList-list">
+          <div class="item-list">
             <Card :place="true" :itemList="placeList"></Card>
           </div>
         </div>
         <div class="list-section">
           <div class="sub-title-container">
             <span class="sub-title">내 주변 마감 할인</span>
-            <Btn btntype="textThin">
+            <Btn btntype="textThin" @click="selectList('item')">
               <span class="showmore">전체보기</span>
               <span class="material-symbols-rounded">chevron_right</span>
             </Btn>
           </div>
-          <div class="itemList-list">
-            <Card :itemList="productList"></Card>
+          <div class="item-list">
+            <Card :itemList="productList" @itemSelected="selectItem"></Card>
           </div>
         </div>
       </div>
@@ -44,11 +53,12 @@ import Btn from '@/views/common/components/Btn.vue';
 import Card from '../components/Card.vue';
 import Footer from './footer/Footer.vue';
 import NonModal from '../components/NonModal.vue';
+import ItemInfo from '@/views/purchase/item-info/ItemInfo.vue';
+import AroundItem from '@/views/purchase/around-item/AroundItem.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 
-import { ref, computed, watchEffect, onMounted } from 'vue';
-
-const selectedItem = ref(null);
+import { ref, onMounted } from 'vue';
+const apiUtils = new ApiUtils();
 
 /*논모달 오늘 하루 보지 않기 확인*/
 let showNm = true;
@@ -63,57 +73,116 @@ if (todayCookie) {
   showNm = true;
 }
 
-const placeList = ref([]);
-const apiUtils = new ApiUtils();
-
-const testData = {
-  userId: 'testID2',
-};
-async function getCorpAround() {
-  const result = await apiUtils.post('/api/query/corp', testData);
-  placeList.value = result.data;
-  console.log(placeList.value);
-}
-onMounted(() => {
-  getCorpAround();
-});
+const placeList = ref([
+  {
+    name: 'GS25 영통한아름점',
+    distance: '500',
+    score: '4.3',
+  },
+  {
+    name: 'GS25 영통한아름점',
+    distance: '500',
+    score: '4.3',
+  },
+  {
+    name: 'GS25 영통한아름점',
+    distance: '500',
+    score: '4.3',
+  },
+  {
+    name: 'GS25 영통한아름점',
+    distance: '500',
+    score: '4.3',
+  },
+  {
+    name: 'GS25 영통한아름점',
+    distance: '500',
+    score: '4.3',
+  },
+]);
 const productList = ref([
   {
     name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
     price: 8900,
-    discountRate: 0.25,
+    discountRat: 0.25,
     place: 'GS25 영통한아름점',
     placeTime: 10,
+    expire: '2023-06-12',
+    capacity: '55g x5',
+  },
+  {
+    name: '동원참치 튜나페 고소마요 129g x 10개',
+    price: 44000,
+    discountRat: 0.5,
+    place: 'GS25 영통한아름점',
+    placeTime: 10,
+    expire: '2023-06-12',
+    capacity: '129g x 10',
+  },
+  {
+    name: '네슬레 킷캣 청키 프룻비스킷 38g x 24개',
+    price: 33600,
+    discountRat: 0.5,
+    place: 'GS25 영통한아름점',
+    placeTime: 10,
+    expire: '2023-10-26',
+    capacity: '38g x 24',
   },
   {
     name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
     price: 8900,
-    discountRate: 0.25,
+    discountRat: 0.25,
     place: 'GS25 영통한아름점',
     placeTime: 10,
+    expire: '2023-06-12',
+    capacity: '55g x5',
   },
   {
     name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
     price: 8900,
-    discountRate: 0.25,
+    discountRat: 0.25,
     place: 'GS25 영통한아름점',
     placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
+    expire: '2023-06-12',
+    capacity: '55g x5',
   },
 ]);
+
+const selectedItem = ref(null);
+
+const clearSelectedItem = () => {
+  selectedItem.value = null;
+};
+
+const selectItem = (item) => {
+  selectedItem.value = item;
+  console.log(`item: ${selectedItem.value}`);
+};
+
+const selectedList = ref(null);
+
+const clearSelectedList = () => {
+  selectedList.value = null;
+};
+const selectList = (pageName) => {
+  selectedList.value = pageName;
+};
+
+/*
+const productList = ref([]);
+
+const testData = {
+  userId: 'testID2',
+};
+async function getItemAround() {
+  const result = await apiUtils.post('/api/query/item', testData);
+  productList.value = result.data;
+  console.log(productList.value);
+}
+onMounted(() => {
+  getItemAround();
+});
+*/
 </script>
 
 <style scoped>
@@ -123,7 +192,7 @@ const productList = ref([
   gap: 32px;
   padding-inline: 75px;
 }
-.itemList-list {
+.item-list {
   display: flex;
   gap: 24px;
 }

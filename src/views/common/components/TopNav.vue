@@ -88,6 +88,9 @@ const toggleModal = () => {
   border-bottom: 1px solid var(--ngray100);
   background-color: var(--gray-white);
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 998;
 }
 .nav-location {
   justify-content: space-between;
