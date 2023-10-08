@@ -3,7 +3,8 @@
     class="card-box"
     :class="{ place: place }"
     v-for="(item, index) in itemList"
-    :key="index">
+    :key="index"
+    @click="$emit('itemSelected', item)">
     <div class="card-img"></div>
     <div v-if="place" class="card-info">
       <div class="place-name">{{ item.name }}</div>
@@ -27,8 +28,8 @@
         <div class="pruduct-name">{{ item.name }}</div>
         <div class="price-info">
           <div class="discount-price">
-            <span class="discount-rate">{{ item.discountRate * 100 }}%</span>
-            <span>{{ item.price * (1 - item.discountRate) }}원</span>
+            <span class="discount-rate">{{ item.discountRat * 100 }}%</span>
+            <span>{{ item.price * (1 - item.discountRat) }}원</span>
           </div>
           <div class="cost">{{ item.price }}원</div>
         </div>
@@ -56,6 +57,7 @@ const props = defineProps({
   align-items: flex-start;
   gap: 16px;
   max-width: 285px;
+  cursor: pointer;
 }
 .card-img {
   width: 285px;

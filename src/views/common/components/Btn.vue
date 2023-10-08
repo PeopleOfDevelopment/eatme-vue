@@ -73,6 +73,7 @@ const btnClass = computed(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
 }
 .solid-button {
   background-color: var(--primary-def);
