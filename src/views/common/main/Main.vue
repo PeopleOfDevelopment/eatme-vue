@@ -11,6 +11,11 @@
         @itemSelected="selectItem"
         @close="clearSelectedList"></AroundItem>
     </div>
+    <div id="sub-wrapper" v-else-if="selectedList === 'place'">
+      <AroundMarket
+        :placeList="placeList"
+        @close="clearSelectedList"></AroundMarket>
+    </div>
     <div id="sub-wrapper" v-else>
       <Slide></Slide>
       <div class="list-container">
@@ -22,8 +27,22 @@
               <span class="material-symbols-rounded">chevron_right</span>
             </Btn>
           </div>
-          <div class="item-list">
-            <Card :place="true" :itemList="placeList"></Card>
+          <div class="item-list-wrap">
+            <div class="item-list" ref="scrollBoxPlace">
+              <Card :place="true" :itemList="placeList"></Card>
+            </div>
+            <Btn
+              btntype="slideNav"
+              class="item-nav item-prev"
+              @click="slidePrev(scrollBoxPlace)">
+              <span class="material-symbols-rounded">chevron_left</span>
+            </Btn>
+            <Btn
+              btntype="slideNav"
+              class="item-nav item-next"
+              @click="slideNext(scrollBoxPlace)">
+              <span class="material-symbols-rounded">chevron_right</span>
+            </Btn>
           </div>
         </div>
         <div class="list-section">
@@ -34,8 +53,22 @@
               <span class="material-symbols-rounded">chevron_right</span>
             </Btn>
           </div>
-          <div class="item-list">
-            <Card :itemList="productList" @itemSelected="selectItem"></Card>
+          <div class="item-list-wrap">
+            <div class="item-list" ref="scrollBoxItem">
+              <Card :itemList="productList" @itemSelected="selectItem"></Card>
+            </div>
+            <Btn
+              btntype="slideNav"
+              class="item-nav item-prev"
+              @click="slidePrev(scrollBoxItem)">
+              <span class="material-symbols-rounded">chevron_left</span>
+            </Btn>
+            <Btn
+              btntype="slideNav"
+              class="item-nav item-next"
+              @click="slideNext(scrollBoxItem)">
+              <span class="material-symbols-rounded">chevron_right</span>
+            </Btn>
           </div>
         </div>
       </div>
@@ -55,25 +88,18 @@ import Footer from './footer/Footer.vue';
 import NonModal from '../components/NonModal.vue';
 import ItemInfo from '@/views/purchase/item-info/ItemInfo.vue';
 import AroundItem from '@/views/purchase/around-item/AroundItem.vue';
+import AroundMarket from '@/views/purchase/around-market/AroundMarket.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 
 import { ref, onMounted } from 'vue';
 const apiUtils = new ApiUtils();
 
-/*논모달 오늘 하루 보지 않기 확인*/
-let showNm = true;
-const getCookie = (name) => {
-  const value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-  return value ? value[2] : null;
-};
-const todayCookie = getCookie('today');
-if (todayCookie) {
-  showNm = false;
-} else {
-  showNm = true;
-}
-
 const placeList = ref([
+  {
+    name: 'GS25 영통한아름점',
+    distance: '500',
+    score: '4.3',
+  },
   {
     name: 'GS25 영통한아름점',
     distance: '500',
@@ -146,27 +172,16 @@ const productList = ref([
     expire: '2023-06-12',
     capacity: '55g x5',
   },
+  {
+    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
+    price: 8900,
+    discountRat: 0.25,
+    place: 'GS25 영통한아름점',
+    placeTime: 10,
+    expire: '2023-06-12',
+    capacity: '55g x5',
+  },
 ]);
-
-const selectedItem = ref(null);
-
-const clearSelectedItem = () => {
-  selectedItem.value = null;
-};
-
-const selectItem = (item) => {
-  selectedItem.value = item;
-  console.log(`item: ${selectedItem.value}`);
-};
-
-const selectedList = ref(null);
-
-const clearSelectedList = () => {
-  selectedList.value = null;
-};
-const selectList = (pageName) => {
-  selectedList.value = pageName;
-};
 
 /*
 const productList = ref([]);
@@ -183,6 +198,68 @@ onMounted(() => {
   getItemAround();
 });
 */
+
+/* 이동 */
+const selectedItem = ref(null);
+
+const clearSelectedItem = () => {
+  selectedItem.value = null;
+};
+
+const selectItem = (item) => {
+  selectedItem.value = item;
+  scrollToTop();
+};
+
+const selectedList = ref(null);
+
+const clearSelectedList = () => {
+  selectedList.value = null;
+};
+const selectList = (pageName) => {
+  selectedList.value = pageName;
+  scrollToTop();
+};
+
+/* 리스트 스크롤 */
+const scrollBoxPlace = ref(null);
+const scrollBoxItem = ref(null);
+const scrollStep = 309;
+
+const slidePrev = (element) => {
+  if (element) {
+    element.scrollLeft -= scrollStep;
+  }
+};
+const slideNext = (element) => {
+  if (element) {
+    element.scrollLeft += scrollStep;
+  }
+};
+/*
+const isAtLeft = (element) => {
+  return element ? element.scrollLeft === 0 : false;
+};
+const isAtRight = (element) => {
+  return element ? element.scrollLeft + element.clientWidth === 1505 : false;
+};*/
+
+const scrollToTop = () => {
+  window.scrollTo(0, 0);
+};
+
+/*논모달 오늘 하루 보지 않기 확인*/
+let showNm = true;
+const getCookie = (name) => {
+  const value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return value ? value[2] : null;
+};
+const todayCookie = getCookie('today');
+if (todayCookie) {
+  showNm = false;
+} else {
+  showNm = true;
+}
 </script>
 
 <style scoped>
@@ -192,9 +269,34 @@ onMounted(() => {
   gap: 32px;
   padding-inline: 75px;
 }
+.item-list-wrap {
+  position: relative;
+}
 .item-list {
   display: flex;
   gap: 24px;
+  width: 100%;
+  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.item-list::-webkit-scrollbar {
+  display: none;
+}
+.item-nav {
+  position: absolute;
+  border-radius: 50%;
+  top: calc(50% - 22px);
+}
+.item-prev {
+  left: -22px;
+}
+.item-next {
+  right: -22px;
 }
 .list-container {
   display: flex;

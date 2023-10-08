@@ -3,12 +3,10 @@
     <span class="material-symbols-rounded prev-btn" @click="$emit('close')">
       chevron_left
     </span>
-    내 주변 할인 제품
+    내 주변 할인 매장
   </div>
   <div class="item-list">
-    <Card
-      :itemList="productList"
-      @itemSelected="$emit('itemSelected', $event)"></Card>
+    <Card :itemList="placeList" :place="true"></Card>
   </div>
   <Footer></Footer>
 </template>
@@ -16,7 +14,7 @@
 import Card from '@/views/common/components/Card.vue';
 import Footer from '@/views/common/main/footer/Footer.vue';
 const props = defineProps({
-  productList: {
+  placeList: {
     type: Array,
   },
 });
