@@ -124,8 +124,11 @@ import Btn from '../../common/components/Btn.vue';
 import Footer from '../../common/main/footer/Footer.vue';
 import TopNav from '../../common/components/TopNav.vue';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import ChangeInfo from '../mypage/change-user-info/ChangeUserInfo.vue';
 import { ApiUtils } from '../../common/utils/ApiUtils';
+import { router } from '@/router';
+import axios from 'axios';
 
 const change_btn = (e) => {
     var btns = document.querySelectorAll(".btnbox");
@@ -148,6 +151,9 @@ const changeTab = (index) => {
 
 const userInfos = ref([]);
 
+const isAuthenticated = ref(false);
+const router = useRouter();
+
 const apiUtils = new ApiUtils();
 
 const testData = {
@@ -161,8 +167,12 @@ async function myPage() {
   console.log(userInfos.value);
 };
 
-onMounted(() => {
-  myPage();
+onMounted(async () => {
+    const token = localStorage.getItem('token');
+    if(!token) {
+        alert('로그인 후 이용할 수 있습니다.')
+        router.push('/login') //토큰이 없으면 로그인 페이지로
+    }
 })
 </script>
 
