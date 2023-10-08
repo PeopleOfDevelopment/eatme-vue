@@ -69,16 +69,12 @@
 
 <script setup lang="ts">
 import Btn from '../common/components/Btn.vue';
-import Ph from '../common/components/PlaceHolder.vue';
 import { ApiUtils } from '../common/utils/ApiUtils';
 import { ref, onMounted } from 'vue';
-
-const id = '아이디';
-const pw = '비밀번호';
+import { router } from '@/router';
 
 const userId = ref('');
 const userPw = ref('');
-const loginData = ref([]);
 
 const apiUtils = new ApiUtils();
 
@@ -92,17 +88,15 @@ async function login() {
 
   try {
     const result = await apiUtils.post('/api/login/generateToken', testData);
-    loginData.value = result.data;
-    alert('토큰확인성공')
+    const token = result.result;
+    localStorage.setItem('token', token);
+    router.push('/');
     //로그인 상태 유지 작업 추가..
   } catch (error) {
     console.error(error);
+    alert('아이디 또는 비밀번호를 다시 입력해주세요.')
   }
 };
-
-onMounted(() => {
-  login();
-});
 </script>
 
 <style scoped>
