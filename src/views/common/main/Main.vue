@@ -3,6 +3,11 @@
   <div id="main-wrapper" v-if="selectedItem">
     <ItemInfo :itemInfo="selectedItem" @close="clearSelectedItem"></ItemInfo>
   </div>
+  <div id="main-wrapper" v-else-if="selectedMarket">
+    <MarketInfo
+      :marketInfo="selectedMarket"
+      @close="clearSelectedMarket"></MarketInfo>
+  </div>
   <div id="main-wrapper" v-else>
     <TopNav navType="location"></TopNav>
     <div id="sub-wrapper" v-if="selectedList === 'item'">
@@ -11,9 +16,10 @@
         @itemSelected="selectItem"
         @close="clearSelectedList"></AroundItem>
     </div>
-    <div id="sub-wrapper" v-else-if="selectedList === 'place'">
+    <div id="sub-wrapper" v-else-if="selectedList === 'market'">
       <AroundMarket
-        :placeList="placeList"
+        :marketList="marketList"
+        @itemSelected="selectMarket"
         @close="clearSelectedList"></AroundMarket>
     </div>
     <div id="sub-wrapper" v-else>
@@ -22,25 +28,28 @@
         <div class="list-section">
           <div class="sub-title-container">
             <span class="sub-title">내 주변 할인 매장</span>
-            <Btn btntype="textThin" @click="selectList('place')">
+            <Btn btntype="textThin" @click="selectList('market')">
               <span class="showmore">전체보기</span>
               <span class="material-symbols-rounded">chevron_right</span>
             </Btn>
           </div>
           <div class="item-list-wrap">
-            <div class="item-list" ref="scrollBoxPlace">
-              <Card :place="true" :itemList="placeList"></Card>
+            <div class="item-list" ref="scrollBoxMarket">
+              <Card
+                :market="true"
+                :itemList="marketList"
+                @itemSelected="selectMarket"></Card>
             </div>
             <Btn
               btntype="slideNav"
               class="item-nav item-prev"
-              @click="slidePrev(scrollBoxPlace)">
+              @click="slidePrev(scrollBoxMarket)">
               <span class="material-symbols-rounded">chevron_left</span>
             </Btn>
             <Btn
               btntype="slideNav"
               class="item-nav item-next"
-              @click="slideNext(scrollBoxPlace)">
+              @click="slideNext(scrollBoxMarket)">
               <span class="material-symbols-rounded">chevron_right</span>
             </Btn>
           </div>
@@ -87,6 +96,7 @@ import Card from '../components/Card.vue';
 import Footer from './footer/Footer.vue';
 import NonModal from '../components/NonModal.vue';
 import ItemInfo from '@/views/purchase/item-info/ItemInfo.vue';
+import MarketInfo from '@/views/purchase/market-info/MarketInfo.vue';
 import AroundItem from '@/views/purchase/around-item/AroundItem.vue';
 import AroundMarket from '@/views/purchase/around-market/AroundMarket.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
@@ -94,110 +104,47 @@ import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import { ref, onMounted } from 'vue';
 const apiUtils = new ApiUtils();
 
-const placeList = ref([
+const marketList = ref([
   {
     name: 'GS25 영통한아름점',
-    distance: '500',
     score: '4.3',
   },
   {
     name: 'GS25 영통한아름점',
-    distance: '500',
     score: '4.3',
   },
   {
     name: 'GS25 영통한아름점',
-    distance: '500',
     score: '4.3',
   },
   {
     name: 'GS25 영통한아름점',
-    distance: '500',
     score: '4.3',
   },
   {
     name: 'GS25 영통한아름점',
-    distance: '500',
     score: '4.3',
   },
   {
     name: 'GS25 영통한아름점',
-    distance: '500',
     score: '4.3',
-  },
-]);
-const productList = ref([
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRat: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-    expire: '2023-06-12',
-    capacity: '55g x5',
-  },
-  {
-    name: '동원참치 튜나페 고소마요 129g x 10개',
-    price: 44000,
-    discountRat: 0.5,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-    expire: '2023-06-12',
-    capacity: '129g x 10',
-  },
-  {
-    name: '네슬레 킷캣 청키 프룻비스킷 38g x 24개',
-    price: 33600,
-    discountRat: 0.5,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-    expire: '2023-10-26',
-    capacity: '38g x 24',
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRat: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-    expire: '2023-06-12',
-    capacity: '55g x5',
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRat: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-    expire: '2023-06-12',
-    capacity: '55g x5',
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRat: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-    expire: '2023-06-12',
-    capacity: '55g x5',
   },
 ]);
 
-/*
 const productList = ref([]);
 
 const testData = {
-  userId: 'testID2',
+  userId: 'testID',
+  userAddr: '주소',
+  curAddr: '주소',
 };
 async function getItemAround() {
-  const result = await apiUtils.post('/api/query/item', testData);
+  const result = await apiUtils.post('/api/main/query/item', testData);
   productList.value = result.data;
-  console.log(productList.value);
 }
 onMounted(() => {
   getItemAround();
 });
-*/
 
 /* 이동 */
 const selectedItem = ref(null);
@@ -208,6 +155,17 @@ const clearSelectedItem = () => {
 
 const selectItem = (item) => {
   selectedItem.value = item;
+  scrollToTop();
+};
+
+const selectedMarket = ref(null);
+
+const clearSelectedMarket = () => {
+  selectedMarket.value = null;
+};
+
+const selectMarket = (item) => {
+  selectedMarket.value = item;
   scrollToTop();
 };
 
@@ -222,7 +180,7 @@ const selectList = (pageName) => {
 };
 
 /* 리스트 스크롤 */
-const scrollBoxPlace = ref(null);
+const scrollBoxMarket = ref(null);
 const scrollBoxItem = ref(null);
 const scrollStep = 309;
 

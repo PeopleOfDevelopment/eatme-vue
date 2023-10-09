@@ -6,7 +6,10 @@
     내 주변 할인 매장
   </div>
   <div class="item-list">
-    <Card :itemList="placeList" :place="true"></Card>
+    <Card
+      :itemList="marketList"
+      :market="true"
+      @itemSelected="$emit('itemSelected', $event)"></Card>
   </div>
   <Footer></Footer>
 </template>
@@ -14,7 +17,7 @@
 import Card from '@/views/common/components/Card.vue';
 import Footer from '@/views/common/main/footer/Footer.vue';
 const props = defineProps({
-  placeList: {
+  marketList: {
     type: Array,
   },
 });
