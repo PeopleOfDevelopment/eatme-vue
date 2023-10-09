@@ -59,10 +59,10 @@ onMounted(() => {
 }
 
 .p-text1 {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: bold;
   text-align: left;
-  padding-left: 50px;
+  padding-left: 80px;
   padding-top: 20px;
   padding-bottom: 20px;
 }
@@ -102,6 +102,7 @@ onMounted(() => {
   text-align: left;
   color: #8b938a;
   margin-bottom: 0px;
+  margin-top: 20px;
 }
 
 .g-name1 {
@@ -150,13 +151,13 @@ onMounted(() => {
 
 .t-btn1 {
   float: right;
-  margin-left: 200px;
+  margin-left: 280px;
   margin-top: 10px;
 }
 
 .t-btn2 {
   float: right;
-  margin-left: 200px;
+  margin-left: 280px;
   margin-top: -10px;
 }
 
