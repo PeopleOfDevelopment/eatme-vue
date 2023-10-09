@@ -7,7 +7,7 @@
     @click="$emit('itemSelected', item)">
     <div class="card-img"></div>
     <div v-if="market" class="card-info">
-      <div class="place-name">{{ item.name }}</div>
+      <div class="place-name">{{ item.corpNm }}</div>
       <div class="place-info">
         <span class="score-container">
           <span class="material-symbols-rounded icon-fill">star</span>

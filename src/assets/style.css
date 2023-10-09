@@ -67,7 +67,8 @@ https://fonts.google.com/icons?icon.style=Rounded에서 'Inserting the icon'부�
 }
 
 /*기본 레이아웃*/
-body {
+body,
+p {
   margin: 0;
 }
 #main-wrapper {
