@@ -48,26 +48,26 @@
     <input placeholder="전화번호" class="inputInfor" v-model="userNumber">
 
     <div class="c-text1">
-      <input type="checkbox" style="margin-right: 5px" />
-      <p style="margin-right: 5px; color: #d13125">(필수)</p>
+      <input type="checkbox" style="margin-right: 5px;" />
+      <p style="margin-right: 5px; color: #d13125;">(필수)</p>
       <p style="margin-right: 5px; color: #757874">이용약관 동의</p>
-      <Btns btntype="outline-gray-small">내용보기</Btns>
+      <Btns btntype="outline-gray-small" style="margin-top: 0px;">내용보기</Btns>
     </div>
     <div class="c-text1">
-      <input type="checkbox" style="margin-right: 5px" />
+      <input type="checkbox" style="margin-right: 5px;" />
       <p style="margin-right: 5px; color: #d13125">(필수)</p>
       <p style="margin-right: 5px; color: #757874">
         개인정보 수집 및 이용 동의
       </p>
-      <Btns btntype="outline-gray-small">내용보기</Btns>
+      <Btns btntype="outline-gray-small" style="margin-top: 0px;">내용보기</Btns>
     </div>
     <div class="c-text1">
-      <input type="checkbox" style="margin-right: 5px" />
+      <input type="checkbox" style="margin-right: 5px;" />
       <p style="margin-right: 5px; color: #757874">(선택)</p>
       <p style="margin-right: 5px; color: #757874">
         이벤트 및 프로모션 메일 수신 동의
       </p>
-      <Btns btntype="outline-gray-small">내용보기</Btns>
+      <Btns btntype="outline-gray-small" style="margin-top: 0px;">내용보기</Btns>
     </div>
     <Btns
       btntype="solid"
@@ -159,7 +159,7 @@ const check = async () => {
 .join-text1 {
   font-size: 32px;
   font-weight: bold;
-  margin-top: 30px;
+  margin-top: 20px;
   color: #2b322c;
 }
 
@@ -168,6 +168,8 @@ const check = async () => {
   float: left;
   margin-left: 15%;
   color: #2e312e;
+  margin-top: 20px;
+  margin-bottom: 70px;
 }
 
 .join-text3 {
@@ -175,6 +177,7 @@ const check = async () => {
   float: right;
   margin-right: 15%;
   color: #00a664;
+  margin-top: 30px;
 }
 
 .ph1 {
@@ -203,8 +206,7 @@ const check = async () => {
   width: 95%;
   display: flex;
   margin: 0 auto;
-  margin-top: -5px;
-  margin-bottom: -10px;
+  margin-top: 10px;
 }
 
 .non-password {

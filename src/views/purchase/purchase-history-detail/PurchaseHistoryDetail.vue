@@ -327,6 +327,7 @@ const toggleButton2 = (button) => {
 .person-text1 {
     font-size: 20px;
     margin-right: 100px;
+    margin-top: 10px;
 }
 
 .agree-text1 {
@@ -336,6 +337,7 @@ const toggleButton2 = (button) => {
 
 .person-text2 {
     font-size: 20px;
+    margin-top: 10px;
 }
 
 .agree-text2 {
@@ -343,6 +345,7 @@ const toggleButton2 = (button) => {
     margin-left: auto;
     margin-right: 10px;
     color: var(--gray300);
+    margin-top: 10px;
 }
 
 .agree-text3 {
@@ -399,8 +402,9 @@ const toggleButton2 = (button) => {
 .hidden3-1-text1{
     font-size: 20px;
     margin-left: 30px;
-    margin-top: 40px;
     margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 .time-select {
@@ -505,6 +509,7 @@ const toggleButton2 = (button) => {
     font-weight: bold;
     margin-right: auto;
     margin-left: 180px;
+    margin-bottom: 10px;
 }
 
 .simple-select-box {

@@ -252,6 +252,8 @@ const handle_toggle = () => {
     margin-left: auto;
     margin-right: 10px;
     cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .black-bg{
     width: 1670px;

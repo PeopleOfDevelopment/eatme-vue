@@ -2,7 +2,7 @@
   <div class="Login">
     <div class="green-box">
       <div class="b-text1">
-        <p style="font-size: 64px; float: left; margin-bottom: 0px">EAT ME</p>
+        <p style="font-size: 64px; float: left; margin-bottom: 0px; margin-top: 60px;">EAT ME</p>
         <p
           style="
             float: right;
@@ -43,7 +43,7 @@
           <p class="b-text6">아이디 · 비밀번호 기억하기</p>
         </div>
 
-        <Btn btntype="solid" style="width: 52%;margin-top: 20px;text-align: center; padding: 15px;"
+        <Btn btntype="solid" style="width: 52%;margin-top: 30px;text-align: center; padding: 15px;"
         @click="login()">
           로그인
         </Btn>
@@ -89,7 +89,7 @@ async function login() {
   try {
     const result = await apiUtils.post('/api/login/generateToken', testData);
     const token = result.result;
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
     router.push('/');
     //로그인 상태 유지 작업 추가..
   } catch (error) {
@@ -117,7 +117,7 @@ async function login() {
   font-size: 48px;
   text-align: left;
   margin-left: 18%;
-  margin-top: 25%;
+  margin-top: 30%;
 }
 
 .b-text2 {
@@ -125,7 +125,7 @@ async function login() {
   font-size: 20px;
   text-align: left;
   margin-left: 19%;
-  margin-top: 50%;
+  margin-top: 55%;
 }
 
 .white-box {
@@ -144,7 +144,7 @@ async function login() {
   color: var(--primary-def);
   font-size: 48px;
   font-weight: bold;
-  margin-top: 16%;
+  margin-top: 20%;
 }
 
 .b-text4 {
@@ -158,6 +158,7 @@ async function login() {
 .b-text5 {
   color: var(--gray800);
   font-size: 20px;
+  margin-bottom: 20px;
 }
 
 .b-text6 {

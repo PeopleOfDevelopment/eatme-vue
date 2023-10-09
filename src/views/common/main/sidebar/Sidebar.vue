@@ -18,7 +18,7 @@
         </svg>
       </div>
       <p
-        style="float: left; margin-left: 10px; cursor: pointer"
+        style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
         onclick="location.href='login'">
         로그인
       </p>
@@ -38,7 +38,7 @@
         </svg>
       </div>
       <p
-        style="float: left; margin-left: 10px; cursor: pointer"
+        style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
         onclick="location.href='mypage'">
         로그인된상태
       </p>
@@ -207,9 +207,24 @@ const props = defineProps({
 });
 
 const isLoggedIn = ref(false);
+const token = sessionStorage.getItem('token');
+
+fetch('/api/login/login', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'BEARER' + sessionStorage.getItem('token'), // 토큰을 Authorization 헤더에 추가
+    'Content-Type': 'application/json', // 요청의 Content-Type 설정 (JSON인 경우)
+  },
+})
+.then(response => response.json())
+.then(data => {
+  return data;
+})
+.catch(error => {
+  console.error('에러');
+});
 
 onMounted(() => {
-  const token = localStorage.getItem('token');
 
   if(token) {
     isLoggedIn.value = true;
