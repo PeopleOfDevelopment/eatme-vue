@@ -3,6 +3,10 @@
   URL: '/api/purchaseHistory/query'
   파라미터 : 주문자명(ordererName) (주문자 닉네임..)
 
+매장 상세 정보 조회:
+  URL: '/api/marketInfo/query'
+  파라미터: 회사코드(corpCd)
+
 # 장바구니 URL
 장바구니 조회 :
   URL: '/api/basket/query'
@@ -23,7 +27,7 @@
 # 회원가입 URL
 유저 정보 삽입 :
   URL: '/api/join/insert'
-  파라미터 : 이름(userNm), 아이디(userId), 비밀번호(userPw), 닉네임(userNick), 주소(userAddr), 이메일(userEmail)
+  파라미터 : 이름(userNm), 아이디(userId), 비밀번호(userPw), 닉네임(userNick), 주소(userAddr), 이메일(userEmail), 전화번호(userPhoneNumber)
 
 # 가맹점 URL
 가맹점 등록 :
