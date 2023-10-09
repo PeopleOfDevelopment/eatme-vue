@@ -141,17 +141,16 @@ const toggleModal = () => {
   flex: 1 0 0;
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 
 .prev-btn {
-  font-size: 36px;
-  padding: 14px;
+  font-size: 28px;
+  padding: 18px 10px 18px 0;
   cursor: pointer;
 }
 .subtitle-text {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
-  padding: 12px;
+  padding: 10px;
 }
 </style>

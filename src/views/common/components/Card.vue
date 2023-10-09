@@ -1,15 +1,14 @@
 <template>
   <div
     class="card-box"
-    :class="{ place: place }"
+    :class="{ market: market }"
     v-for="(item, index) in itemList"
     :key="index"
     @click="$emit('itemSelected', item)">
     <div class="card-img"></div>
-    <div v-if="place" class="card-info">
+    <div v-if="market" class="card-info">
       <div class="place-name">{{ item.name }}</div>
       <div class="place-info">
-        {{ item.distance }}m
         <span class="score-container">
           <span class="material-symbols-rounded icon-fill">star</span>
           {{ item.score }}
@@ -18,20 +17,20 @@
     </div>
     <div v-else class="card-info">
       <div class="place-info">
-        <span class="place-name">{{ item.place }}</span>
+        <span class="place-name">{{ item.corpNm }}</span>
         <span class="place-time">
           <span class="material-symbols-rounded">schedule</span>
-          {{ item.placeTime }}분
+          3일
         </span>
       </div>
       <div class="product-info">
-        <div class="pruduct-name">{{ item.name }}</div>
+        <div class="pruduct-name">{{ item.itemNm }}</div>
         <div class="price-info">
           <div class="discount-price">
-            <span class="discount-rate">{{ item.discountRat * 100 }}%</span>
-            <span>{{ item.price * (1 - item.discountRat) }}원</span>
+            <span class="discount-rate">{{ item.discountRat }}%</span>
+            <span>{{ (item.itemPrc * (100 - item.discountRat)) / 100 }}원</span>
           </div>
-          <div class="cost">{{ item.price }}원</div>
+          <div class="cost">{{ item.itemPrc }}원</div>
         </div>
       </div>
     </div>
@@ -43,7 +42,7 @@ const props = defineProps({
   itemList: {
     type: Array,
   },
-  place: {
+  market: {
     type: Boolean,
     default: false,
   },
@@ -64,13 +63,13 @@ const props = defineProps({
   height: 285px;
   background-color: var(--gray100);
 }
-.place .card-img {
+.market .card-img {
   height: 180px;
 }
-.place .place-name {
+.market .place-name {
   font-weight: 700;
 }
-.place .material-symbols-rounded {
+.market .material-symbols-rounded {
   color: var(--secondary-def);
 }
 .card-info {
@@ -80,6 +79,7 @@ const props = defineProps({
   text-align: left;
   font-weight: 500;
   font-size: 16px;
+  width: 100%;
 }
 .place-info {
   color: var(--ngray400);

@@ -2,36 +2,40 @@
   <TopNav navType="title" subtitle="상품정보" @close="$emit('close')"></TopNav>
   <div class="item-info-box1">
     <div class="item-img1"></div>
-    <div class="item-info1">
-      <p class="info-text1">{{ itemInfo.name }}</p>
-    </div>
-    <div class="item-info2">
-      <p class="info-text2">{{ itemInfo.discountRat * 100 }}%</p>
-      <p class="info-text3">
-        {{ itemInfo.price * (1 - itemInfo.discountRat) }}원
-      </p>
-    </div>
-    <div class="item-info3">
-      <p class="info-text4">{{ itemInfo.price }}원</p>
-    </div>
-    <div class="item-info4">
-      <p class="info-text5">유통기한</p>
-      <p class="info-text7">{{ itemInfo.expire }}</p>
-    </div>
-    <div class="item-info4">
-      <p class="info-text5">용량</p>
-      <p class="info-text6">{{ itemInfo.capacity }}</p>
-    </div>
-    <div class="item-info4">
-      <p class="info-text5">판매자</p>
-      <p>{{ itemInfo.place }}</p>
-    </div>
-    <div class="btn-box1">
-      <Btn btntype="outline" class="btn-style1">
-        <span class="material-symbols-rounded">favorite</span>
-      </Btn>
-      <Btn btntype="ghost" class="btn-style2">장바구니 담기</Btn>
-      <Btn btntype="solid" class="btn-style2">구매하기</Btn>
+    <div class="item-text-wrap">
+      <div class="item-info1">
+        <p class="info-text1">{{ itemInfo.itemNm }}</p>
+      </div>
+      <div class="item-info2">
+        <p class="info-text2">{{ itemInfo.discountRat }}%</p>
+        <p class="info-text3">
+          {{ (itemInfo.itemPrc * (100 - itemInfo.discountRat)) / 100 }}원
+        </p>
+      </div>
+      <div class="item-info3">
+        <p class="info-text4">{{ itemInfo.itemPrc }}원</p>
+      </div>
+      <div class="item-info4">
+        <p class="info-text5">유통기한</p>
+        <p class="info-text7">{{ itemInfo.itemExpdate }}</p>
+      </div>
+      <div class="item-info4">
+        <p class="info-text5">용량</p>
+        <p class="info-text6">{{ itemInfo.capacity }}</p>
+      </div>
+      <div class="item-info4">
+        <p class="info-text5">판매자</p>
+        <p>{{ itemInfo.corpNm }}</p>
+      </div>
+      <div class="btn-box1">
+        <Btn btntype="outline" class="btn-style1">
+          <span class="material-symbols-rounded">favorite</span>
+        </Btn>
+        <Btn btntype="ghost" class="btn-style2">장바구니 담기</Btn>
+        <Btn btntype="solid" class="btn-style2" @click="goPage('detail')">
+          구매하기
+        </Btn>
+      </div>
     </div>
   </div>
 </template>
@@ -39,22 +43,34 @@
 <script setup>
 import Btn from '../../common/components/Btn.vue';
 import TopNav from '@/views/common/components/TopNav.vue';
+
 const props = defineProps({
   itemInfo: {
     type: Array,
   },
 });
+
+import { router } from '@/router';
+
+const goPage = (page) => {
+  router.push('/' + page);
+};
 </script>
 
 <style scoped>
 .item-info-box1 {
-  width: 902px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  padding: 32px 75px;
 }
 .item-img1 {
-  width: 100%;
-  height: 800px;
-  background-color: #000;
+  width: 50%;
+  aspect-ratio: 1 / 1;
+  background-color: var(--gray100);
+}
+.item-text-wrap {
+  flex: 1 0 0;
 }
 .item-info1 {
   display: flex;
@@ -97,7 +113,6 @@ const props = defineProps({
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 20px;
-  margin-left: 20px;
 }
 
 .info-text5 {
@@ -111,16 +126,11 @@ const props = defineProps({
 }
 .btn-box1 {
   display: flex;
-  float: right;
-  margin-bottom: 50px;
+  gap: 16px;
 }
-.btn-style1 {
-  margin-left: 20px;
-  padding: 18px 18px;
-}
+
 .btn-style2 {
-  margin-left: 20px;
   font-size: 20px;
-  padding: 18px 100px;
+  flex: 1 0 0;
 }
 </style>
