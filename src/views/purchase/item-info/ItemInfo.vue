@@ -15,17 +15,19 @@
       <div class="item-info3">
         <p class="info-text4">{{ itemInfo.itemPrc }}원</p>
       </div>
-      <div class="item-info4">
-        <p class="info-text5">유통기한</p>
-        <p class="info-text7">{{ itemInfo.itemExpdate }}</p>
-      </div>
-      <div class="item-info4">
-        <p class="info-text5">용량</p>
-        <p class="info-text6">{{ itemInfo.capacity }}</p>
-      </div>
-      <div class="item-info4">
-        <p class="info-text5">판매자</p>
-        <p>{{ itemInfo.corpNm }}</p>
+      <div class="item-info-container">
+        <div class="item-info4">
+          <p class="info-text5">유통기한</p>
+          <p class="info-text7">{{ itemInfo.itemExpdate }}</p>
+        </div>
+        <div class="item-info4">
+          <p class="info-text5">용량</p>
+          <p class="info-text6">{{ itemInfo.capacity }}</p>
+        </div>
+        <div class="item-info4">
+          <p class="info-text5">판매자</p>
+          <p>{{ itemInfo.corpNm }}</p>
+        </div>
       </div>
       <div class="btn-box1">
         <Btn btntype="outline" class="btn-style1">
@@ -71,6 +73,14 @@ const goPage = (page) => {
 }
 .item-text-wrap {
   flex: 1 0 0;
+  color: var(--ngray800);
+  font-weight: 500;
+}
+.item-info-container {
+  color: var(--ngray600);
+  font-size: 20px;
+  text-align: left;
+  margin-top: 30px;
 }
 .item-info1 {
   display: flex;
@@ -78,25 +88,20 @@ const goPage = (page) => {
 .info-text1 {
   float: left;
   font-size: 24px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 .item-info2 {
   font-size: 28px;
   font-weight: bold;
   display: flex;
+  gap: 12px;
+  padding-block: 4px;
 }
 .info-text2 {
   float: left;
-  margin-top: 0px;
-  margin-bottom: 10px;
   color: var(--secondary-def);
 }
 .info-text3 {
   float: left;
-  margin-top: 0px;
-  margin-bottom: 10px;
-  margin-left: 20px;
 }
 .item-info3 {
   display: flex;
@@ -105,32 +110,27 @@ const goPage = (page) => {
 .info-text4 {
   color: var(--gray400);
   text-decoration: line-through;
-  margin-top: 0px;
-  margin-bottom: 10px;
 }
 .item-info4 {
   display: flex;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 20px;
+  gap: 16px;
+  padding: 10px;
+}
+.info-text5 {
+  min-width: 100px;
 }
 
-.info-text5 {
-  margin-right: 80px;
-}
-.info-text6 {
-  margin-left: 20px;
-}
-.info-text7 {
-  margin-left: -14px;
-}
 .btn-box1 {
   display: flex;
   gap: 16px;
+  margin-top: 80px;
 }
-
+.btn-style1 {
+  padding: 16px;
+}
 .btn-style2 {
   font-size: 20px;
   flex: 1 0 0;
+  padding: 20px 12px;
 }
 </style>

@@ -104,32 +104,7 @@ import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import { ref, onMounted } from 'vue';
 const apiUtils = new ApiUtils();
 
-const marketList = ref([
-  {
-    name: 'GS25 영통한아름점',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    score: '4.3',
-  },
-]);
+const marketList = ref([]);
 
 const productList = ref([]);
 
@@ -138,11 +113,18 @@ const testData = {
   userAddr: '주소',
   curAddr: '주소',
 };
+
+async function getMarketAround() {
+  const result = await apiUtils.post('/api/main/query/corp', testData);
+  marketList.value = result.data;
+}
+
 async function getItemAround() {
   const result = await apiUtils.post('/api/main/query/item', testData);
   productList.value = result.data;
 }
 onMounted(() => {
+  getMarketAround();
   getItemAround();
 });
 
