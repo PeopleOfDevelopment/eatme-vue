@@ -198,7 +198,9 @@
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+const apiUtils = new ApiUtils();
 
 const pickupList = ref([
   {
@@ -281,6 +283,35 @@ const noticeList = ref([
     noticeDate: '2023.05.25',
   },
 ]);
+
+const sellingReport = ref([]);
+
+const testData = {
+  corpCd: '테스트가맹점코드',
+  frDt: '2023-07-01',
+  toDt: '2023-12-30',
+};
+
+async function getSelling() {
+  const result = await apiUtils.post('/api/dashboard/selling', testData);
+  sellingReport.value = result.data;
+}
+
+const qnaList = ref([]);
+
+const testData2 = {
+  corpCd: 'testcorpCd',
+};
+
+async function getQnaList() {
+  const result = await apiUtils.post('/api/dashboard/qnaList', testData2);
+  qnaList.value = result.data;
+}
+
+onMounted(() => {
+  getSelling();
+  getQnaList();
+});
 </script>
 
 <style scoped>

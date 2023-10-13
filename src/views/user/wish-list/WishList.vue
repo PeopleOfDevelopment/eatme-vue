@@ -26,73 +26,28 @@ import TopNav from '../../common/components/TopNav.vue';
 import Card from '../../common/components/Card.vue';
 import Footer from '../../common/main/footer/Footer.vue';
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-const productList = ref([
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-]);
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+const apiUtils = new ApiUtils();
 
-const placeList = ref([
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-]);
+const wishList = ref([]);
+const productList = ref([]);
+const placeList = ref([]);
+
+const testData = {
+  userId: 'admin',
+  corpCd: '테스트가맹점코드',
+};
+
+async function getWishList() {
+  const result = await apiUtils.post('/api/wishList/query', testData);
+  wishList.value = result.data;
+}
+
+onMounted(() => {
+  getWishList();
+});
 
 const pageContents = ref([
   { title: '내가 찜한 상품', list: productList },
