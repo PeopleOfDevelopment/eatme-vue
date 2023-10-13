@@ -82,11 +82,14 @@
 import Btns from '../common/components/Btn.vue';
 import { ref, computed, onMounted } from 'vue';
 import { ApiUtils } from '../common/utils/ApiUtils';
+import { router } from '@/router';
 
 const userId = ref('');
 const userNick = ref('');
 const userEmail = ref('');
 const userNumber = ref('');
+const userNm = ref('ppp')
+const userAddr = ref('경기도')
 
 const password = ref('');
 const password2 = ref('');
@@ -119,7 +122,7 @@ const check = async () => {
   if (password.value != password2.value) {
     alert('비밀번호를 다시 한 번 확인해주세요.');
   } else {
-    alert('비밀번호일치확인용');
+    console.log('비밀번호 일치')
   }
   
   const userData = {
@@ -129,12 +132,16 @@ const check = async () => {
     userNick: userNick.value,
     userEmail: userEmail.value,
     userPhoneNumber: userNumber.value,
+    userAddr: userAddr.value,
+    userNm: userNm.value
   };
 
   try {
     const result = await apiUtils.post('/api/join/insert', userData)
     joinData.value = result.data;
     console.log('회원가입 성공: ', result.data);
+    alert('회원가입 되었습니다.');
+    router.push('/login');
   } catch (error) {
     console.error('회원가입 실패: ', error);
   }
@@ -169,7 +176,7 @@ const check = async () => {
   margin-left: 15%;
   color: #2e312e;
   margin-top: 20px;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
 }
 
 .join-text3 {
@@ -177,7 +184,7 @@ const check = async () => {
   float: right;
   margin-right: 15%;
   color: #00a664;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 .ph1 {

@@ -39,7 +39,7 @@
       </div>
       <p
         style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
-        onclick="location.href='mypage'">
+        @click="handle_toggle">
         로그인된상태
       </p>
     </div>
@@ -184,6 +184,14 @@
       </Btns>
     </div>
   </div>
+
+  <div class="black-bg" v-show="LoginModal">
+    <div class="modal1">
+      <p class="t1" @click="goPage('mypage')" style="cursor: pointer;">마이페이지</p>
+      <hr />
+      <p class="t2" @click="Logout" style="cursor: pointer;">로그아웃</p>
+      </div>
+  </div>
 </template>
 
 <script setup>
@@ -192,6 +200,11 @@ import Btns from '../../components/Btn.vue';
 import { ref, onMounted } from 'vue';
 
 const clickedItem = ref(window.location.pathname.substring(1) || 'home');
+const LoginModal = ref(false);
+
+const handle_toggle = () => {
+    LoginModal.value = !LoginModal.value;
+}
 
 const goPage = (page) => {
   if (page === 'home') router.push('/');
@@ -230,6 +243,13 @@ onMounted(() => {
     isLoggedIn.value = true;
   }
 })
+
+const Logout = () => {
+  sessionStorage.removeItem('token');
+
+  goPage('/');
+  router.go(0);
+}
 </script>
 
 <style scoped>
@@ -355,5 +375,36 @@ onMounted(() => {
   .sideBar {
     display: none;
   }
+}
+
+.black-bg{
+    width: 1670px;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-left: 249px;
+    z-index: 999;
+}
+
+.modal1 {
+    width: 12%;
+    height: 8%;
+    background-color: white;
+    border: solid 1px #DDE5DB;
+    border-radius: 7px;
+    font-family: Pretendard;
+    margin-top: 5%;
+    margin-left: -20px;
+}
+
+hr {
+  width: 90%;
+}
+
+.t1 {
+  padding-top: 10px;
 }
 </style>
