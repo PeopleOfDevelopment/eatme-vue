@@ -62,7 +62,7 @@
                     <Btn btntype="solid" style="width: 120px; height: 25px; padding: 15px; color: #717971;
                     background-color: #DDE5DB; border-radius: 10px; float: right; margin-right: 32%;
                     margin-top: 40px;" @click="handle_toggle">취소</Btn>
-            </div>
+                </div>
             </div>
         </div>
     </div>
