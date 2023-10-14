@@ -1,20 +1,20 @@
 <template>
-    <Sidebar isSeller="true"></Sidebar>
+    <Sidebar pageType="seller"></Sidebar>
     <div id="main-wrapper">
         <Topnav navType="tabs" :tabList="['전체 상품', '픽업 관리', '배송 관리']"
         :currentTab="currentTab" :changeTab="changeTab"></Topnav>
        <div class="menu-box">
            <div class="menu-top-box">
-               <p style="margin-left: 50px;">상품코드</p>
-               <p style="margin-left: 85px;">사진</p>
-               <p style="margin-left: 210px;">제품명</p>
-               <p style="margin-left: 195px;">용량</p>
-               <p style="margin-left: 65px;">수량</p>
-               <p style="margin-left: 70px;">유통기한</p>
-               <p style="margin-left: 95px;">원가</p>
-               <p style="margin-left: 90px;">할인율</p>
-               <p style="margin-left: 82px;">판매가</p>
-               <p style="margin-left: 90px;">상태</p>
+               <p style="flex-basis: 90px;">상품코드</p>
+               <p style="flex-basis: 60px;">사진</p>
+               <p style="flex-basis: 296px;">제품명</p>
+               <p style="flex-basis: 60px;">용량</p>
+               <p style="flex-basis: 50px;">수량</p>
+               <p style="flex-basis: 90px;">유통기한</p>
+               <p style="flex-basis: 70px;">원가</p>
+               <p style="flex-basis: 70px;">할인율</p>
+               <p style="flex-basis: 70px;">판매가</p>
+               <p style="flex-basis: 60px;">상태</p>
            </div>
            <div class="menu-list" v-if="shouldShow(currentTab)">
                <div class="menu-info" v-for="(item, index) in goods" :key="index">
@@ -22,7 +22,7 @@
                    <div class="menu-img"></div>
                    <p style="flex-basis: 296px;">{{ item.title }}</p>
                    <p style="flex-basis: 60px;">{{ item.capacity }}</p>
-                   <p style="flex-basis: 10px;">{{ item.quantity }}</p>
+                   <p style="flex-basis: 50px;">{{ item.quantity }}</p>
                    <p style="flex-basis: 90px;">{{ item.day }}</p>
                    <p style="flex-basis: 70px;">{{ item.price }}원</p>
                    <p style="flex-basis: 70px;">{{ item.discount }}%</p>
@@ -34,13 +34,12 @@
     </div>
 </template>
    
-<script setup>
+<script setup lang="ts">
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import { ref, watchEffect } from 'vue';
+import { ref, watch } from 'vue';
 import Topnav from '../../common/components/TopNav.vue';
-import ItemInfo from '@/views/purchase/item-info/ItemInfo.vue';
    
-const goods = ref([
+const goodsData = [
     {
         id: 0,
         title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
@@ -89,7 +88,9 @@ const goods = ref([
         quantity: 1,
         ispickup: '배송 예정'
     },
-]);
+];
+
+const goods = ref([...goodsData]);
 
 const currentTab = ref(0);
 
@@ -97,13 +98,18 @@ const changeTab = (index) => {
   currentTab.value = index;
 };
 
+watch(currentTab, () => {
+    const filterData = shouldShow(currentTab.value);
+    goods.value = [...filterData];
+})
+
 const shouldShow = (currentTab) => {
     if(currentTab === 0) {
-        return goods.value;
+        return goodsData;
     } else if (currentTab === 1) {
-        return goods.value;
+        return goodsData.filter(item => item.ispickup === '픽업 예정');
     } else {
-        return goods.value;
+        return goodsData.filter(item => item.ispickup === '배송 예정');
     }
 }
 
@@ -119,6 +125,7 @@ const shouldShow = (currentTab) => {
     border-top: solid 1px #C1C9BF;
     border-bottom: solid 1px #C1C9BF;
     background-color: var(--gray10);
+    justify-content: space-around;
 }
    
 .menu-top-box p {
@@ -140,6 +147,10 @@ const shouldShow = (currentTab) => {
     margin-top: 10px;
     padding-bottom: 10px;
     border-bottom: solid 1px #C1C9BF;
+}
+
+.menu-info p {
+    margin-top: 18px;
 }
    
 .menu-img {

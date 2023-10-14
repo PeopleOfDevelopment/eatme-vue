@@ -14,12 +14,58 @@
       <div class="p-menus3">
         <p class="d-text2">{{ item.day }}</p>
           <div class="btn-box1">
-            <Btn class="t-btn2" btntype="outline" style="width: 136px;">
+            <Btn class="t-btn2" btntype="outline" style="width: 136px;" @click="handle_toggle">
               리뷰 작성</Btn>
-            <Btn class="t-btn1" btntype="outlineGray" style="width: 136px">
+            <Btn class="t-btn1" btntype="outlineGray" style="width: 136px" @click="handle_toggle2">
               문의하기
             </Btn>
           </div>
+      </div>
+    </div>
+
+    <div class="black-bg" v-show="reviewModal">
+      <div class="modal1">
+        <p class="t1">리뷰 작성</p>
+        <div class="starCheck">
+          <p class="star-text1">별점</p>
+          <div class="star-rating">
+            <div class="star" v-for="index in 5" :key="index" @click="check(index)">
+              <span v-if="index < score">★</span>
+              <span v-if="index >= score">☆</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <form>
+            <textarea></textarea>
+          </form>
+        </div>
+        <Btn btntype="outlineGray" style="width: 120px; height: 25px; padding: 10px;
+             border-radius: 10px; float: left; margin-left: 65%; margin-top: 8px;"
+             @click="handle_toggle">취소</Btn>
+        <Btn btntype="solid" style="width: 120px; height: 25px; padding: 10px;
+             border-radius: 10px; float: right; margin-right: 5%;
+             margin-top: 8px;">작성</Btn>
+      </div>
+    </div>
+
+    <div class="black-bg" v-show="QnaModal">
+      <div class="modal1">
+        <p class="t1">문의 작성</p>
+        <div>
+          <input type="text" class="qna-text1" placeholder="제목을 입력해주세요">
+        </div>
+        <div>
+          <form>
+            <textarea></textarea>
+          </form>
+        </div>
+        <Btn btntype="outlineGray" style="width: 120px; height: 25px; padding: 10px;
+             border-radius: 10px; float: left; margin-left: 65%; margin-top: 8px;"
+             @click="handle_toggle2">취소</Btn>
+        <Btn btntype="solid" style="width: 120px; height: 25px; padding: 10px;
+             border-radius: 10px; float: right; margin-right: 5%;
+             margin-top: 8px;">작성</Btn>
       </div>
     </div>
   </div>
@@ -32,11 +78,26 @@ import { ref, onMounted } from 'vue';
 import { ApiUtils } from '../../common/utils/ApiUtils';
 
 const goods = ref([]);
+const score = ref(0);
+const reviewModal = ref(false);
+const QnaModal = ref(false);
+
+const handle_toggle = () => {
+    reviewModal.value = !reviewModal.value;
+}
+
+const handle_toggle2 = () => {
+  QnaModal.value = !QnaModal.value;
+}
+
+const check = (index) => {
+  score.value = index + 1;
+}
 
 const apiUtils = new ApiUtils();
 
 const testData = {
-  ordererName: 'testOrdererName1'
+  ordererName: 'testOrdererName'
 }
 
 async function query() {
@@ -164,5 +225,75 @@ onMounted(() => {
 .btn-box1 {
   display: flex;
   flex-direction: column;
+}
+
+.black-bg{
+    width: 1670px;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-left: 249px;
+}
+
+.modal1 {
+    width: 60%;
+    height: 75%;
+    background-color: white;
+    border: solid 1px #DDE5DB;
+    border-radius: 10px;
+    margin: 0 auto;
+    font-family: Pretendard;
+    margin-top: 5%;
+}
+
+.t1 {
+    color: #161D17;
+    padding-top: 40px;
+    font-weight: bold;
+    font-size: 34px;
+    float: left;
+    margin-left: 50px;
+}
+
+.starCheck {
+  display: flex;
+  margin-top: 10%;
+  margin-left: 50px;
+}
+
+.star-text1 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.star-rating {
+  display: flex;
+  margin-left: 20px;
+}
+
+.star span {
+  font-size: 20px;
+}
+
+textarea {
+  width: 90%;
+  height: 480px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: solid 2px var(--ngray200);
+}
+
+.qna-text1 {
+  width: 88%;
+  height: 30px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: solid 2px var(--ngray200);
+  font-family: Pretendard;
+  font-size: 18px;
+  padding: 12px;
 }
 </style>

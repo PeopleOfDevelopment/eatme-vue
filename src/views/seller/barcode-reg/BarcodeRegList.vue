@@ -1,5 +1,5 @@
 <template>
-    <Sidebar isSeller="true"></Sidebar>
+    <Sidebar pageType="seller"></Sidebar>
     <div id="main-wrapper">
         <div style="height: 850px; overflow-y: scroll;">
             <p class="title-text1">제품 등록</p>
@@ -17,7 +17,8 @@
                         <input
                             class="search_input"
                             type="text"
-                            placeholder="상품 코드 혹은 제품명 검색" />
+                            placeholder="상품 코드 혹은 제품명 검색"
+                            v-model="search" />
                     </div>
                     <Btn btntype="ghostWhite" class="list_btn2" style="color: #000; font-weight: 300;"
                     @click="showModify">
@@ -32,13 +33,13 @@
                         <p style="flex-basis: 5%;">추가</p>
                     </div>
                     <div class="menu-list">
-                        <div class="menu-info" v-for="(item, idx) in goods">
+                        <div class="menu-info" v-for="(item, idx) in goods" v-show="shouldDisplay(item)">
                             <p style="flex-basis: 15%;">{{ item.itemCd }}</p>
                             <p style="flex-basis: 50%;">{{ item.itemNm }}</p>
                             <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
                             <p style="flex-basis: 10%;">{{ item.salePrc }}원</p>
                             <Btn btntype="LightSolid" class="list-btn1"
-                            @click="moveToDestination(item)" style="flex-basis: 5%;">추가</Btn>
+                            @click="moveToDestination(item)" style="flex-basis: 5%; margin-bottom: 10px;">추가</Btn>
                         </div>
                     </div>
                 </div>
@@ -66,14 +67,14 @@
                             @change="toggleSelectAll" />
                         <p style="flex-basis: 10%;">상품코드</p>
                         <p style="flex-basis: 30%;">제품명</p>
-                        <p style="flex-basis: 12%;">용량</p>
+                        <p style="flex-basis: 10%;">용량</p>
                         <p style="flex-basis: 10%;">원가</p>
                         <p style="flex-basis: 5%;">수정</p>
                         <p style="flex-basis: 5%">삭제</p>
                     </div>
                     <div class="menu-list">
                         <div class="menu-info" v-for="(item, idx) in goods">
-                            <input style="flex-basis: 5px;"
+                            <input style="flex-basis: 20px;"
                                 type="checkbox"
                                 v-model="item.checked" />
                             <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
@@ -81,9 +82,9 @@
                             <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
                             <p style="flex-basis: 10%;">{{ item.salePrc }}원</p>
                             <Btn btntype="LightSolid" class="list-btn1"
-                            @click="goPage('itemreg')">수정</Btn>
+                            @click="goPage('itemreg')" style="flex-basis: 5%; margin-bottom: 10px;">수정</Btn>
                             <Btn btntype="LightSolid" class="list-btn3" 
-                            @click="removeItem2(Item)">삭제</Btn>
+                            @click="removeItem2(Item)" style="flex-basis: 5%; margin-bottom: 10px;">삭제</Btn>
                         </div>
                     </div>
                 </div>
@@ -138,15 +139,15 @@
                         <div class="menu-list">
                             <div class="menu-info" v-for="item in select_goods" :key="item.id">
                                 <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
-                                <div style="width: 60px; height: 60px; margin: 5px; background-color: #000;"></div>
+                                <div style="width: 50px; height: 50px; margin: 5px; background-color: #000;"></div>
                                 <p style="flex-basis: 30%;">{{ item.itemNm }}</p>
                                 <p style="flex-basis: 5%;">{{ item.capacity }}</p>
                                 <p style="flex-basis: 5%;">{{ item.saleAmt }}</p>
                                 <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
                                 <p style="flex-basis: 5%;">{{ item.discountRat }}%</p>
                                 <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
-                                <Btn btntype="LightSolid" class="list-btn1">수정</Btn>
-                                <Btn btntype="LightSolid" class="list-btn3"
+                                <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 5%; margin-bottom: 10px;">수정</Btn>
+                                <Btn btntype="LightSolid" class="list-btn3" style="flex-basis: 5%; margin-bottom: 10px;"
                                 @click="removeItem(item)">삭제</Btn>
                             </div>
                         </div>
@@ -166,12 +167,15 @@ import { router } from '@/router';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 
 const goods = ref([]);
+const select_goods = ref([]);
 
 //데이터 조회
 const apiUtils = new ApiUtils();
 
 const testData = {
-  corpCd: '테스트가맹점코드',
+  itemCd: 'Code',
+  itemNm : '테스트아이템',
+  corpCd : '테스트가맹점코드',
 }
 
 async function query() {
@@ -180,11 +184,20 @@ async function query() {
   console.log(goods.value);
 };
 
+const search = ref('');
+
+//검색기능
+const shouldDisplay = (item) => {
+    const searchString = search.value.toLowerCase();
+    return (
+        item.itemCd.toLowerCase().includes(searchString) ||
+        item.itemNm.toLowerCase().includes(searchString)
+    );
+};
+
 onMounted(() => {
   query();
 })
-
-const select_goods = ref([]);
 
 const goodCount = computed(() => goods.value.length);
 const selectCount = computed(() => select_goods.value.length);
@@ -240,11 +253,6 @@ const toggleSelectAll = () => {
     good.checked = selectAll.value;
   });
 };
-
-watchEffect(() => {
-  const allSelected = goods.value.every((good) => good.checked);
-  selectAll.value = allSelected;
-});
 
 const deleteChecked = () => {
   goods.value = goods.value.filter((good) => !good.checked);
@@ -478,5 +486,9 @@ const goPage = (page) => {
 .top-text2 {
     margin-left: 20px;
     font-weight: bold;
+}
+
+.menu-info p {
+    margin-top: 20px;
 }
 </style>
