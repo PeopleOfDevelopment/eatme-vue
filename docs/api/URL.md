@@ -117,7 +117,7 @@ QnA답변작성
 
 공지 조회
   URL: '/api/admin/notice/query'
-  파라미터: 조회개수(limitNum 관리자 메인페이지에서 공지내역을 몇개 가져올지에 대한 변수, 필수아님)
+  파라미터: 조회개수(limitNum 관리자 메인페이지에서 공지내역을 몇개 가져올지에 대한 변수, 필수아님), 조회 to-date (noticeTodt), 조회 from-date(noticeFrdt)
 
 공지 상세조회
   URL: '/api/admin/notice/detail'
@@ -155,8 +155,28 @@ QnA답변작성
 로그인
   URL: '/api/login/generateToken'
   파라미터: 유저아이디(userId), 비밀번호(userPw)
+  
+# 판매자 정보 관라
+판매자 정보 조회
+  URL: '/api/sellerProfile/query'  
+  파라미터: 회사코드(corpCd)
 
+판매자 정보 수정
+  URL: '/api/sellerProfile/update'
+  파라미터: 회사명(corpNm), 회사 주소(corpAddr), 회사소개(corpDesc)
 
+# 판매자 공지
+공지 조회
+  URL: '/api/sellerNotice/query'
+  파라미터: 조회 to-date (noticeTodt), 조회 from-date(noticeFrdt), 회사코드(corpCd)
+
+공지 작성
+  URL: '/api/sellerNotice/insert'
+  파라미터: 공지번호(noticeNo), 공지제목(noticeTit), 공지내용(noticeTxt), 공지시작일(noticeTodt), 공지종료일(noticeFrdt) 회사코드(corpCd)
+
+공지 수정
+  URL: '/api/sellerNotice/update'
+  파라미터: 공지번호(noticeNo), 공지제목(noticeTit), 공지내용(noticeTxt), 공지시작일(noticeTodt), 공지종료일(noticeFrdt)
 
 ```
 // 회원가입 예시 테스트코드
