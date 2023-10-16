@@ -1,109 +1,64 @@
 <template>
   <Sidebar></Sidebar>
-  <div id="main-wrapper">
-    <TopNav
-      navType="tabs"
-      :tabList="['상품', '매장']"
-      :currentTab="currentTab"
-      :changeTab="changeTab"></TopNav>
-    <div id="sub-wrapper">
-      <div class="content-section">
-        <h2 class="page-title">{{ pageContents[currentTab].title }}</h2>
-        <div class="item-list">
-          <Card
-            :itemList="pageContents[currentTab].list"
-            :place="currentTab === 1"></Card>
-        </div>
+  <div v-if="selectedMarket" id="main-wrapper">
+    <MarketInfo
+      :marketInfo="selectedMarket"
+      @close="clearSelectedMarket"></MarketInfo>
+  </div>
+  <div v-else id="main-wrapper">
+    <div class="content-section">
+      <h2 class="page-title">내가 찜한 매장</h2>
+      <div class="item-list">
+        <Card
+          :itemList="wishList"
+          :market="true"
+          @itemSelected="selectMarket"></Card>
       </div>
-      <Footer></Footer>
     </div>
+
+    <Footer></Footer>
   </div>
 </template>
 
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import TopNav from '../../common/components/TopNav.vue';
 import Card from '../../common/components/Card.vue';
 import Footer from '../../common/main/footer/Footer.vue';
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
-const productList = ref([
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-  {
-    name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
-    price: 8900,
-    discountRate: 0.25,
-    place: 'GS25 영통한아름점',
-    placeTime: 10,
-  },
-]);
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+const apiUtils = new ApiUtils();
 
-const placeList = ref([
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-  {
-    name: 'GS25 영통한아름점',
-    distance: '500',
-    score: '4.3',
-  },
-]);
+const wishList = ref([]);
 
-const pageContents = ref([
-  { title: '내가 찜한 상품', list: productList },
-  { title: '내가 찜한 매장', list: placeList },
-]);
+const testData = {
+  userId: 'admin',
+};
 
-// 탭 버튼 관련
-const currentTab = ref(0);
+async function getWishList() {
+  const result = await apiUtils.post('/api/wishList/query', testData);
+  wishList.value = result.data;
+}
 
-const changeTab = (index) => {
-  currentTab.value = index;
+onMounted(() => {
+  getWishList();
+});
+
+/*매장 상세 페이지 이동*/
+const selectedMarket = ref(null);
+
+const clearSelectedMarket = () => {
+  selectedMarket.value = null;
+};
+
+const selectMarket = (item) => {
+  selectedMarket.value = item;
+  scrollToTop();
+};
+
+const scrollToTop = () => {
+  window.scrollTo(0, 0);
 };
 </script>
 
@@ -113,6 +68,7 @@ const changeTab = (index) => {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  min-height: calc(100vh - 312px);
 }
 .page-title {
   color: var(--ngray800);

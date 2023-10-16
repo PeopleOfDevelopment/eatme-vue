@@ -10,6 +10,11 @@
           <div class="table-text">{{ marketInfo.corpAddr }}</div>
         </div>
       </div>
+      <div class="btn-box">
+        <Btn btntype="outline" class="btn-style1">
+          <span class="material-symbols-rounded">favorite</span>
+        </Btn>
+      </div>
     </div>
   </div>
 </template>
@@ -57,5 +62,8 @@ const props = defineProps({
 }
 .table-label {
   min-width: 60px;
+}
+.btn-box {
+  display: flex;
 }
 </style>

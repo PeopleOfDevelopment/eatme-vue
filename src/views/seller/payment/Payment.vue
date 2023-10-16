@@ -35,7 +35,6 @@
             <div class="stat-info-text">
               2023년 4월 25일에 256,450 원이 마지막으로 정산되었습니다.
             </div>
-            <Btn btntype="ghost">정산 신청</Btn>
           </div>
         </div>
         <div class="content-container">
@@ -47,14 +46,6 @@
               <br />
               국민은행 1234-56-7891000
             </div>
-          </div>
-        </div>
-        <div class="content-container">
-          <h2 class="page-title">정산 내역</h2>
-          <div class="contents-info-container info-table">
-            <div class="payment-date">2023년 4월 1일 ~ 2023년 4월 25일</div>
-            <div class="payment-amount">256,450 원</div>
-            <div class="payment-state">정산 완료</div>
           </div>
         </div>
       </div>
@@ -69,7 +60,7 @@ import Btn from '../../common/components/Btn.vue';
 import { ref } from 'vue';
 
 /* 탭 */
-const currentTab = ref(1);
+const currentTab = ref(0);
 
 const changeTab = (index) => {
   currentTab.value = index;
