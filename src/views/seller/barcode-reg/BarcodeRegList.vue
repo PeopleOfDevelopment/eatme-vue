@@ -29,8 +29,8 @@
                         <p style="flex-basis: 15%;">상품코드</p>
                         <p style="flex-basis: 50%">제품명</p>
                         <p style="flex-basis: 10%;">용량</p>
-                        <p style="flex-basis: 10%;">원가</p>
-                        <p style="flex-basis: 5%;">추가</p>
+                        <p style="flex-basis: 9.5%;">원가</p>
+                        <p style="flex-basis: 6%;">추가</p>
                     </div>
                     <div class="menu-list">
                         <div class="menu-info" v-for="(item, idx) in goods" v-show="shouldDisplay(item)">
@@ -70,7 +70,7 @@
                         <p style="flex-basis: 10%;">용량</p>
                         <p style="flex-basis: 10%;">원가</p>
                         <p style="flex-basis: 5%;">수정</p>
-                        <p style="flex-basis: 5%">삭제</p>
+                        <p style="flex-basis: 6%">삭제</p>
                     </div>
                     <div class="menu-list">
                         <div class="menu-info" v-for="(item, idx) in goods">
@@ -84,7 +84,7 @@
                             <Btn btntype="LightSolid" class="list-btn1"
                             @click="goPage('itemreg')" style="flex-basis: 5%; margin-bottom: 10px;">수정</Btn>
                             <Btn btntype="LightSolid" class="list-btn3" 
-                            @click="removeItem2(Item)" style="flex-basis: 5%; margin-bottom: 10px;">삭제</Btn>
+                            @click="deleteItem(item)" style="flex-basis: 5%; margin-bottom: 10px;">삭제</Btn>
                         </div>
                     </div>
                 </div>
@@ -126,10 +126,10 @@
                     <div class="menu-box">
                         <div class="menu-top-box">
                             <p style="flex-basis: 10%;">상품코드</p>
-                            <p style="flex-basis: 80px;">사진</p>
+                            <p style="flex-basis: 70px;">사진</p>
                             <p style="flex-basis: 30%;">제품명</p>
                             <p style="flex-basis: 5%;">용량</p>
-                            <p style="flex-basis: 5%;">수량</p>
+                            <p style="flex-basis: 6%;">수량</p>
                             <p style="flex-basis: 5%;">원가</p>
                             <p style="flex-basis: 5%;">할인율</p>
                             <p style="flex-basis: 5%;">판매가</p>
@@ -141,13 +141,13 @@
                                 <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
                                 <div style="width: 50px; height: 50px; margin: 5px; background-color: #000;"></div>
                                 <p style="flex-basis: 30%;">{{ item.itemNm }}</p>
-                                <p style="flex-basis: 5%;">{{ item.capacity }}</p>
+                                <p style="flex-basis: 5%;">5</p>
                                 <p style="flex-basis: 5%;">{{ item.saleAmt }}</p>
                                 <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
                                 <p style="flex-basis: 5%;">{{ item.discountRat }}%</p>
                                 <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
-                                <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 5%; margin-bottom: 10px;">수정</Btn>
-                                <Btn btntype="LightSolid" class="list-btn3" style="flex-basis: 5%; margin-bottom: 10px;"
+                                <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 4%; margin-bottom: 10px;">수정</Btn>
+                                <Btn btntype="LightSolid" class="list-btn3" style="flex-basis: 4%; margin-bottom: 10px;"
                                 @click="removeItem(item)">삭제</Btn>
                             </div>
                         </div>
@@ -184,15 +184,31 @@ async function query() {
   console.log(goods.value);
 };
 
+async function deleteItem(item) {
+    try {
+        const result = await apiUtils.post('/api/goodsReg/delete' , [{
+            itemCd: item.itemCd,
+            corpCd: item.corpCd
+    }]);
+    goods.value = goods.value.filter(good => good.itemCd !== item.itemCd);
+    console.log('삭제 완료');
+    } catch (error) {
+        console.error('오류 발생', error);
+    }
+}
+
 const search = ref('');
 
 //검색기능
 const shouldDisplay = (item) => {
-    const searchString = search.value.toLowerCase();
-    return (
-        item.itemCd.toLowerCase().includes(searchString) ||
-        item.itemNm.toLowerCase().includes(searchString)
-    );
+    if (item && item.itemCd && item.itemNm) {
+        const searchString = search.value.toLowerCase();
+        return (
+            item.itemCd.toLowerCase().includes(searchString) ||
+            item.itemNm.toLowerCase().includes(searchString)
+        );
+    }
+    return false;
 };
 
 onMounted(() => {
