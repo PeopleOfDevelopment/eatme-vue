@@ -1,11 +1,11 @@
 <template>
-    <Sidebar></Sidebar>
+    <Sidebar pageType="seller"></Sidebar>
     <div id="main-wrapper">
         <div class="top-box">
             <div class="top-box-items">
                 <span class="material-symbols-rounded">arrow_back_ios</span>
                 <p class="top-box-text1">제품 정보 입력</p>
-                <Btn btntype="solid" class="top-box-btn1">확인</Btn>
+                <Btn btntype="solid" class="top-box-btn1" @click="insert()">확인</Btn>
             </div>
         </div>
         <div class="img-box1">
@@ -18,7 +18,7 @@
                 <p class="form-text1">제품명</p>
             </div>
             <div class="form-input-box1">
-                <input type="text" class="form-input1">
+                <input type="text" class="form-input1" v-model="itemNm">
                 <span class="material-symbols-rounded">cancel</span>
             </div>
         </div>
@@ -28,7 +28,7 @@
                     <p class="form-text2">용량</p>
                 </div>
                 <div class="form-input-box2">
-                    <input type="text" class="form-input2" dir="rtl">
+                    <input type="text" class="form-input2" dir="rtl" v-model="itemCp">
                 </div>
             </div>
             <p style="font-size: 20px; color: #c5c7c3;
@@ -38,14 +38,14 @@
             margin-top: 60px; margin-bottom: 0px; margin-left: 30px;"
             >x</p>
             <div class="form-input-box2-1">
-                <input type="text" class="form-input2-1">
+                <input type="text" class="form-input2-1" v-model="itemCpx">
             </div>
             <div class="form-box3">
                 <div class="form3">
                     <p class="form-text3">수량</p>
                 </div>
                 <div class="form-input-box3">
-                    <input type="text" class="form-input3" dir="rtl">
+                    <input type="text" class="form-input3" dir="rtl" v-model="itemAmt">
                 </div>
             </div>
             <p style="font-size: 20px; color: #c5c7c3;
@@ -57,7 +57,7 @@
                 <p class="form-text1">유통기한</p>
             </div>
             <div class="form-input-box4">
-                <input type="text" class="form-input4" dir="rtl">
+                <input type="text" class="form-input4" dir="rtl" v-model="itemDate">
             </div>
         </div>
         <p style="font-size: 20px; color: #c5c7c3;
@@ -68,7 +68,7 @@
                 <p class="form-text1">원가</p>
             </div>
             <div class="form-input-box4">
-                <input type="text" class="form-input4" dir="rtl">
+                <input type="text" class="form-input4" dir="rtl" v-model="itemPrice">
             </div>
         </div>
         <p style="font-size: 20px; color: #c5c7c3;
@@ -79,36 +79,88 @@
                 <p class="form-text1">할인율</p>
             </div>
             <div class="box1-btns1">
-                <button class="btnbox active" @click="change_btn">10%</button>
-                <button class="btnbox" @click="change_btn">25%</button>
-                <button class="btnbox" @click="change_btn">30%</button>
-                <button class="btnbox" @click="change_btn">50%</button>
-                <button class="btnbox" @click="change_btn">70%</button>
-                <button class="btnbox" @click="change_btn">90%</button>
+                <button class="btnbox active" @click="change_btn">{{discount1}}%</button>
+                <button class="btnbox" @click="change_btn">{{discount2}}%</button>
+                <button class="btnbox" @click="change_btn">{{discount3}}%</button>
+                <button class="btnbox" @click="change_btn">{{discount4}}%</button>
+                <button class="btnbox" @click="change_btn">{{discount5}}%</button>
+                <button class="btnbox" @click="change_btn">{{discount6}}%</button>
             </div>
         </div>
         <div class="total-box">
             <p class="total-text1">판매가</p>
-            <p class="total-price1">6,675원</p>
+            <p class="total-price1">{{ (itemPrice * (1 - (selectDiscountRat/100))).toFixed(0) }}원</p>
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
+import { ApiUtils } from '../../common/utils/ApiUtils';
+import { ref, onMounted } from 'vue';
+import { router } from '@/router';
+import dayjs from 'dayjs';
+
+const discount1 = ref(10);
+const discount2 = ref(25);
+const discount3 = ref(30);
+const discount4 = ref(50);
+const discount5 = ref(70);
+const discount6 = ref(90);
+
+const selectDiscountRat = ref();
 
 const change_btn = (e) => {
     var btns = document.querySelectorAll(".btnbox");
-                btns.forEach(function(btn, i) {
-                    if(e.currentTarget == btn) {
-                        btn.classList.add("active");
-                    }
-                    else {
-                        btn.classList.remove("active");
-                    }
-                });
-                console.log(e.currentTarget);
+        btns.forEach(function(btn, i) {
+        if(e.currentTarget == btn) {
+            btn.classList.add("active");
+            selectDiscountRat.value = parseInt(e.currentTarget.textContent);
+        } else {
+            btn.classList.remove("active");
+        }
+    });
+};
+
+const itemRegGoods = ref([]);
+const itemRegGoods2 = ref([]);
+
+const itemNm = ref('');
+const itemCp = ref('');
+const itemCpx = ref('');
+const itemAmt = ref('');
+const itemDate = ref('');
+const itemPrice = ref();
+//테스트용
+const itemCd = ref('Code');
+const corpCd = ref('테스트가맹점코드');
+const itemBarcode = ref(null);
+const useYn = ref(true);
+
+const apiUtils = new ApiUtils();
+
+const insert = async () => {
+  const itemData = [{
+    itemCd: itemCd.value,
+    corpCd: corpCd.value,
+    discountRat: selectDiscountRat.value,
+    salePrc: itemPrice.value,
+    saleAmt: itemAmt.value,
+    itemExpdate: itemDate.value,
+    itemBarcode: itemBarcode.value,
+    itemNm: itemNm.value
+  }];
+
+  try {
+    const result = await apiUtils.post('/api/goodsReg/insert', itemData)
+    itemRegGoods2.value = result.data;
+    console.log('등록 성공: ', result.data);
+    alert('등록 되었습니다.');
+    router.push('/barcodereg-list');
+  } catch (error) {
+    console.error('등록 실패: ', error);
+  }
 };
 </script>
 
