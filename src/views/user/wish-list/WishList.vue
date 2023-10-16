@@ -1,28 +1,27 @@
 <template>
   <Sidebar></Sidebar>
-  <div id="main-wrapper">
-    <TopNav
-      navType="tabs"
-      :tabList="['상품', '매장']"
-      :currentTab="currentTab"
-      :changeTab="changeTab"></TopNav>
-    <div id="sub-wrapper">
-      <div class="content-section">
-        <h2 class="page-title">{{ pageContents[currentTab].title }}</h2>
-        <div class="item-list">
-          <Card
-            :itemList="pageContents[currentTab].list"
-            :place="currentTab === 1"></Card>
-        </div>
+  <div v-if="selectedMarket" id="main-wrapper">
+    <MarketInfo
+      :marketInfo="selectedMarket"
+      @close="clearSelectedMarket"></MarketInfo>
+  </div>
+  <div v-else id="main-wrapper">
+    <div class="content-section">
+      <h2 class="page-title">내가 찜한 매장</h2>
+      <div class="item-list">
+        <Card
+          :itemList="wishList"
+          :market="true"
+          @itemSelected="selectMarket"></Card>
       </div>
-      <Footer></Footer>
     </div>
+
+    <Footer></Footer>
   </div>
 </template>
 
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import TopNav from '../../common/components/TopNav.vue';
 import Card from '../../common/components/Card.vue';
 import Footer from '../../common/main/footer/Footer.vue';
 
@@ -32,12 +31,9 @@ import { ApiUtils } from '@/views/common/utils/ApiUtils';
 const apiUtils = new ApiUtils();
 
 const wishList = ref([]);
-const productList = ref([]);
-const placeList = ref([]);
 
 const testData = {
   userId: 'admin',
-  corpCd: '테스트가맹점코드',
 };
 
 async function getWishList() {
@@ -49,16 +45,20 @@ onMounted(() => {
   getWishList();
 });
 
-const pageContents = ref([
-  { title: '내가 찜한 상품', list: productList },
-  { title: '내가 찜한 매장', list: placeList },
-]);
+/*매장 상세 페이지 이동*/
+const selectedMarket = ref(null);
 
-// 탭 버튼 관련
-const currentTab = ref(0);
+const clearSelectedMarket = () => {
+  selectedMarket.value = null;
+};
 
-const changeTab = (index) => {
-  currentTab.value = index;
+const selectMarket = (item) => {
+  selectedMarket.value = item;
+  scrollToTop();
+};
+
+const scrollToTop = () => {
+  window.scrollTo(0, 0);
 };
 </script>
 
@@ -68,6 +68,7 @@ const changeTab = (index) => {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  min-height: calc(100vh - 312px);
 }
 .page-title {
   color: var(--ngray800);

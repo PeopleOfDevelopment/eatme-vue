@@ -6,46 +6,58 @@
       <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">상호명</span>
-          <span class="info-data">GS25 안서점</span>
+          <span class="info-data">
+            {{ sellerProfile.corpNm }}
+          </span>
         </div>
-        <Btn btntype="ghostGray">수정</Btn>
+      </div>
+      <div class="info-tr">
+        <div class="info-wrap">
+          <span class="info-label">소개</span>
+          <span v-if="!isEditingCorpDesc" class="info-data">
+            {{ sellerProfile.corpDesc }}
+          </span>
+          <input v-else class="info-data" v-model="editedCorpDesc" />
+        </div>
+        <div v-if="!isEditingCorpDesc" class="btn-box">
+          <Btn btntype="ghostGray" @click="toggleEditing('corpDesc')">수정</Btn>
+        </div>
+        <div v-else class="btn-box">
+          <Btn btntype="ghostGray" @click="editComplete('corpDesc')">확인</Btn>
+          <Btn btntype="ghostGray" @click="editCancel('corpDesc')">취소</Btn>
+        </div>
       </div>
       <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">대표자명</span>
-          <span class="info-data">김이름</span>
+          <span class="info-data">{{ sellerProfile.ceoNm }}</span>
         </div>
-        <Btn btntype="ghostGray">수정</Btn>
       </div>
       <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">대표 전화번호</span>
-          <span class="info-data">041-000-0000</span>
+          <span class="info-data">{{ sellerProfile.corpPhoneNumber }}</span>
         </div>
-        <Btn btntype="ghostGray">수정</Btn>
       </div>
       <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">이메일</span>
-          <span class="info-data">000-00-00000</span>
+          <span class="info-data">{{ sellerProfile.corpEmail }}</span>
         </div>
-        <Btn btntype="ghostGray">수정</Btn>
       </div>
       <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">사업자등록번호</span>
-          <span class="info-data">000-00-00000</span>
+          <span class="info-data">{{ sellerProfile.corpRegNo }}</span>
         </div>
-        <Btn btntype="ghostGray">수정</Btn>
       </div>
       <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">사업장 주소</span>
           <span class="info-data">
-            충남 천안시 동남구 상명대길 25 1층 (안서동 321-34, 부광빌딩)
+            {{ sellerProfile.corpAddr }}
           </span>
         </div>
-        <Btn btntype="ghostGray">수정</Btn>
       </div>
       <div class="info-tr">
         <div class="info-wrap">
@@ -66,6 +78,60 @@
 <script setup>
 import Sidebar from '@/views/common/main/sidebar/Sidebar.vue';
 import Btn from '@/views/common/components/Btn.vue';
+import { ref, onMounted } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+const apiUtils = new ApiUtils();
+
+const sellerProfile = ref([]);
+
+const testData = {
+  corpCd: '테스트가맹점코드',
+};
+
+async function getSellerProfile() {
+  const result = await apiUtils.post('/api/sellerProfile/query', testData);
+  sellerProfile.value = result.data;
+}
+async function updateSellerProfile() {
+  try {
+    const result = await apiUtils.post(
+      '/api/sellerProfile/update',
+      sellerProfile
+    );
+    if (result === 1) {
+      console.log('판매자 프로필 업데이트 성공');
+    } else {
+      console.log('판매자 프로필 업데이트 실패');
+    }
+  } catch (error) {
+    console.error('판매자 프로필 업데이트 중 오류 발생:', error);
+  }
+}
+
+onMounted(() => {
+  getSellerProfile();
+});
+
+const isEditingCorpDesc = ref(false);
+const editedCorpDesc = ref('');
+
+const toggleEditing = (field) => {
+  if (field === 'corpDesc') {
+    isEditingCorpDesc.value = !isEditingCorpDesc.value;
+    editedCorpDesc.value = sellerProfile.value.corpDesc;
+  }
+  console.log(`${sellerProfile.value.corpDesc}`);
+};
+const editCancel = (field) => {
+  toggleEditing(field);
+};
+const editComplete = (field) => {
+  if (field === 'corpDesc') {
+    sellerProfile.value.corpDesc = editedCorpDesc.value;
+  }
+  updateSellerProfile();
+  toggleEditing(field);
+};
 </script>
 
 <style scoped>
@@ -86,11 +152,14 @@ import Btn from '@/views/common/components/Btn.vue';
   align-items: center;
   border-bottom: 1px solid var(--ngray100);
   padding: 16px 20px;
+  gap: 15px;
 }
 .info-wrap {
   display: flex;
   gap: 15px;
   text-align: left;
+  flex: 1;
+  align-items: center;
 }
 .info-label {
   width: 120px;
@@ -100,10 +169,15 @@ import Btn from '@/views/common/components/Btn.vue';
   flex: 1 0 0;
   color: var(--ngray800);
   font-weight: 700;
+  font-size: 18px;
+  font-family: Pretendard;
+  padding: 2px;
+  width: 100%;
 }
 .profile-img {
-  width: 90px;
+  max-width: 90px;
   height: 90px;
+  aspect-ratio: 1/1;
   background-color: var(--ngray200);
   border-radius: 50%;
 }
@@ -114,6 +188,12 @@ import Btn from '@/views/common/components/Btn.vue';
   display: block;
 }
 .info-table .btn {
-  min-width: 60px;
+  min-width: 48px;
+  padding: 6px;
+  font-size: 16px;
+}
+.btn-box {
+  display: flex;
+  gap: 4px;
 }
 </style>
