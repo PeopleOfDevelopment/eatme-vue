@@ -98,23 +98,23 @@
             <span class="dash-count">3</span>
           </div>
           <div class="dash-contents-container">
-            <div v-for="item in contactList" class="cs-tr">
+            <div v-for="item in qnaList" class="cs-tr">
               <div class="cs-info-container">
                 <div class="cs-title">
-                  {{ item.title }}
+                  {{ item.qnaTit }}
                 </div>
                 <div class="cs-detail-wrap">
                   <div class="cs-detail">
                     <div class="detail-label">작성자</div>
-                    <div class="detail-text">{{ item.customer }}</div>
+                    <div class="detail-text">{{ item.userId }}</div>
                   </div>
                   <div class="cs-detail">
                     <div class="detail-label">작성일</div>
-                    <div class="detail-text">{{ item.postTime }}</div>
+                    <div class="detail-text">{{ item.insertDatetime }}</div>
                   </div>
                 </div>
               </div>
-              <div class="cs-condition">{{ item.condition }}</div>
+              <div class="cs-condition">{{ item.qnaSt }}</div>
             </div>
           </div>
         </div>
@@ -235,20 +235,6 @@ const deliveryList = ref([
     condition: '배송대기',
   },
 ]);
-const contactList = ref([
-  {
-    title: '배송 언제 와요?',
-    customer: '김미소',
-    postTime: '7월 5일',
-    condition: '답변대기',
-  },
-  {
-    title: '배송 문의',
-    customer: '김이지',
-    postTime: '7월 23일',
-    condition: '답변대기',
-  },
-]);
 const recommendList = ref([
   {
     name: '[피그인더가든] 그린믹스 콜라겐 샐러드키트 5봉',
@@ -288,11 +274,11 @@ const sellingReport = ref([]);
 
 const testData = {
   corpCd: '테스트가맹점코드',
-  frDt: '2023-07-01',
+  frDt: '2023-07-22',
   toDt: '2023-12-30',
 };
 
-async function getSelling() {
+async function getSellingReport() {
   const result = await apiUtils.post('/api/dashboard/selling', testData);
   sellingReport.value = result.data;
 }
@@ -309,7 +295,7 @@ async function getQnaList() {
 }
 
 onMounted(() => {
-  getSelling();
+  getSellingReport();
   getQnaList();
 });
 </script>
