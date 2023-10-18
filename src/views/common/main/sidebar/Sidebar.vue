@@ -40,7 +40,7 @@
       <p
         style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
         @click="handle_toggle">
-        로그인된상태
+        {{ user }}
       </p>
     </div>
     <div v-if="pageType === 'user'" class="search">
@@ -198,6 +198,7 @@
 import { router } from '@/router';
 import Btns from '../../components/Btn.vue';
 import { ref, onMounted } from 'vue';
+import { ApiUtils } from '../../utils/ApiUtils';
 
 const clickedItem = ref(window.location.pathname.substring(1) || 'home');
 const LoginModal = ref(false);
@@ -219,30 +220,37 @@ const props = defineProps({
   },
 });
 
+const apiUtils = new ApiUtils();
+
 const isLoggedIn = ref(false);
-const token = sessionStorage.getItem('token');
+const user = sessionStorage.getItem('userId');
 
-fetch('/api/login/login', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'BEARER' + sessionStorage.getItem('token'), // 토큰을 Authorization 헤더에 추가
-    'Content-Type': 'application/json', // 요청의 Content-Type 설정 (JSON인 경우)
-  },
-})
-.then(response => response.json())
-.then(data => {
-  return data;
-})
-.catch(error => {
-  console.error('에러');
-});
+const userData = {
+  userId: 'YtestID1',
+  userPw: 'YtestPW1'
+}
 
-onMounted(() => {
+onMounted(async () => {
+  const token = sessionStorage.getItem('token');
 
   if(token) {
     isLoggedIn.value = true;
+    try {
+      const result = await apiUtils.post('/api/login/login', userData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      const userInfo = result.data;
+      console.log('사용자 정보:', userInfo);
+
+      user.value = userInfo;
+    } catch (error) {
+      console.error('Error fetching user data: ', error);
+    }
   }
-})
+});
 
 const Logout = () => {
   sessionStorage.removeItem('token');

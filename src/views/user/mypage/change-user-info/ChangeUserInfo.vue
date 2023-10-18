@@ -6,7 +6,7 @@
                 <path d="M64 64C58.1334 64 53.1111 61.9112 48.9334 57.7334C44.7556 53.5556 42.6667 48.5334 42.6667 42.6667C42.6667 36.8 44.7556 31.7778 48.9334 27.6C53.1111 23.4223 58.1334 21.3334 64 21.3334C69.8667 21.3334 74.8889 23.4223 79.0667 27.6C83.2445 31.7778 85.3334 36.8 85.3334 42.6667C85.3334 48.5334 83.2445 53.5556 79.0667 57.7334C74.8889 61.9112 69.8667 64 64 64ZM32 106.667C29.0667 106.667 26.5547 105.621 24.464 103.531C22.3734 101.44 21.3298 98.9298 21.3334 96V91.7334C21.3334 88.7112 22.112 85.9325 23.6694 83.3974C25.2267 80.8623 27.2925 78.9298 29.8667 77.6C35.3778 74.8445 40.9778 72.7769 46.6667 71.3974C52.3556 70.0178 58.1334 69.3298 64 69.3334C69.8667 69.3334 75.6445 70.0232 81.3334 71.4027C87.0222 72.7823 92.6222 74.848 98.1334 77.6C100.711 78.9334 102.779 80.8676 104.336 83.4027C105.893 85.9378 106.67 88.7147 106.667 91.7334V96C106.667 98.9334 105.621 101.445 103.531 103.536C101.44 105.627 98.9298 106.67 96 106.667H32Z" fill="#8B938A"/>
                 </svg>
             </div>
-            <p class="username1">유저이름</p>
+            <p class="username1">{{ user.userNick }}</p>
         </div>
         <div class="box2">
             <div class="box2-border">
@@ -24,26 +24,26 @@
             </div>
             <div class="box2-2">
                 <p class="box2-2-text1">아이디</p>
-                <p class="box2-2-text2">dbqls1703</p>
+                <p class="box2-2-text2">{{ user.userId }}</p>
             </div>
             <div class="box2-3">
                 <p class="box2-3-text1">비밀번호</p>
-                <p class="box2-3-text2">***********</p>
+                <p class="box2-3-text2">{{ user.userPw }}</p>
                 <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">비밀번호 변경</Btn>
             </div>
             <div class="box2-3">
                 <p class="box2-4-text1">이름(실명)</p>
-                <p class="box2-3-text2">지*빈</p>
+                <p class="box2-3-text2">{{ user.userNm }}</p>
                 <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">이름 수정</Btn>
             </div>
             <div class="box2-3">
                 <p class="box2-5-text1">닉네임</p>
-                <p class="box2-3-text2">유저이름</p>
+                <p class="box2-3-text2">{{ user.userNick }}</p>
                 <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">닉네임 변경</Btn>
             </div>
             <div class="box2-3">
                 <p class="box2-6-text1">이메일</p>
-                <p class="box2-3-text2">1234555@naver.com</p>
+                <p class="box2-3-text2">{{ user.userEmail }}</p>
                 <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">이메일 변경</Btn>
             </div>
             <div class="box2-3">
@@ -58,7 +58,8 @@
                 <p class="t1">정말 탈퇴하시겠어요?</p>
                     <p class="t2">탈퇴할 시, 계정은 삭제되며 복구되지 않습니다.</p>
                     <Btn btntype="danger" style="width: 120px; height: 25px; padding: 15px;
-                    border-radius: 10px; float: left; margin-left: 32%; margin-top: 40px;">탈퇴</Btn>
+                    border-radius: 10px; float: left; margin-left: 32%; margin-top: 40px;"
+                    @click="exit()">탈퇴</Btn>
                     <Btn btntype="solid" style="width: 120px; height: 25px; padding: 15px; color: #717971;
                     background-color: #DDE5DB; border-radius: 10px; float: right; margin-right: 32%;
                     margin-top: 40px;" @click="handle_toggle">취소</Btn>
@@ -72,12 +73,42 @@
 <script setup>
 import Btn from '../../../common/components/Btn.vue';
 import { ref } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import { onMounted } from 'vue';
 
 const modalOpen = ref(false);   
 
 const handle_toggle = () => {
     modalOpen.value = !modalOpen.value;
 }
+
+const apiUtils = new ApiUtils();
+
+const user = ref([]);
+
+const userData = {
+    userId: 'testID',
+    userNm: '테스트입니다'
+}
+
+async function query() {
+    const result = await apiUtils.post('/api/mypage/query', userData);
+    user.value = result.data;
+}
+
+const testData = {
+    userId: 'Ytest4',
+    userNm: 'ppp'
+}
+
+async function exit() {
+  const result = await apiUtils.post('/api/mypage/exit', testData);
+  console.log('탈퇴완료');
+};
+
+onMounted(() => {
+    query();
+})
 </script>
 
 <style scoped>

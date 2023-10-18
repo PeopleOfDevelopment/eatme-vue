@@ -73,25 +73,32 @@ import { ApiUtils } from '../common/utils/ApiUtils';
 import { ref, onMounted } from 'vue';
 import { router } from '@/router';
 
+const apiUtils = new ApiUtils();
+
 const userId = ref('');
 const userPw = ref('');
 
-const apiUtils = new ApiUtils();
-
-async function login() {
+const login = async () => {
   const testData = {
     userId: userId.value,
     userPw: userPw.value
   };
 
-  console.log(userId.value, userPw.value);
+  const token = 'eyJyZWdEYXRlIjoxNjk3Mzk3NjUwNDg0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyTm0iOm51bGwsInN1YiI6Im51bGwiLCJleHAiOjE2OTc0MjY0NTAsInVzZXJJZCI6Ill0ZXN0SUQxIn0.2gaRELm4pREyfmobxssWebj2-AP3keuo9mLqc0bN5Nc'
+
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  };
 
   try {
-    const result = await apiUtils.post('/api/login/generateToken', testData);
-    const token = result.result;
-    sessionStorage.setItem('token', token);
+    const result = await apiUtils.post('/api/login/generateToken', testData, { headers });
+    const generatetoken = result.result;
+    sessionStorage.setItem('token', generatetoken);
+    sessionStorage.setItem('userId', testData.userId);
+    sessionStorage.setItem('userPw', testData.userPw);
+    
     router.push('/');
-    //로그인 상태 유지 작업 추가..
   } catch (error) {
     console.error(error);
     alert('아이디 또는 비밀번호를 다시 입력해주세요.')

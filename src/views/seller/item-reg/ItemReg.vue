@@ -133,7 +133,7 @@ const itemAmt = ref('');
 const itemDate = ref('');
 const itemPrice = ref();
 //테스트용
-const itemCd = ref('Code');
+const itemCd = ref('item01');
 const corpCd = ref('테스트가맹점코드');
 const itemBarcode = ref(null);
 const useYn = ref(true);
