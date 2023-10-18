@@ -151,7 +151,6 @@ const changeTab = (index) => {
 
 const userInfos = ref([]);
 
-const isAuthenticated = ref(false);
 const router = useRouter();
 
 const apiUtils = new ApiUtils();
@@ -173,6 +172,8 @@ onMounted(async () => {
         alert('로그인 후 이용할 수 있습니다.')
         router.push('/login') //토큰이 없으면 로그인 페이지로
     }
+
+    myPage();
 })
 </script>
 

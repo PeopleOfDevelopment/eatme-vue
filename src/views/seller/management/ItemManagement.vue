@@ -36,11 +36,12 @@
    
 <script setup lang="ts">
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import Topnav from '../../common/components/TopNav.vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
    
 const goodsData = [
-    {
+{
         id: 0,
         title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
         price: 8900,
@@ -91,6 +92,22 @@ const goodsData = [
 ];
 
 const goods = ref([...goodsData]);
+
+//데이터 조회
+// const apiUtils = new ApiUtils();
+
+// const testData = {
+//   itemCd: 'Code',
+//   itemNm : '테스트아이템',
+//   corpCd: '테스트가맹점코드',
+//   itemBarcode : '123456',
+// };
+
+// async function query() {
+//   const result = await apiUtils.post('/api/itemReg/query', testData);
+//   goods.value = result.data
+//   console.log(goods.value);
+// };
 
 const currentTab = ref(0);
 
