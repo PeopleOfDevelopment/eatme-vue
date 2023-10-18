@@ -17,7 +17,7 @@
           <span v-if="!isEditingCorpDesc" class="info-data">
             {{ sellerProfile.corpDesc }}
           </span>
-          <input v-else class="info-data" v-model="editedCorpDesc" />
+          <input v-else class="info-data" v-model="editedData.corpDesc" />
         </div>
         <div v-if="!isEditingCorpDesc" class="btn-box">
           <Btn btntype="ghostGray" @click="toggleEditing('corpDesc')">수정</Btn>
@@ -94,10 +94,7 @@ async function getSellerProfile() {
 }
 async function updateSellerProfile() {
   try {
-    const result = await apiUtils.post(
-      '/api/sellerProfile/update',
-      sellerProfile
-    );
+    const result = await apiUtils.post('/api/sellerProfile/update', editedData);
     if (result === 1) {
       console.log('판매자 프로필 업데이트 성공');
     } else {
@@ -113,22 +110,23 @@ onMounted(() => {
 });
 
 const isEditingCorpDesc = ref(false);
-const editedCorpDesc = ref('');
+
+const editedData = {
+  corpCd: sellerProfile.value.corpCd,
+  corpAddr: sellerProfile.value.corpAddr,
+  corpDesc: sellerProfile.value.corpDesc,
+};
 
 const toggleEditing = (field) => {
   if (field === 'corpDesc') {
     isEditingCorpDesc.value = !isEditingCorpDesc.value;
-    editedCorpDesc.value = sellerProfile.value.corpDesc;
+    editedData.corpDesc = sellerProfile.value.corpDesc;
   }
-  console.log(`${sellerProfile.value.corpDesc}`);
 };
 const editCancel = (field) => {
   toggleEditing(field);
 };
 const editComplete = (field) => {
-  if (field === 'corpDesc') {
-    sellerProfile.value.corpDesc = editedCorpDesc.value;
-  }
   updateSellerProfile();
   toggleEditing(field);
 };

@@ -21,6 +21,26 @@ const props = defineProps({
     type: Array,
   },
 });
+
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import { ref, onMounted } from 'vue';
+
+const apiUtils = new ApiUtils();
+
+const marketInfo = ref([]);
+
+const testData = {
+  corpCd: '테스트가맹점코드',
+};
+
+async function getMarketInfo() {
+  const result = await apiUtils.post('/api/marketInfo/query', testData);
+  marketInfo.value = result.data;
+}
+
+onMounted(() => {
+  getMarketInfo();
+});
 </script>
 
 <style scoped>
