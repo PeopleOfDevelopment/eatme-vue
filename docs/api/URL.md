@@ -155,7 +155,23 @@ QnA답변작성
 로그인
   URL: '/api/login/generateToken'
   파라미터: 유저아이디(userId), 비밀번호(userPw)
-  
+
+# ID/PW 찾기
+아이디 찾기
+  URL: '/api/login/findId'
+  파라미터: 이메일(userEmail) or 전화번호(userPhoneNumber)
+  리턴값: 해당하는 이메일
+
+비밀번호 찾기
+  URL: '/api/login/find'  
+  파라미터: 아이디(userId)
+  리턴: 해당하는 아이디가 있으면 true 아니면 false
+  * 만약 값이 true라면 비밀번호를 재설정하도록 하기
+
+비밀번호 변경
+  URL: '/api/login/resetPw'
+  파라미터: 아이디(userId), 새 비밀번호(userPw)
+
 # 판매자 정보 관라
 판매자 정보 조회
   URL: '/api/sellerProfile/query'  
