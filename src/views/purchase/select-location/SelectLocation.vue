@@ -1,26 +1,7 @@
 <template>
   <div class="dimmed">
     <div class="modal select-location">
-      <div class="search-location">
-        <input
-          class="search-location-input"
-          type="text"
-          placeholder="도로명, 건물명 또는 지번으로 검색" />
-      </div>
-      <div class="saved-location">
-        <Btn btntype="chip">내 위치</Btn>
-        <Btn btntype="chip">집</Btn>
-        <Btn btntype="chip">회사</Btn>
-      </div>
-      <div class="search-result">
-        <div
-          class="result-list"
-          v-for="(result, index) in locationList"
-          :key="index">
-          <div class="result-location">{{ result.location }}</div>
-          <div class="result-detail">{{ result.detail }}</div>
-        </div>
-      </div>
+      <div ref="locationWrap"></div>
     </div>
   </div>
 </template>
@@ -29,13 +10,39 @@
 import Btn from '../../common/components/Btn.vue';
 import { ref } from 'vue';
 
-const locationList = ref([
-  { location: '상명대학교 서울캠퍼스', detail: '서울 종로구 홍지문2길 20' },
-  {
-    location: '상명대학교 천안캠퍼스',
-    detail: '충남 천안시 동남구 상명대길 31',
+const props = defineProps(['searchLocation']);
+const emits = defineEmits(['searchLocation']);
+
+const locationWrap = ref(null);
+
+new daum.Postcode({
+  oncomplete: (data) => {
+    const addr = ref('');
+    const extraAddr = ref('');
+
+    if (data.userSeletedType === 'R') {
+      addr = data.roadAddress;
+    } else {
+      addr = data.jibunAddress;
+    }
+
+    if (data.userSelectedType === 'R') {
+      if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+        extraAddr += data.bname;
+      }
+      // 건물명, 공동주택일 경우 추가
+      if (data.buildingName !== '' && data.apartment === 'Y') {
+        extraAddr +=
+          extraAddr !== '' ? ', ' + data.buildingName : data.buildingName;
+      }
+      // 참고항목 추가
+      if (extraAddr !== '') {
+        extraAddr = ' (' + extraAddr + ')';
+      }
+    } else {
+    }
   },
-]);
+}).embed(locationWrap.value);
 </script>
 
 <style scoped>
