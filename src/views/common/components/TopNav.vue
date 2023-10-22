@@ -1,6 +1,6 @@
 <template>
   <div id="top-nav" v-if="navType === 'location'" class="nav-location">
-    <div class="location-box" @click="toggleModal">
+    <div class="location-box" @click="showLocation">
       <span class="material-symbols-rounded location-icon">location_on</span>
       <Btn btntype="textGray" class="user-location">{{ userLocation }}</Btn>
     </div>
@@ -38,7 +38,11 @@
     </Btn>
   </div>
   <div v-else></div>
-  <SelectLocation v-if="modalOpen" />
+  <div
+    class="location-wrap"
+    :class="{ show: modalOpen }"
+    ref="locationWrap"></div>
+  <!--<SelectLocation v-if="modalOpen" />-->
 </template>
 
 <script setup>
@@ -49,6 +53,18 @@ import SelectLocation from '../../purchase/select-location/SelectLocation.vue';
 const userLocation = ref('상명대학교');
 const locationFilter = ref('500m 이내');
 const modalOpen = ref(false);
+const locationWrap = ref(null);
+
+const showLocation = () => {
+  toggleModal();
+  new daum.Postcode({
+    oncomplete: (data) => {
+      let addr = data.roadAddress; //도로명주소
+      userLocation.value = addr;
+      toggleModal();
+    },
+  }).embed(locationWrap.value);
+};
 
 const props = defineProps({
   navType: {
@@ -152,5 +168,16 @@ const toggleModal = () => {
   font-size: 20px;
   font-weight: 700;
   padding: 10px;
+}
+.location-wrap {
+  display: none;
+  position: absolute;
+  z-index: 999;
+  margin-inline: 75px;
+  border: 1px solid var(--ngray100);
+  border-top: 0;
+}
+.show {
+  display: block;
 }
 </style>

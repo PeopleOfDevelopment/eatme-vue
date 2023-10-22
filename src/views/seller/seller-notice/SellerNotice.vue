@@ -15,14 +15,14 @@
         @click="toggleContents(index)"
         :class="{ open: isOpen[index] }">
         <div class="table-tr">
-          <div class="table-number">{{ index + 1 }}</div>
+          <div class="table-number">{{ item.noticeNo }}</div>
           <div class="cs-title">
-            {{ item.title }}
+            {{ item.noticeTit }}
           </div>
-          <div class="cs-detail-wrap">{{ item.date }}　{{ item.time }}</div>
+          <div class="cs-detail-wrap">{{ item.noticeTodt }}</div>
         </div>
         <div class="table-contents-box">
-          {{ item.contents }}
+          {{ item.noticeTxt }}
         </div>
       </div>
     </div>
@@ -30,21 +30,27 @@
 </template>
 <script setup>
 import Sidebar from '@/views/common/main/sidebar/Sidebar.vue';
-import { ref } from 'vue';
-const noticeListSeller = ref([
-  {
-    title: '서비스 점검 안내 (2023년 5월 26일 새벽 23시 50분 ~ 00시 5분)',
-    date: '2023.05.25',
-    time: '10:45',
-    contents: '서비스 점검을 실시합니다.',
-  },
-  {
-    title: '제품 등록 안내',
-    date: '2023.05.25',
-    time: '10:45',
-    contents: '제품 등록 방법 안내입니다.',
-  },
-]);
+import { ref, onMounted } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+const apiUtils = new ApiUtils();
+
+const noticeListSeller = ref([]);
+
+const testData = {
+  noticeTodt: '2023-10-31',
+  noticeFrdt: '2023-10-01',
+  corpCd: '테스트가맹점코드',
+};
+
+async function getNoticeList() {
+  const result = await apiUtils.post('/api/sellerNotice/query', testData);
+  noticeListSeller.value = result.data;
+}
+
+onMounted(() => {
+  getNoticeList();
+});
+
 const isOpen = ref(Array(noticeListSeller.length).fill(false));
 
 const toggleContents = (index) => {
