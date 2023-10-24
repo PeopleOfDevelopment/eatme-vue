@@ -94,8 +94,12 @@ async function getSellerProfile() {
 }
 async function updateSellerProfile() {
   try {
-    const result = await apiUtils.post('/api/sellerProfile/update', editedData);
+    const result = await apiUtils.post(
+      '/api/sellerProfile/update',
+      sellerProfile.value
+    );
     if (result === 1) {
+      alert('프로필이 업데이트되었습니다.');
       console.log('판매자 프로필 업데이트 성공');
     } else {
       console.log('판매자 프로필 업데이트 실패');
@@ -111,22 +115,23 @@ onMounted(() => {
 
 const isEditingCorpDesc = ref(false);
 
-const editedData = {
-  corpCd: sellerProfile.value.corpCd,
-  corpAddr: sellerProfile.value.corpAddr,
+const editedData = ref({
   corpDesc: sellerProfile.value.corpDesc,
-};
+});
 
 const toggleEditing = (field) => {
   if (field === 'corpDesc') {
     isEditingCorpDesc.value = !isEditingCorpDesc.value;
-    editedData.corpDesc = sellerProfile.value.corpDesc;
+    editedData.value.corpDesc = sellerProfile.value.corpDesc;
   }
 };
 const editCancel = (field) => {
   toggleEditing(field);
 };
 const editComplete = (field) => {
+  if (field === 'corpDesc') {
+    sellerProfile.value.corpDesc = editedData.value.corpDesc;
+  }
   updateSellerProfile();
   toggleEditing(field);
 };
