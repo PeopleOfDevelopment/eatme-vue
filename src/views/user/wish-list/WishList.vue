@@ -15,7 +15,6 @@
           @itemSelected="selectMarket"></Card>
       </div>
     </div>
-
     <Footer></Footer>
   </div>
 </template>
@@ -24,6 +23,7 @@
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Card from '../../common/components/Card.vue';
 import Footer from '../../common/main/footer/Footer.vue';
+import MarketInfo from '@/views/purchase/market-info/MarketInfo.vue';
 
 import { ref, onMounted } from 'vue';
 

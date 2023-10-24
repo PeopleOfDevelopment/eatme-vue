@@ -9,7 +9,7 @@
       @close="clearSelectedMarket"></MarketInfo>
   </div>
   <div id="main-wrapper" v-else>
-    <TopNav navType="location"></TopNav>
+    <TopNav navType="location" :curAddr="testData.curAddr"></TopNav>
     <div id="sub-wrapper" v-if="selectedList === 'item'">
       <AroundItem
         :productList="productList"
@@ -110,8 +110,8 @@ const productList = ref([]);
 
 const testData = {
   userId: 'testID',
-  userAddr: '주소',
-  curAddr: '주소',
+  userAddr: '',
+  curAddr: '오산시',
 };
 
 async function getMarketAround() {

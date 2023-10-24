@@ -2,11 +2,7 @@
   <div id="top-nav" v-if="navType === 'location'" class="nav-location">
     <div class="location-box" @click="showLocation">
       <span class="material-symbols-rounded location-icon">location_on</span>
-      <Btn btntype="textGray" class="user-location">{{ userLocation }}</Btn>
-    </div>
-    <div class="location-box">
-      <span class="material-symbols-rounded filter-icon">tune</span>
-      <Btn btntype="textGray" class="location-filter">{{ locationFilter }}</Btn>
+      <Btn btntype="textGray" class="user-location">{{ curAddr }}</Btn>
     </div>
   </div>
   <!--탭 버튼 예시
@@ -42,16 +38,12 @@
     class="location-wrap"
     :class="{ show: modalOpen }"
     ref="locationWrap"></div>
-  <!--<SelectLocation v-if="modalOpen" />-->
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import Btn from './Btn.vue';
-import SelectLocation from '../../purchase/select-location/SelectLocation.vue';
 
-const userLocation = ref('상명대학교');
-const locationFilter = ref('500m 이내');
 const modalOpen = ref(false);
 const locationWrap = ref(null);
 
@@ -89,6 +81,10 @@ const props = defineProps({
   buttonText: {
     type: String,
     default: '등록하기',
+  },
+  curAddr: {
+    type: String,
+    default: '주소를 입력해주세요',
   },
 });
 
