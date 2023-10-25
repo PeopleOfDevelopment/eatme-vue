@@ -1,18 +1,12 @@
 <template>
   <Sidebar></Sidebar>
   <div id="main-wrapper">
-    <p class="text1">주문서</p>
+    <div class="text1">주문서</div>
     <div class="goods-box">
       <div class="text-box1">
         <p class="goods-text1">주문상품</p>
         <span
           class="material-symbols-rounded"
-          style="
-            margin-left: auto;
-            height: 30px;
-            margin-top: 40px;
-            cursor: pointer;
-          "
           :class="{ active: isClicked1 === 'Clicked1' }"
           @click="toggleBtn1('Clicked1')">
           expand_more
@@ -26,16 +20,10 @@
       </div>
     </div>
     <div class="goods-box">
-      <div class="text-box1" style="margin-top: 40px">
+      <div class="text-box1">
         <p class="goods-text1">주문자 정보</p>
         <span
           class="material-symbols-rounded"
-          style="
-            margin-left: auto;
-            height: 30px;
-            margin-top: 40px;
-            cursor: pointer;
-          "
           :class="{ active: isClicked2 === 'Clicked1' }"
           @click="toggleBtn2('Clicked2')">
           expand_more
@@ -57,37 +45,29 @@
       </div>
     </div>
     <div class="goods-box">
-      <div class="text-box1" style="margin-top: 40px">
+      <div class="text-box1">
         <p class="goods-text1">수령 방법</p>
         <span
           class="material-symbols-rounded"
-          style="
-            margin-left: auto;
-            height: 30px;
-            margin-top: 40px;
-            cursor: pointer;
-          "
           :class="{ active: isClicked3 === 'Clicked3' }"
           @click="toggleBtn3('Clicked3')">
           expand_more
         </span>
       </div>
       <div v-if="(isClicked3 === 'Clicked3', showDiv3)" class="content active">
-        <div class="btn-box1">
-          <Btn
-            btntype="outline"
-            class="btnbox"
+        <div class="btn-box2">
+          <button
+            class="btnbox2"
             :class="{ active: activeButton === 'button1' }"
             @click="toggleButton('button1')">
             직접 수령
-          </Btn>
-          <Btn
-            btntype="outline"
-            class="btnbox"
+          </button>
+          <button
+            class="btnbox2"
             :class="{ active: activeButton === 'button2' }"
             @click="toggleButton('button2')">
             배달
-          </Btn>
+          </button>
         </div>
         <div v-if="activeButton === 'button1'" class="content active">
           <div style="display: flex">
@@ -129,16 +109,10 @@
       </div>
     </div>
     <div class="goods-box">
-      <div class="text-box1" style="margin-top: 40px">
+      <div class="text-box1">
         <p class="goods-text1">결제 수단</p>
         <span
           class="material-symbols-rounded"
-          style="
-            margin-left: auto;
-            height: 30px;
-            margin-top: 40px;
-            cursor: pointer;
-          "
           :class="{ active: isClicked4 === 'Clicked4' }"
           @click="toggleBtn4('Clicked4')">
           expand_more
@@ -146,11 +120,9 @@
       </div>
       <div v-if="(isClicked4 === 'Clicked4', showDiv4)" class="content active">
         <div class="payment-select">
-          <p class="select-text1">결제 수단 선택</p>
           <div class="btn-box2">
             <button
               class="btnbox2"
-              style="border-radius: 4px 0px 0px 4px; border-right: 0px"
               :class="{ active: activeButton2 === 'button3' }"
               @click="toggleButton2('button3')">
               신용카드
@@ -158,8 +130,7 @@
             <button
               class="btnbox2"
               :class="{ active: activeButton2 === 'button4' }"
-              @click="toggleButton2('button4')"
-              style="border-radius: 0px 4px 4px 0px">
+              @click="toggleButton2('button4')">
               간편결제
             </button>
           </div>
@@ -183,7 +154,6 @@
           </div>
           <div v-if="activeButton2 === 'button4'" class="content2 active">
             <div class="simple-box">
-              <p class="simple-text1">결제 방식 선택</p>
               <div class="table-box1">
                 <table class="simple-select-box">
                   <thead>
@@ -226,16 +196,10 @@
       </div>
     </div>
     <div class="goods-box">
-      <div class="text-box1" style="margin-top: 40px">
+      <div class="text-box1">
         <p class="goods-text1">개인 정보 수집/제공</p>
         <span
           class="material-symbols-rounded"
-          style="
-            margin-left: auto;
-            height: 30px;
-            margin-top: 40px;
-            cursor: pointer;
-          "
           :class="{ active: isClicked5 === 'Clicked5' }"
           @click="toggleBtn5('Clicked5')">
           expand_more
@@ -391,26 +355,29 @@ const showLocation = () => {
 .text1 {
   font-weight: bold;
   font-size: 34px;
-  float: left;
+  text-align: left;
   margin-left: 80px;
   margin-top: 50px;
 }
 
 .goods-box {
-  width: 1500px;
-  margin: 0 auto;
+  margin: 0 80px;
 }
 
 .text-box1 {
   font-weight: bold;
   font-size: 28px;
-  border-bottom: solid 2px #2b322c;
-  margin-top: 150px;
+  margin-block: 80px 0px;
   display: flex;
 }
-
+.text-box1 .material-symbols-rounded {
+  padding: 10px;
+  cursor: pointer;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
 .goods-text1 {
-  margin-bottom: 20px;
   text-align: left;
 }
 
@@ -476,56 +443,35 @@ const showLocation = () => {
   margin-left: 10px;
 }
 
-.btn-box1 {
-  margin-top: 20px;
-  display: flex;
-}
-
 .btn-box2 {
   margin-top: 30px;
   display: flex;
-  margin-left: 180px;
 }
-
-.btnbox {
-  width: 47%;
-  margin-left: 30px;
-  color: var(--primary-d2);
-  font-family: Pretendard;
-  font-size: 18px;
-  border: solid 1px var(--primary-d2);
-  padding: 15px 18px;
-  border-radius: 4px;
-}
-
 .btnbox2 {
   width: 140px;
-  background-color: var(--secondary-l5);
-  color: var(--gray200);
+  color: var(--gray400);
   font-family: Pretendard;
   font-size: 18px;
   border: solid 1px var(--gray200);
   padding: 15px 18px;
+  cursor: pointer;
 }
-
-.btnbox:hover,
-.btnbox.active {
-  background-color: var(--primary-d2);
-  color: #fff;
-  border: 0px;
+.btnbox2:nth-child(1) {
+  border-radius: 4px 0px 0px 4px;
+  border-right: 0px;
 }
-
+.btnbox2:nth-last-child(1) {
+  border-radius: 0px 4px 4px 0px;
+}
 .btnbox2:hover,
 .btnbox2.active {
   background-color: var(--primary-d2);
   color: #fff;
-  border: 0px;
+  border-color: var(--primary-d2);
 }
 
 .hidden3-1-text1 {
   font-size: 20px;
-  margin-left: 30px;
-  margin-right: auto;
   margin-top: 40px;
   margin-bottom: 20px;
 }
@@ -542,24 +488,14 @@ const showLocation = () => {
   display: flex;
   border-radius: 4px;
   border: solid 1px #c1c9bf;
-  margin-left: 34px;
   width: 94%;
   padding: 10px;
-}
-
-.select-text1 {
-  float: left;
-  font-size: 20px;
-  font-weight: 500;
-  margin-top: 15px;
-  margin-bottom: 0px;
 }
 
 .card-select-box {
   display: flex;
   border-radius: 4px;
   border: solid 1px #c1c9bf;
-  margin-left: 180px;
   margin-top: 30px;
   width: 26.5%;
   padding: 20px 10px;
@@ -579,7 +515,6 @@ const showLocation = () => {
   border-radius: 4px;
   border: solid 1px #c1c9bf;
   background-color: var(--gray50);
-  margin-left: 180px;
   margin-top: 10px;
   width: 26.5%;
   padding: 20px 10px;
@@ -622,30 +557,20 @@ const showLocation = () => {
 .simple-box {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
+  margin-top: 30px;
 }
-
-.simple-text1 {
-  font-size: 20px;
-  font-weight: bold;
-  margin-right: auto;
-  margin-left: 180px;
-  margin-bottom: 10px;
-}
-
 .simple-select-box {
   border-collapse: collapse;
   border-spacing: 0;
   width: 420px;
-  margin-left: 180px;
   border-style: hidden;
-  box-shadow: 0 0 0 1px #000;
+  box-shadow: 0 0 0 1px var(--ngray200);
   border-radius: 10px;
 }
 
 .simple-box td {
-  border: solid 1px #000;
-  padding: 50px 0px 50px 0px;
+  border: solid 1px var(--ngray200);
+  padding: 28px 0px;
 }
 
 .simple-box tr {
@@ -678,7 +603,6 @@ span {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-inline: 30px;
 }
 .deliver-info-wrap input {
   font-size: 16px;
