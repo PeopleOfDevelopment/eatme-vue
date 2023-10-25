@@ -16,7 +16,7 @@ import ItemInfo from '../views/purchase/item-info/ItemInfo.vue';
 import Dashboard from '../views/seller/dashboard/Dashboard.vue';
 import BarcodeReg from '../views/seller/barcode-reg/BarcodeReg.vue';
 import BarcodeRegList from '../views/seller/barcode-reg/BarcodeRegList.vue';
-import ItemManagement from '../views/seller/management/ItemManagement.vue';
+import goodManagement from '../views/seller/management/goodManagement.vue';
 import Payment from '../views/seller/payment/Payment.vue';
 import SellerProfile from '../views/seller/seller-profile/SellerProfile.vue';
 import SellerNotice from '../views/seller/seller-notice/SellerNotice.vue';
@@ -49,7 +49,7 @@ const routes = [
   { path: '/dashboard', component: Dashboard },
   { path: '/barcodereg', component: BarcodeReg },
   { path: '/barcodereg-list', component: BarcodeRegList },
-  { path: '/itemmanage', component: ItemManagement },
+  { path: '/goodmanage', component: goodManagement },
   { path: '/payment', component: Payment },
   { path: '/seller-profile', component: SellerProfile },
   { path: '/seller-notice', component: SellerNotice },
