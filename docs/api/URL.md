@@ -148,6 +148,11 @@ QnA답변작성
   URL: '/api/goodsReg/query'
   파라미터: 회사코드(corpCd), 제품코드및이름(itemCdNm, 검색기능 사용시 사용하는 파라미터)
 
+# 상품관리
+판매 상품 조회 (전체, 픽업, 배달)
+  URL: '/api/goodsMgm/query'
+  파라미터: 회사코드(corpCd), 제품코드및이름(itemCdNm, 검색기능 사용시 사용하는 파라미터)
+
 # 로그인
   * 아이디 및 비밀번호가 일치하는 경우에만 토큰이 발급됨, 틀릴경우 BAD_REQUEST 에러 발생시킴
   * 발급된 토큰은 다른 요청을 보낼경우 Header에 Authorization이라는 이름으로 넣어서 보내야함
