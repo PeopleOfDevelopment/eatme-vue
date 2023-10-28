@@ -26,6 +26,9 @@
                     <p class="id-text1">아이디</p>
                     <input type="text" class="id-input" placeholder="아이디를 입력해주세요." v-model="findPw">
                 </div>
+                <div v-if="dataIs2">
+                    <p>비밀번호 재설정</p>
+                </div>
             </div>
             <Btn btntype="solid" style="width: 150px; height: 25px;
             border-radius: 20px; margin-left: 270px;" @click="findP()">확인</Btn>
@@ -52,15 +55,15 @@ const user2 = ref([]);
 
 const findId = ref('');
 const findPw = ref('');
-const findId2 = ref('01023232323');
 const dataIs = ref(false);
-
-const userData = {
-    userEmail: findId.value,
-    userPhoneNumber: findId2.value
-}
+const dataIs2 = ref(false);
 
 async function find() {
+    const userData = {
+        userEmail: findId.value,
+    }
+
+    console.log(findId.value);
     const result = await apiUtils.post('/api/login/findId', userData);
     user.value = result.data;
 
@@ -71,13 +74,21 @@ async function find() {
     }
 }
 
-const userData2 = {
-    userId: findPw.value
-}
 
 async function findP() {
+    const userData2 = {
+        userId: findPw.value,
+    }
+
+    console.log(findPw.value);
     const result = await apiUtils.post('/api/login/findPw', userData2);
     user2.value = result.data;
+
+    if (result.data === true) {
+        dataIs2.value = true;
+    } else {
+        console.log('비밀번호 찾기 실패');
+    }
 }
 </script>
 

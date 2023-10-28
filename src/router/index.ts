@@ -31,6 +31,7 @@ import SellerNoticeList from '../views/admin/admin/seller-notice-list/SellerNoti
 import SellerQnaWork from '../views/admin/admin/seller-qna-work/SellerQnaWork.vue';
 import Qna from '../views/user/qna/QnaReg.vue';
 import Ecostatus from '../views/user/eco-status/EcoStatus.vue';
+import ItemUpdate from '../views/seller/item-reg/ItemUpdate.vue';
 
 //라우터설계(경로랑 컴포넌트 배열로 입력)
 const routes = [
@@ -64,6 +65,7 @@ const routes = [
   { path: '/seller-qna-work', component: SellerQnaWork },
   { path: '/qna', component: Qna },
   { path: '/ecostatus', component: Ecostatus },
+  { path: '/itemupdate', component: ItemUpdate},
 ];
 
 //라우터생성

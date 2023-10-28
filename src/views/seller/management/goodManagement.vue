@@ -8,7 +8,6 @@
                <p style="flex-basis: 90px;">상품코드</p>
                <p style="flex-basis: 60px;">사진</p>
                <p style="flex-basis: 296px;">제품명</p>
-               <p style="flex-basis: 60px;">용량</p>
                <p style="flex-basis: 50px;">수량</p>
                <p style="flex-basis: 90px;">유통기한</p>
                <p style="flex-basis: 70px;">원가</p>
@@ -16,18 +15,22 @@
                <p style="flex-basis: 70px;">판매가</p>
                <p style="flex-basis: 60px;">상태</p>
            </div>
-           <div class="menu-list" v-if="shouldShow(currentTab)">
-               <div class="menu-info" v-for="(item, index) in goods" :key="index">
-                   <p style="flex-basis: 90px;">{{ item.code }}</p>
+           <div class="menu-list">
+               <div class="menu-info" v-for="item in filteredItems">
+                   <p style="flex-basis: 90px;">{{ item.itemCd }}</p>
                    <div class="menu-img"></div>
-                   <p style="flex-basis: 296px;">{{ item.title }}</p>
-                   <p style="flex-basis: 60px;">{{ item.capacity }}</p>
-                   <p style="flex-basis: 50px;">{{ item.quantity }}</p>
-                   <p style="flex-basis: 90px;">{{ item.day }}</p>
-                   <p style="flex-basis: 70px;">{{ item.price }}원</p>
-                   <p style="flex-basis: 70px;">{{ item.discount }}%</p>
-                   <p style="flex-basis: 70px;">{{ item.discountprice }}원</p>
-                   <p style="flex-basis: 60px;">{{ item.ispickup }}</p>
+                   <p style="flex-basis: 296px;">{{ item.itemNm }}</p>
+                   <p style="flex-basis: 50px;">{{ item.saleAmt }}</p>
+                   <p style="flex-basis: 90px;">{{ item.itemExpdate }}</p>
+                   <p style="flex-basis: 70px;">{{ item.salePrc }}원</p>
+                   <p style="flex-basis: 70px;">{{ item.discountRat }}%</p>
+                   <p style="flex-basis: 70px;">{{ (item.salePrc * (1 - (item.discountRat/100))).toFixed(0) }}원</p>
+                   <p style="flex-basis: 60px;">
+                    <span v-if="item.pickYn === null && item.pickYn !== '0' && item.pickYn !== '1'">-</span>
+                    <span v-else-if="item.pickYn === '0'">배송 예정</span>
+                    <span v-else-if="item.pickYn === '1'">픽업 예정</span>
+                    <span v-else>에러</span>
+                    </p>
                </div>
            </div>
        </div>
@@ -40,96 +43,50 @@ import { ref, watch, onMounted } from 'vue';
 import Topnav from '../../common/components/TopNav.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
    
-const goodsData = [
-{
-        id: 0,
-        title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-        price: 8900,
-        discountprice: 6675,
-        discount: 25,
-        day: "2023-05-29",
-        code: "154203215",
-        capacity: "55g X 5",
-        quantity: 1,
-        ispickup: '-'
-    },
-    {
-        id: 1,
-        title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-        price: 8900,
-        discountprice: 6675,
-        discount: 25,
-        day: "2023-05-29",
-        code: "154203215",
-        capacity: "55g X 5",
-        quantity: 1,
-        ispickup: '픽업 예정'
-    },
-    {
-        id: 2,
-        title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-        price: 8900,
-        discountprice: 6675,
-        discount: 25,
-        day: "2023-05-29",
-        code: "154203215",
-        capacity: "55g X 5",
-        quantity: 1,
-        ispickup: '배송 예정'
-    },
-    {
-        id: 3,
-        title: "[피그인더가든]그린믹스 콜라겐 샐러드키트 5봉",
-        price: 8900,
-        discountprice: 6675,
-        discount: 25,
-        day: "2023-05-29",
-        code: "154203215",
-        capacity: "55g X 5",
-        quantity: 1,
-        ispickup: '배송 예정'
-    },
-];
+const goods = ref([]);
+const filteredItems = ref([]);
 
-const goods = ref([...goodsData]);
+const apiUtils = new ApiUtils();
 
-//데이터 조회
-// const apiUtils = new ApiUtils();
+const testData = {
+  itemCd: 'Code',
+  itemNm : '테스트아이템',
+  corpCd : '테스트가맹점코드',
+}
 
-// const testData = {
-//   itemCd: 'Code',
-//   itemNm : '테스트아이템',
-//   corpCd: '테스트가맹점코드',
-//   itemBarcode : '123456',
-// };
+async function query() {
+  const result = await apiUtils.post('/api/goodsMgm/query', testData);
+  goods.value = result.data
+  console.log(goods.value);
 
-// async function query() {
-//   const result = await apiUtils.post('/api/itemReg/query', testData);
-//   goods.value = result.data
-//   console.log(goods.value);
-// };
+  updateFilteredItems();
+};
 
 const currentTab = ref(0);
 
 const changeTab = (index) => {
   currentTab.value = index;
+  updateFilteredItems();
 };
 
-watch(currentTab, () => {
-    const filterData = shouldShow(currentTab.value);
-    goods.value = [...filterData];
-})
-
-const shouldShow = (currentTab) => {
-    if(currentTab === 0) {
-        return goodsData;
-    } else if (currentTab === 1) {
-        return goodsData.filter(item => item.ispickup === '픽업 예정');
-    } else {
-        return goodsData.filter(item => item.ispickup === '배송 예정');
+const updateFilteredItems = () => {
+    if (currentTab.value === 0) {
+        filteredItems.value = [
+            ...goods.value.sellingAll,
+            ...goods.value.sellingPick,
+            ...goods.value.sellingDeli
+        ];
+    } else if (currentTab.value === 1) {
+        filteredItems.value = [...goods.value.sellingPick];
+    } 
+    else if (currentTab.value === 2) {
+        filteredItems.value = [...goods.value.sellingDeli];
     }
 }
 
+onMounted(() => {
+    query();
+})
 </script>
    
 <style scoped>  

@@ -76,6 +76,7 @@ import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import { ref, onMounted } from 'vue';
 import { ApiUtils } from '../../common/utils/ApiUtils';
+import { router } from '@/router';
 
 const goods = ref([]);
 const score = ref(0);
@@ -106,7 +107,13 @@ async function query() {
   console.log(goods.value);
 };
 
-onMounted(() => {
+onMounted(async () => {
+  const token = sessionStorage.getItem('token');
+    if(!token) {
+        alert('로그인 후 이용할 수 있습니다.')
+        router.push('/login') //토큰이 없으면 로그인 페이지로
+    }
+    
   query();
 })
 
