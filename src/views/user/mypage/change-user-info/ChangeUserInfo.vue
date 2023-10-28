@@ -28,8 +28,18 @@
             </div>
             <div class="box2-3">
                 <p class="box2-3-text1">비밀번호</p>
-                <p class="box2-3-text2">{{ user.userPw }}</p>
-                <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">비밀번호 변경</Btn>
+                <p class="box2-3-text2" v-if="!isEditingUserPw">{{ user.userPw }}</p>
+                <input v-else class="info-data" v-model="editedData.userPw" />
+                <div style="margin-left: auto;">
+                    <div v-if="!isEditingUserPw">
+                        <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;"
+                        @click="toggleEditing('userPw')">비밀번호 변경</Btn>
+                    </div>
+                    <div v-else class="btn-box">
+                        <Btn btntype="ghostGray" @click="editComplete('userPw')">확인</Btn>
+                        <Btn btntype="ghostGray" @click="editCancel('userPw')">취소</Btn>
+                    </div>
+                </div>
             </div>
             <div class="box2-3">
                 <p class="box2-4-text1">이름(실명)</p>
@@ -38,13 +48,33 @@
             </div>
             <div class="box2-3">
                 <p class="box2-5-text1">닉네임</p>
-                <p class="box2-3-text2">{{ user.userNick }}</p>
-                <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">닉네임 변경</Btn>
+                <p class="box2-3-text2" v-if="!isEditingUserNick">{{ user.userNick }}</p>
+                <input v-else class="info-data" v-model="editedData.userNick" />
+                <div style="margin-left: auto;">
+                    <div v-if="!isEditingUserNick">
+                        <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;"
+                        @click="toggleEditing('userNick')">닉네임 변경</Btn>
+                    </div>
+                    <div v-else class="btn-box">
+                        <Btn btntype="ghostGray" @click="editComplete('userNick')">확인</Btn>
+                        <Btn btntype="ghostGray" @click="editCancel('userNick')">취소</Btn>
+                    </div>
+                </div>
             </div>
             <div class="box2-3">
                 <p class="box2-6-text1">이메일</p>
-                <p class="box2-3-text2">{{ user.userEmail }}</p>
-                <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">이메일 변경</Btn>
+                <p class="box2-3-text2" v-if="!isEditingUserEmail">{{ user.userEmail }}</p>
+                <input v-else class="info-data" v-model="editedData.userEmail" />
+                <div style="margin-left: auto;">
+                    <div v-if="!isEditingUserEmail">
+                        <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;"
+                        @click="toggleEditing('userEmail')">이메일 변경</Btn>
+                    </div>
+                    <div v-else class="btn-box">
+                        <Btn btntype="ghostGray" @click="editComplete('userEmail')">확인</Btn>
+                        <Btn btntype="ghostGray" @click="editCancel('userEmail')">취소</Btn>
+                    </div>
+                </div>
             </div>
             <div class="box2-3">
                 <p class="box2-7-text1">휴대전화</p>
@@ -87,8 +117,8 @@ const apiUtils = new ApiUtils();
 const user = ref([]);
 
 const userData = {
-    userId: 'testID',
-    userNm: '테스트입니다'
+    userId: sessionStorage.getItem('userId'),
+    userNm: '김회원'
 }
 
 async function query() {
@@ -96,9 +126,69 @@ async function query() {
     user.value = result.data;
 }
 
+async function update() {
+  try {
+    const result = await apiUtils.post('/api/mypage/changeUser', user.value);
+    if (result === 1) {
+      alert('프로필이 업데이트되었습니다.');
+      console.log('업데이트 성공');
+    } else {
+      console.log('업데이트 실패');
+    }
+  } catch (error) {
+    console.error('업데이트 중 오류 발생:', error);
+  }
+}
+
+const isEditingUserPw = ref(false);
+const isEditingUserNick = ref(false);
+const isEditingUserEmail = ref(false);
+const isEditingUserAddr = ref(false);
+
+const editedData = ref({
+  userPw: user.value.userPw,
+  userNick: user.value.userNick,
+  userEmail: user.value.userEmail,
+  userAddr: user.value.userAddr,
+});
+
+const toggleEditing = (field) => {
+  if (field === 'userPw') {
+    isEditingUserPw.value = !isEditingUserPw.value;
+    editedData.value.userPw = user.value.userPw;
+  } else if (field === 'userNick') {
+    isEditingUserNick.value = !isEditingUserNick.value;
+    editedData.value.userNick = user.value.userNick;
+  } else if (field === 'userEmail') {
+    isEditingUserEmail.value = !isEditingUserEmail.value;
+    editedData.value.userEmail = user.value.userEmail;
+  } else if (field === 'userAddr') {
+    isEditingUserAddr.value = !isEditingUserAddr.value;
+    editedData.value.userAddr = user.value.userAddr;
+  }
+};
+
+const editCancel = (field) => {
+  toggleEditing(field);
+};
+
+const editComplete = (field) => {
+  if (field === 'userPw') {
+    user.value.userPw = editedData.value.userPw;
+  } else if (field === ' userNick') {
+    user.value.userNick = editedData.value.userNick;
+  } else if (field === 'userEmail') {
+    user.value.userEmail = editedData.value.userEmail;
+  } else if (field === 'userAddr') {
+    user.value.userAddr = editedData.value.userAddr;
+  }
+  update();
+  toggleEditing(field);
+};
+
 const testData = {
-    userId: 'Ytest4',
-    userNm: 'ppp'
+    userId: sessionStorage.getItem('userId'),
+    userNm: '김회원'
 }
 
 async function exit() {
@@ -323,5 +413,24 @@ onMounted(() => {
     font-size: 20px;
     margin: 0 auto;
     margin-top: 40px;
+}
+
+.info-data {
+  flex: 1 0 0;
+  color: var(--ngray800);
+  font-weight: 700;
+  font-size: 18px;
+  font-family: Pretendard;
+  padding: 2px;
+  width: 100%;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.btn-box {
+  display: flex;
+  gap: 4px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 }
 </style>

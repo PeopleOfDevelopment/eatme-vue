@@ -90,8 +90,8 @@
           대시보드
         </p>
         <p
-          @click="goPage('itemmanage')"
-          :class="{ clicked: clickedItem === 'itemmanage' }">
+          @click="goPage('goodmanage')"
+          :class="{ clicked: clickedItem === 'goodmanage' }">
           <span class="material-symbols-rounded">shopping_cart</span>
           상품관리
         </p>
@@ -225,13 +225,14 @@ const apiUtils = new ApiUtils();
 const isLoggedIn = ref(false);
 const user = sessionStorage.getItem('userId');
 
-const userData = {
-  userId: 'YtestID1',
-  userPw: 'YtestPW1'
+onMounted(async () => {
+  const userData = {
+  userId: sessionStorage.getItem('userId'),
+  userPw: sessionStorage.getItem('userPw')
 }
 
-onMounted(async () => {
   const token = sessionStorage.getItem('token');
+  console.log(token);
 
   if(token) {
     isLoggedIn.value = true;
@@ -239,13 +240,10 @@ onMounted(async () => {
       const result = await apiUtils.post('/api/login/login', userData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
         }
       });
-      const userInfo = result.data;
-      console.log('사용자 정보:', userInfo);
-
-      user.value = userInfo;
+      const userData2 = result.data;
+      console.log('사용자 정보: ', userData2);
     } catch (error) {
       console.error('Error fetching user data: ', error);
     }

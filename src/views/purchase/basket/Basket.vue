@@ -79,6 +79,7 @@ import Btn from '../../common/components/Btn.vue';
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import { ref, computed, watchEffect, onMounted } from 'vue';
+import { router } from '@/router';
 
 const basketList = ref([]);
 const apiUtils = new ApiUtils;
@@ -93,10 +94,15 @@ async function getBasket() {
   console.log(basketList.value)
 }
 
-onMounted(() => {
-  getBasket()
-})
+onMounted(async () => {
+    const token = sessionStorage.getItem('token');
+    if(!token) {
+        alert('로그인 후 이용할 수 있습니다.')
+        router.push('/login') //토큰이 없으면 로그인 페이지로
+    }
 
+    getBasket();
+})
 
 const total = computed(() =>
   basketList.value.reduce((acc, cur) => acc + cur.itemPrc, 0)

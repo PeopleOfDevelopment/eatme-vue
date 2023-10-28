@@ -1,11 +1,10 @@
 <template>
-    <Sidebar pageType="seller"></Sidebar>
     <div id="main-wrapper">
         <div class="top-box">
             <div class="top-box-items">
                 <span class="material-symbols-rounded">arrow_back_ios</span>
-                <p class="top-box-text1">제품 정보 입력</p>
-                <Btn btntype="solid" class="top-box-btn1" @click="insert()">확인</Btn>
+                <p class="top-box-text1">상품 정보 수정</p>
+                <Btn btntype="solid" class="top-box-btn1" @click="editComplete('editData')">수정</Btn>
             </div>
         </div>
         <div class="img-box1">
@@ -76,11 +75,24 @@
 </template>
 
 <script setup lang="ts">
-import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
-import { ApiUtils } from '../../common/utils/ApiUtils';
-import { ref, onMounted } from 'vue';
-import { router } from '@/router';
+import { ref, onMounted, reactive } from 'vue';
+import { defineProps } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+
+const props = defineProps({
+    data: {
+        type: Object,
+        default: () => ({
+            itemCd: '',
+            corpCd: '',
+            discountRat: 0,
+            salePrc: 0,
+            saleAmt: 0,
+            itemBarcode: '',
+        }),
+    },
+});
 
 const discount1 = ref(10);
 const discount2 = ref(25);
@@ -89,7 +101,7 @@ const discount4 = ref(50);
 const discount5 = ref(70);
 const discount6 = ref(90);
 
-const selectDiscountRat = ref();
+const selectDiscountRat = ref(props.data.discountRat);
 
 const change_btn = (e) => {
     var btns = document.querySelectorAll(".btnbox");
@@ -103,43 +115,78 @@ const change_btn = (e) => {
     });
 };
 
-const itemRegGoods = ref([]);
-const itemRegGoods2 = ref([]);
+const itemNm = ref(props.data.itemNm);
+const itemAmt = ref(props.data.saleAmt);
+const itemDate = ref(props.data.itemExpdate);
+const itemPrice = ref(props.data.salePrc);
+const itemCd = ref(props.data.itemCd);
+const corpCd = ref(props.data.corpCd);
+const itemBarcode = ref(props.data.itemBarcode);
 
-const itemNm = ref('');
-const itemCp = ref('');
-const itemCpx = ref('');
-const itemAmt = ref('');
-const itemDate = ref('');
-const itemPrice = ref();
-//테스트용
-const itemCd = ref('Code');
-const corpCd = ref('테스트가맹점코드');
-const itemBarcode = ref('654321');
-const useYn = ref(true);
+const editData = reactive([{
+    itemCd: itemCd.value,
+    corpCd: corpCd.value,
+    discountRat: selectDiscountRat.value,
+    salePrc: itemPrice.value,
+    saleAmt: itemAmt.value,
+    itemBarcode: itemBarcode.value,
+}]);
+
+const editedData = reactive([{
+    itemCd: editData.itemCd,
+    corpCd: editData.corpCd,
+    discountRat: editData.discountRat,
+    salePrc: editData.salePrc,
+    saleAmt: editData.saleAmt,
+    itemBarcode: editData.itemBarcode,
+}]);
+
 
 const apiUtils = new ApiUtils();
 
-const insert = async () => {
-  const itemData = [{
-    itemCd: itemCd.value,
-    corpCd: corpCd.value,
-    itemBarcode: itemBarcode.value,
-    itemNm: itemNm.value,
-    itemPrc: itemPrice.value,
-    useYn: useYn.value
-  }];
-
+async function update() {
   try {
-    const result = await apiUtils.post('/api/itemReg/insert', itemData)
-    itemRegGoods2.value = result.data;
-    console.log('등록 성공: ', result.data);
-    alert('등록 되었습니다.');
-    router.push('/barcodereg-list');
+    const result = await apiUtils.post('/api/goodsReg/update', editedData);
+    if (result === 1) {
+      alert('수정되었습니다.');
+      location.reload();
+      console.log('성공');
+    } else {
+      console.log('실패');
+    }
   } catch (error) {
-    console.error('등록 실패: ', error);
+    console.error('오류 발생:', error);
+  }
+}
+
+const toggleEditing = (field) => {
+  if (field === 'editData') {
+    editedData.corpCd = editData.corpCd;
+    editedData.itemCd = editData.itemCd;
+    editedData.discountRat = editData.discountRat;
+    editedData.salePrc = editData.salePrc;
+    editedData.saleAmt = editData.saleAmt;
+    editedData.itemBarcode = editData.itemBarcode;
   }
 };
+
+const editComplete = (field) => {
+  if (field === 'editData') {
+    editData.corpCd = editedData.corpCd;
+    editData.itemCd = editedData.itemCd
+    editData.discountRat = editedData.discountRat;
+    editData.salePrc = editedData.salePrc;
+    editData.saleAmt = editedData.saleAmt;
+    editData.itemBarcode = editedData.itemBarcode;
+  }
+  update();
+  toggleEditing(field);
+};
+
+onMounted(() => {
+    console.log(props.data);
+})
+
 </script>
 
 <style scoped>

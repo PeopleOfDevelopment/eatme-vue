@@ -1,6 +1,6 @@
 <template>
     <Sidebar pageType="seller"></Sidebar>
-    <div id="main-wrapper">
+    <div id="main-wrapper" v-if="!isShow && !isShow2">
         <div style="height: 850px; overflow-y: scroll;">
             <p class="title-text1">제품 등록</p>
             <div v-if="goodCount === 0">
@@ -37,7 +37,7 @@
                             <p style="flex-basis: 15%;">{{ item.itemCd }}</p>
                             <p style="flex-basis: 50%;">{{ item.itemNm }}</p>
                             <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
-                            <p style="flex-basis: 10%;">{{ item.salePrc }}원</p>
+                            <p style="flex-basis: 10%;">{{ item.itemPrc }}원</p>
                             <Btn btntype="LightSolid" class="list-btn1"
                             @click="moveToDestination(item)" style="flex-basis: 5%; margin-bottom: 10px;">추가</Btn>
                         </div>
@@ -80,9 +80,9 @@
                             <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
                             <p style="flex-basis: 30%;">{{ item.itemNm }}</p>
                             <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
-                            <p style="flex-basis: 10%;">{{ item.salePrc }}원</p>
+                            <p style="flex-basis: 10%;">{{ item.itemPrc }}원</p>
                             <Btn btntype="LightSolid" class="list-btn1"
-                            @click="goPage('itemreg')" style="flex-basis: 5%; margin-bottom: 10px;">수정</Btn>
+                            @click="isShowing2(item)" style="flex-basis: 5%; margin-bottom: 10px;">수정</Btn>
                             <Btn btntype="LightSolid" class="list-btn3" 
                             @click="deleteItem(item)" style="flex-basis: 5%; margin-bottom: 10px;">삭제</Btn>
                         </div>
@@ -92,7 +92,7 @@
 
             <div class="scan-text-box1">
                 <p class="barcode-scan-text2">스캔이 되지 않는 경우</p>
-                <p class="barcode-scan-text3">문제 해결</p>
+                <p class="barcode-scan-text3" @click="goPage('itemreg')">문제 해결</p>
                 <p class="barcode-scan-text2">혹은</p>
                 <p class="barcode-scan-text3">바코드 입력</p>
             </div>
@@ -128,8 +128,7 @@
                             <p style="flex-basis: 10%;">상품코드</p>
                             <p style="flex-basis: 70px;">사진</p>
                             <p style="flex-basis: 30%;">제품명</p>
-                            <p style="flex-basis: 5%;">용량</p>
-                            <p style="flex-basis: 6%;">수량</p>
+                            <p style="flex-basis: 5%;">수량</p>
                             <p style="flex-basis: 5%;">원가</p>
                             <p style="flex-basis: 5%;">할인율</p>
                             <p style="flex-basis: 5%;">판매가</p>
@@ -139,62 +138,113 @@
                         <div class="menu-list">
                             <div class="menu-info" v-for="item in select_goods" :key="item.id">
                                 <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
-                                <div style="width: 50px; height: 50px; margin: 5px; background-color: #000;"></div>
+                                <div style="width: 55px; height: 55px; margin: 5px; background-color: #000;"></div>
                                 <p style="flex-basis: 30%;">{{ item.itemNm }}</p>
-                                <p style="flex-basis: 5%;">5</p>
                                 <p style="flex-basis: 5%;">{{ item.saleAmt }}</p>
                                 <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
                                 <p style="flex-basis: 5%;">{{ item.discountRat }}%</p>
-                                <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
-                                <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 4%; margin-bottom: 10px;">수정</Btn>
+                                <p style="flex-basis: 5%;">{{ (item.salePrc * (1 - (item.discountRat/100))).toFixed(0) }}원</p>
+                                <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 4%; margin-bottom: 10px;"
+                                @click="isShowing(item)">수정</Btn>
                                 <Btn btntype="LightSolid" class="list-btn3" style="flex-basis: 4%; margin-bottom: 10px;"
                                 @click="removeItem(item)">삭제</Btn>
                             </div>
                         </div>
                     </div>
-                    <Btn btntype="solid" class="list-btn4">등록하기</Btn>
+                    <Btn btntype="solid" class="list-btn4" @click="insertItem()">등록하기</Btn>
                 </div>
             </Transition>
         </div>
+    </div>
+    <div id="main-wrraper" v-if="isShow">
+        <GoodsUpdate :data="updateData"></GoodsUpdate>
+    </div>
+    <div id="main-wrraper" v-if="isShow2">
+        <ItemUpdate :data="updateData2"></ItemUpdate>
     </div>
 </template>
 
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
+import ItemUpdate from '../item-reg/ItemUpdate.vue';
+import GoodsUpdate from '../goods-reg/GoodsUpdate.vue';
 import { ref, computed, watchEffect, onMounted } from 'vue';
 import { router } from '@/router';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 
 const goods = ref([]);
+const goods2 = ref([]);
 const select_goods = ref([]);
 
 //데이터 조회
 const apiUtils = new ApiUtils();
 
 const testData = {
-  itemCd: 'Code',
+  itemCd: '',
   itemNm : '테스트아이템',
   corpCd : '테스트가맹점코드',
 }
 
 async function query() {
-  const result = await apiUtils.post('/api/goodsReg/query', testData);
+  const result = await apiUtils.post('/api/itemReg/query', testData);
   goods.value = result.data
   console.log(goods.value);
 };
 
-async function deleteItem(item) {
+async function query2() {
+  const result = await apiUtils.post('/api/goodsReg/query', testData);
+  goods2.value = result.data
+  console.log(goods2.value);
+};
+
+async function insertItem() {
+    const insertData = select_goods.value.map(item => ({
+        corpCd: '테스트가맹점코드',
+        itemCd: item.itemCd,
+        discountRat: item.discountRat || 0,
+        salePrc: item.salePrc || 0,
+        saleAmt: item.saleAmt || 0,
+        itemExpdate: '2023-11-30',
+        itemBarcode: '111111'
+    }));
+
     try {
-        const result = await apiUtils.post('/api/goodsReg/delete' , [{
-            itemCd: item.itemCd,
-            corpCd: item.corpCd
-    }]);
-    goods.value = goods.value.filter(good => good.itemCd !== item.itemCd);
-    console.log('삭제 완료');
+        const result = await apiUtils.post('/api/goodsReg/insert', insertData);
+        alert('등록완료');
+    } catch (error) {
+        console.error('등록 오류 발생: ', error);
+    }
+}
+
+async function deleteItem(item) {
+    const deleteData = {
+        itemCd: item.itemCd,
+        corpCd: item.corpCd
+    }
+    
+    try {
+        const result = await apiUtils.post('/api/itemReg/delete', deleteData);
+        goods.value = goods.value.filter(good => good.itemCd !== item.itemCd);
+        console.log('삭제 완료');
     } catch (error) {
         console.error('오류 발생', error);
     }
+}
+
+const isShow = ref(false);
+const isShow2 = ref(false);
+const updateData = ref([]);
+const updateData2 = ref([]);
+
+const isShowing = (item) => {
+    isShow.value = !isShow.value;
+    updateData.value = item;
+}
+
+const isShowing2 = (item) => {
+    isShow2.value = !isShow2.value;
+    updateData2.value = item;
 }
 
 const search = ref('');
@@ -213,13 +263,14 @@ const shouldDisplay = (item) => {
 
 onMounted(() => {
   query();
+  query2();
 })
 
 const goodCount = computed(() => goods.value.length);
 const selectCount = computed(() => select_goods.value.length);
 const totalPrice = computed(() => {
-    const priceData = select_goods.value.map(item => item.salePrc);
-    return priceData.reduce((accmulator, currentValue) => accmulator + currentValue, 0);
+    const priceData = select_goods.value.map(item => (item.salePrc * (1 - (item.discountRat/100))));
+    return parseInt(priceData.reduce((accmulator, currentValue) => accmulator + currentValue, 0));
 });
 
 const showingPopup = ref(false);
@@ -233,7 +284,13 @@ const hidePopup = () => {
 }
 
 const moveToDestination = (item) => {
-    select_goods.value.push({ ...item });
+    const foundItem = goods2.value.find((good) => {
+        return good.itemCd === item.itemCd && good.corpCd === item.corpCd;
+    })
+
+    if (foundItem) {
+        select_goods.value.push(foundItem);
+    }
 };
 
 const removeItem = (item) => {
