@@ -199,6 +199,15 @@ QnA답변작성
   URL: '/api/sellerNotice/update'
   파라미터: 공지번호(noticeNo), 공지제목(noticeTit), 공지내용(noticeTxt), 공지시작일(noticeTodt), 공지종료일(noticeFrdt)
 
+# 환경보호수치
+전체보호수치 (판매수량을 4로 나눈 값이 saveTree로 나옴)
+  URL: '/api/ecoStatus/query'
+  파라미터: 없음   
+
+개인보호수치
+  URL: '/api/ecoStatus/queryMyEco'
+  파라미터: 유저아이디(userId)
+
 ```
 // 회원가입 예시 테스트코드
 import { ApiUtils } from './views/common/utils/ApiUtils';
