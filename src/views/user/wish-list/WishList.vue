@@ -24,6 +24,7 @@ import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Card from '../../common/components/Card.vue';
 import Footer from '../../common/main/footer/Footer.vue';
 import MarketInfo from '@/views/purchase/market-info/MarketInfo.vue';
+import { router } from '@/router';
 
 import { ref, onMounted } from 'vue';
 
@@ -41,9 +42,15 @@ async function getWishList() {
   wishList.value = result.data;
 }
 
-onMounted(() => {
-  getWishList();
-});
+onMounted(async () => {
+  const token = sessionStorage.getItem('token');
+    if(!token) {
+        alert('로그인 후 이용할 수 있습니다.')
+        router.push('/login') //토큰이 없으면 로그인 페이지로
+    }
+    
+    getWishList();
+})
 
 /*매장 상세 페이지 이동*/
 const selectedMarket = ref(null);

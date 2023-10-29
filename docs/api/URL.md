@@ -148,6 +148,11 @@ QnA답변작성
   URL: '/api/goodsReg/query'
   파라미터: 회사코드(corpCd), 제품코드및이름(itemCdNm, 검색기능 사용시 사용하는 파라미터)
 
+# 상품관리
+판매 상품 조회 (전체, 픽업, 배달)
+  URL: '/api/goodsMgm/query'
+  파라미터: 회사코드(corpCd), 제품코드및이름(itemCdNm, 검색기능 사용시 사용하는 파라미터)
+
 # 로그인
   * 아이디 및 비밀번호가 일치하는 경우에만 토큰이 발급됨, 틀릴경우 BAD_REQUEST 에러 발생시킴
   * 발급된 토큰은 다른 요청을 보낼경우 Header에 Authorization이라는 이름으로 넣어서 보내야함
@@ -193,6 +198,15 @@ QnA답변작성
 공지 수정
   URL: '/api/sellerNotice/update'
   파라미터: 공지번호(noticeNo), 공지제목(noticeTit), 공지내용(noticeTxt), 공지시작일(noticeTodt), 공지종료일(noticeFrdt)
+
+# 환경보호수치
+전체보호수치 (판매수량을 4로 나눈 값이 saveTree로 나옴)
+  URL: '/api/ecoStatus/query'
+  파라미터: 없음   
+
+개인보호수치
+  URL: '/api/ecoStatus/queryMyEco'
+  파라미터: 유저아이디(userId)
 
 ```
 // 회원가입 예시 테스트코드

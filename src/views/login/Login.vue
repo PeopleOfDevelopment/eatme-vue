@@ -84,15 +84,8 @@ const login = async () => {
     userPw: userPw.value
   };
 
-  const token = 'eyJyZWdEYXRlIjoxNjk3Mzk3NjUwNDg0LCJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyTm0iOm51bGwsInN1YiI6Im51bGwiLCJleHAiOjE2OTc0MjY0NTAsInVzZXJJZCI6Ill0ZXN0SUQxIn0.2gaRELm4pREyfmobxssWebj2-AP3keuo9mLqc0bN5Nc'
-
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json'
-  };
-
   try {
-    const result = await apiUtils.post('/api/login/generateToken', testData, { headers });
+    const result = await apiUtils.post('/api/login/generateToken', testData);
     const generatetoken = result.result;
     sessionStorage.setItem('token', generatetoken);
     sessionStorage.setItem('userId', testData.userId);
@@ -104,6 +97,10 @@ const login = async () => {
     alert('아이디 또는 비밀번호를 다시 입력해주세요.')
   }
 };
+
+const goPage = () => {
+  router.push('/');
+}
 </script>
 
 <style scoped>
