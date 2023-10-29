@@ -12,7 +12,7 @@
                     <button class="btnbox active" @click="change_btn">5월</button>
                 </div>
                 <p class="box1-text2">총 구매횟수</p>
-                <p class="box1-text3">5회</p>
+                <p class="box1-text3">0회</p>
             </div>
             <div class="box2">
                 <p class="box2-text1">나의 구매를 통해 지켜진 환경은?</p>
@@ -30,7 +30,7 @@
                     <div class="box2-text2">
                         <p style="float: left; margin-right: 200px; margin-bottom: 0px;">나무가</p>
                         <div class="box-text2-1">
-                            <p class="box2-textGreen1">1그루</p>
+                            <p class="box2-textGreen1">{{ ecoInfos.saveTree }}그루</p>
                             <p style="float: left; margin-top: 20px; margin-left: 15px; margin-bottom: 0px;">심어졌어요.</p>
                         </div>
                         <p class="box2-text2-2">음식을 4번 구하면 나무 한 그루가 심어져요.</p>
@@ -150,6 +150,7 @@ const changeTab = (index) => {
 };
 
 const userInfos = ref([]);
+const ecoInfos = ref([]);
 
 const router = useRouter();
 
@@ -160,11 +161,21 @@ const testData = {
     userNm: '테스트입니다'
 }
 
+const ecoData  = {
+    userId: sessionStorage.getItem('userId')
+}
+
 async function myPage() {
   const result = await apiUtils.post('/api/mypage/query', testData);
   userInfos.value = result.data
   console.log(userInfos.value);
 };
+
+async function ecoStatus() {
+    const result = await apiUtils.post('/api/ecoStatus/queryMyEco', ecoData);
+    ecoInfos.value = result.data;
+    console.log(ecoInfos.value);
+}
 
 onMounted(async () => {
     const token = sessionStorage.getItem('token');
@@ -174,6 +185,7 @@ onMounted(async () => {
     }
 
     myPage();
+    ecoStatus();
 })
 </script>
 
