@@ -13,7 +13,7 @@
                     <input type="text" class="email-input" placeholder="이메일을 입력해주세요" v-model="findId">
                 </div>
                 <div>
-                    <p class="email-text2">회원님의 아이디는 <span style="color: var(--primary-def); font-weight: bold;">{{ user.userId }}</span>입니다.</p>
+                    <p class="email-text2" v-if="dataIs">회원님의 아이디는 <span style="color: var(--primary-def); font-weight: bold;">{{ user.userId }}</span>입니다.</p>
                 </div>
             </div>
             <Btn btntype="solid" style="width: 150px; height: 25px;
@@ -27,7 +27,13 @@
                     <input type="text" class="id-input" placeholder="아이디를 입력해주세요." v-model="findPw">
                 </div>
                 <div v-if="dataIs2">
-                    <p>비밀번호 재설정</p>
+                    <p class="text3">비밀번호를 재설정해주세요.</p>
+                    <div class="pw-find-box" style="margin-top: 50px;">
+                    <p class="id-text1">새 비밀번호</p>
+                    <input type="text" class="id-input" placeholder="새 비밀번호를 입력해주세요." v-model="newPw">
+                </div>
+                <Btn btntype="solid" style="width: 100px; height: 25px;
+                border-radius: 20px; margin-left: 300px; margin-top: 40px;" @click="newPassword()">변경</Btn>
                 </div>
             </div>
             <Btn btntype="solid" style="width: 150px; height: 25px;
@@ -41,6 +47,7 @@ import { ref } from 'vue';
 import TopNav from '../common/components/TopNav.vue';
 import Btn from '../common/components/Btn.vue';
 import { ApiUtils } from '../common/utils/ApiUtils';
+import { router } from '@/router';
 
 const currentTab = ref(0);
 
@@ -48,13 +55,22 @@ const changeTab = (index) => {
   currentTab.value = index;
 };
 
+const clickedItem = ref(window.location.pathname.substring(1) || 'home');
+
+const goPage = (page) => {
+  if (page === 'home') router.push('/');
+  else router.push('/' + page);
+  clickedItem.value = page;
+};
+
 const apiUtils = new ApiUtils();
 
 const user = ref([]);
-const user2 = ref([]);
+const password = ref([]);
 
 const findId = ref('');
 const findPw = ref('');
+const newPw = ref('');
 const dataIs = ref(false);
 const dataIs2 = ref(false);
 
@@ -64,12 +80,13 @@ async function find() {
     }
 
     console.log(findId.value);
-    const result = await apiUtils.post('/api/login/findId', userData);
-    user.value = result.data;
-
-    if (user.value.length > 0) {
+    
+    try {
+        const result = await apiUtils.post('/api/login/findId', userData);
+        user.value = result.data;
         dataIs.value = true;
-    } else {
+    } catch (error) {
+        console.error('API 호출 실패:', error);
         dataIs.value = false;
     }
 }
@@ -80,15 +97,26 @@ async function findP() {
         userId: findPw.value,
     }
 
-    console.log(findPw.value);
     const result = await apiUtils.post('/api/login/findPw', userData2);
-    user2.value = result.data;
 
-    if (result.data === true) {
+    if (result === true) {
         dataIs2.value = true;
     } else {
-        console.log('비밀번호 찾기 실패');
+        dataIs2.value = false;
     }
+}
+
+async function newPassword() {
+    const newPwData = {
+        userId: findPw.value,
+        userPw: newPw.value
+    }
+
+    const result = await apiUtils.post('/api/login/resetPw', newPwData);
+    password.value = result.data;
+
+    alert('비밀번호가 변경되었습니다.')
+    goPage('login');
 }
 </script>
 

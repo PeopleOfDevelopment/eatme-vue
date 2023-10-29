@@ -76,7 +76,8 @@
 
 <script setup>
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
 
 const totalMinwon = ref(null);
 const totalMinwon2 = ref(null);
@@ -92,13 +93,31 @@ const donutStyle2 = computed(() => {
     background: `conic-gradient(#3F8BC9 0% ${totalMinwon2.value}%, #F2F2F2 ${totalMinwon2.value}% 100%)`
   };
 });
+
+const apiUtils = new ApiUtils();
+
+const ecoInfos = ref([]);
+
+async function ecoStatus() {
+    const result = await apiUtils.post('/api/ecoStatus/queryMyEco', {}, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    ecoInfos.value = result.data;
+    console.log(ecoInfos.value);
+}
+
+onMounted(() => {
+    ecoStatus();
+})
 </script>
 
 <style scoped>
 .top-text-big {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 100px;
 }
 
 .top-text1 {
@@ -113,7 +132,7 @@ const donutStyle2 = computed(() => {
     font-size: 20px;
     font-weight: bold;
     color: var(--primary-d4);
-    margin-top: 75px;
+    margin-top: 25px;
     margin-left: 5px;
     margin-bottom: 0px;
 }
@@ -203,6 +222,7 @@ const donutStyle2 = computed(() => {
     font-size: 24px;
     font-weight: bold;
     margin-right: 10px;
+    margin-top: 20px;
 }
 
 .percent-text2 {
@@ -216,5 +236,6 @@ const donutStyle2 = computed(() => {
     font-size: 24px;
     font-weight: bold;
     margin-left: 10px;
+    margin-top: 20px;
 }
 </style>
