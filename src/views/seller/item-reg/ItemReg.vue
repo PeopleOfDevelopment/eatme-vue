@@ -9,7 +9,10 @@
             </div>
         </div>
         <div class="img-box1">
-            <Btn btntype="opacityBlack" class="change-btn1">사진 변경</Btn>
+            <input type="file" accept="image/*" required multiple ref="realUpload" @change="handleImageUpload">
+            <div class="image-preview">
+                <img :src="latestUpload?.preview" :data-file="latestUpload?.name" class="img-real1">
+            </div>
         </div>
         <div class="form-box1">
             <div class="form1">
@@ -79,7 +82,7 @@
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
 import { ApiUtils } from '../../common/utils/ApiUtils';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { router } from '@/router';
 
 const props = defineProps({
@@ -155,6 +158,30 @@ const insert = async () => {
     console.error('등록 실패: ', error);
   }
 };
+
+const realUpload = ref(null);
+const uploadFiles = ref([]);
+
+const handleImageUpload = () => {
+    const files = realUpload.value.files;
+
+    if (files) {
+        for (const file of files) {
+            if (file.type.match("image/.*")) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    uploadFiles.value = [{ name: file.name, preview: event.target.result }];
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+}
+
+const latestUpload = ref(null);
+watch(uploadFiles, (newVal) => {
+    latestUpload.value = newVal[newVal.length - 1];
+})
 </script>
 
 <style scoped>
@@ -191,6 +218,12 @@ const insert = async () => {
     background-color: #bdbdbd;
     float: left;
     margin-left: 100px;
+    overflow: hidden;
+}
+.img-real1 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 .change-btn1 {
     position: absolute;
