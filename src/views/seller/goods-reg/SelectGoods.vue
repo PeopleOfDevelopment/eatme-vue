@@ -1,6 +1,5 @@
 <template>
-    <Sidebar pageType="seller"></Sidebar>
-    <div id="main-wrapper">
+    <div id="main-wrapper" v-if="isVisible">
         <div class="top-box">
             <div class="top-box-items">
                 <span class="material-symbols-rounded">arrow_back_ios</span>
@@ -76,11 +75,12 @@
 </template>
 
 <script setup lang="ts">
-import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
-import { ApiUtils } from '../../common/utils/ApiUtils';
-import { ref, onMounted } from 'vue';
-import { router } from '@/router';
+import { ref, onMounted, defineEmits, defineProps } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const isVisible = ref(true);
 
 const props = defineProps({
     data: {
@@ -92,6 +92,9 @@ const props = defineProps({
             saleAmt: 0,
         }),
     },
+
+    emitFunction: Function,
+    toggleIsShow3: Function
 });
 
 const discount1 = ref(10);
@@ -115,46 +118,32 @@ const change_btn = (e) => {
     });
 };
 
-const listData = ref([]);
-
-const itemRegGoods = ref([]);
-const itemRegGoods2 = ref([]);
-
-//const itemNm = ref('');
-const itemNm = ref('');
-const itemCp = ref('');
-const itemCpx = ref('');
-const itemAmt = ref('');
+const itemNm = ref(props.data.itemNm);
+const itemAmt = ref();
 const itemDate = ref('');
-const itemPrice = ref();
-//테스트용
-const itemCd = ref('Code');
-const corpCd = ref('테스트가맹점코드');
+const itemPrice = ref(props.data.itemPrc);
+const itemCd = ref(props.data.itemCd);
+const corpCd = ref(props.data.corpCd);
 const itemBarcode = ref('654321');
 const useYn = ref(true);
-
-const apiUtils = new ApiUtils();
 
 const insert = async () => {
   const itemData = [{
     itemCd: itemCd.value,
     corpCd: corpCd.value,
-    itemBarcode: itemBarcode.value,
+    itemAmt: itemAmt.value,
+    selectDiscountRat: selectDiscountRat.value,
+    itemExpdate: itemDate.value,
+    itemPrc:itemPrice.value,
     itemNm: itemNm.value,
-    itemPrc: itemPrice.value,
-    useYn: useYn.value
   }];
 
-  try {
-    const result = await apiUtils.post('/api/itemReg/insert', itemData)
-    itemRegGoods2.value = result.data;
-    console.log('등록 성공: ', result.data);
-    alert('등록 되었습니다.');
-    router.push('/barcodereg-list');
-  } catch (error) {
-    console.error('등록 실패: ', error);
-  }
-};
+  console.log(itemData);
+
+  props.emitFunction('eventName', itemData);
+  isVisible.value = false;
+  props.toggleIsShow3();
+}
 </script>
 
 <style scoped>
