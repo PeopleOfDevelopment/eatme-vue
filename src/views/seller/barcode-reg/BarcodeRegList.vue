@@ -1,6 +1,6 @@
 <template>
     <Sidebar pageType="seller"></Sidebar>
-    <div id="main-wrapper" v-if="!isShow && !isShow2">
+    <div id="main-wrapper" v-if="!isShow && !isShow2 && !isShow3">
         <div style="height: 850px; overflow-y: scroll;">
             <p class="title-text1">제품 등록</p>
             <div v-if="goodCount === 0">
@@ -39,7 +39,7 @@
                             <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
                             <p style="flex-basis: 10%;">{{ item.itemPrc }}원</p>
                             <Btn btntype="LightSolid" class="list-btn1"
-                            @click="moveToDestination(item)" style="flex-basis: 5%; margin-bottom: 10px;">추가</Btn>
+                            @click="isShowing3(item)" style="flex-basis: 5%; margin-bottom: 10px;">추가</Btn>
                         </div>
                     </div>
                 </div>
@@ -136,14 +136,14 @@
                             <p style="flex-basis: 5%;">삭제</p>
                         </div>
                         <div class="menu-list">
-                            <div class="menu-info" v-for="item in select_goods" :key="item.id">
-                                <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
+                            <div class="menu-info" v-for="item in select_goods" :key="item.itemCd">
+                                <p style="flex-basis: 10%;">{{ item[0].itemCd }}</p>
                                 <div style="width: 55px; height: 55px; margin: 5px; background-color: #000;"></div>
-                                <p style="flex-basis: 30%;">{{ item.itemNm }}</p>
-                                <p style="flex-basis: 5%;">{{ item.saleAmt }}</p>
-                                <p style="flex-basis: 5%;">{{ item.salePrc }}원</p>
-                                <p style="flex-basis: 5%;">{{ item.discountRat }}%</p>
-                                <p style="flex-basis: 5%;">{{ (item.salePrc * (1 - (item.discountRat/100))).toFixed(0) }}원</p>
+                                <p style="flex-basis: 30%;">{{ item[0].itemNm }}</p>
+                                <p style="flex-basis: 5%;">{{ item[0].itemAmt }}</p>
+                                <p style="flex-basis: 5%;">{{ item[0].itemPrc }}원</p>
+                                <p style="flex-basis: 5%;">{{ item[0].selectDiscountRat }}%</p>
+                                <p style="flex-basis: 5%;">{{ (item[0].itemPrc * (1 - (item[0].selectDiscountRat/100))).toFixed(0) }}원</p>
                                 <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 4%; margin-bottom: 10px;"
                                 @click="isShowing(item)">수정</Btn>
                                 <Btn btntype="LightSolid" class="list-btn3" style="flex-basis: 4%; margin-bottom: 10px;"
@@ -162,6 +162,9 @@
     <div id="main-wrraper" v-if="isShow2">
         <ItemUpdate :data="updateData2"></ItemUpdate>
     </div>
+    <div id="main-wrraper" v-if="isShow3">
+        <GoodsSelect :data="insertData" :emitFunction="emitFunction" :toggleIsShow3="toggleIsShow3"></GoodsSelect>
+    </div>
 </template>
 
 <script setup>
@@ -169,6 +172,8 @@ import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
 import ItemUpdate from '../item-reg/ItemUpdate.vue';
 import GoodsUpdate from '../goods-reg/GoodsUpdate.vue';
+import ItemReg from '../item-reg/ItemReg.vue';
+import GoodsSelect from '../goods-reg/SelectGoods.vue';
 import { ref, computed, watchEffect, onMounted } from 'vue';
 import { router } from '@/router';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
@@ -189,24 +194,23 @@ const testData = {
 async function query() {
   const result = await apiUtils.post('/api/itemReg/query', testData);
   goods.value = result.data
-  console.log(goods.value);
+  console.log(goods)
 };
 
 async function query2() {
   const result = await apiUtils.post('/api/goodsReg/query', testData);
   goods2.value = result.data
-  console.log(goods2.value);
 };
 
 async function insertItem() {
     const insertData = select_goods.value.map(item => ({
-        corpCd: '테스트가맹점코드',
-        itemCd: item.itemCd,
-        discountRat: item.discountRat || 0,
-        salePrc: item.salePrc || 0,
-        saleAmt: item.saleAmt || 0,
-        itemExpdate: '2023-11-30',
-        itemBarcode: '111111'
+        corpCd: item[0].corpCd,
+        itemCd: item[0].itemCd,
+        discountRat: item[0].selectDiscountRat || 0,
+        salePrc: item[0].itemPrc || 0,
+        saleAmt: item[0].itemAmt || 0,
+        itemExpdate: item[0].itemExpdate,
+        itemBarcode: ''
     }));
 
     try {
@@ -232,10 +236,21 @@ async function deleteItem(item) {
     }
 }
 
+const emitFunction = (eventName, eventData) => {
+    select_goods.value.push(eventData);
+}
+
+const toggleIsShow3 = () => {
+    isShow3.value = !isShow3.value;
+    console.log(select_goods);
+}
+
 const isShow = ref(false);
 const isShow2 = ref(false);
+const isShow3 = ref(false);
 const updateData = ref([]);
 const updateData2 = ref([]);
+const insertData = ref([]);
 
 const isShowing = (item) => {
     isShow.value = !isShow.value;
@@ -245,6 +260,11 @@ const isShowing = (item) => {
 const isShowing2 = (item) => {
     isShow2.value = !isShow2.value;
     updateData2.value = item;
+}
+
+const isShowing3 = (item) => {
+    isShow3.value = !isShow3.value;
+    insertData.value = item;
 }
 
 const search = ref('');
@@ -284,13 +304,15 @@ const hidePopup = () => {
 }
 
 const moveToDestination = (item) => {
-    const foundItem = goods2.value.find((good) => {
-        return good.itemCd === item.itemCd && good.corpCd === item.corpCd;
-    })
+    // const itemData = {
+    //     itemCd: item.itemCd,
+    //     corpCd: item.corpCd,
+    //     itemNm: item.itemNm,
+    //     itemPrc: item.itemPrc
+    // };
 
-    if (foundItem) {
-        select_goods.value.push(foundItem);
-    }
+    // emit('moveToDestination', itemData);
+    // goPage('itemreg');
 };
 
 const removeItem = (item) => {

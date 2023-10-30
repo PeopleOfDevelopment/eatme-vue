@@ -89,7 +89,6 @@ const login = async () => {
     const generatetoken = result.result;
     sessionStorage.setItem('token', generatetoken);
     sessionStorage.setItem('userId', testData.userId);
-    sessionStorage.setItem('userPw', testData.userPw);
     
     router.push('/');
   } catch (error) {
