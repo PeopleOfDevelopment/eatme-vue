@@ -118,12 +118,23 @@ const user = ref([]);
 
 const userData = {
     userId: sessionStorage.getItem('userId'),
-    userNm: '김회원'
+    userNm: user.userNm
 }
 
 async function query() {
-    const result = await apiUtils.post('/api/mypage/query', userData);
-    user.value = result.data;
+    const token = sessionStorage.getItem('token');
+
+    try {
+        const result = await apiUtils.post('/api/mypage/query', {}, {
+        headers: {
+            Authorization: `BEARER ${token}`,
+        }
+      });
+      const userInfo = result.data;
+      console.log(userInfo);
+    } catch (error) {
+        console.log('에러:', error);
+    }
 }
 
 async function update() {

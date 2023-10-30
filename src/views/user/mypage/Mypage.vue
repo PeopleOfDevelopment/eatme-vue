@@ -157,7 +157,7 @@ const router = useRouter();
 const apiUtils = new ApiUtils();
 
 const testData = {
-    userId: 'testID',
+    userId: sessionStorage.getItem('userId'),
     userNm: '테스트입니다'
 }
 
@@ -166,9 +166,15 @@ const ecoData  = {
 }
 
 async function myPage() {
-  const result = await apiUtils.post('/api/mypage/query', testData);
-  userInfos.value = result.data
-  console.log(userInfos.value);
+    const token = sessionStorage.getItem('token');
+
+    const result = await apiUtils.post('/api/mypage/query', testData, {
+        headers: {
+          Authorization: `BEARER ${token}`,
+        }
+      });
+    userInfos.value = result.data
+    console.log(userInfos.value);
 };
 
 async function ecoStatus() {
