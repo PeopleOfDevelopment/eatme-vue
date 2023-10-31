@@ -1,7 +1,10 @@
 <template>
   <TopNav navType="title" subtitle="상품정보" @close="$emit('close')"></TopNav>
   <div class="item-info-box1">
-    <div class="item-img1"></div>
+    <div class="item-img1">
+      <!-- 문제 여기 -->
+      <img :src="itemImgData" />
+    </div>
     <div class="item-text-wrap">
       <div class="item-info1">
         <p class="info-text1">{{ itemInfo.itemNm }}</p>
@@ -21,22 +24,14 @@
           <p class="info-text7">{{ itemInfo.itemExpdate }}</p>
         </div>
         <div class="item-info4">
-          <p class="info-text5">용량</p>
-          <p class="info-text6">{{ itemInfo.capacity }}</p>
-        </div>
-        <div class="item-info4">
           <p class="info-text5">판매자</p>
           <p>{{ itemInfo.corpNm }}</p>
         </div>
       </div>
-      <div class="btn-box1">
-        <Btn btntype="outline" class="btn-style1">
-          <span class="material-symbols-rounded">favorite</span>
-        </Btn>
-        <Btn btntype="ghost" class="btn-style2">장바구니 담기</Btn>
-        <Btn btntype="solid" class="btn-style2" @click="goPage('detail')">
-          구매하기
-        </Btn>
+      <div class="sale-wrap">
+        <div class="total-amt">
+          <p>남은 수량: {{ itemInfo.saleAmt }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -45,12 +40,46 @@
 <script setup>
 import Btn from '../../common/components/Btn.vue';
 import TopNav from '@/views/common/components/TopNav.vue';
+import { ref, onMounted } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
 
+const apiUtils = new ApiUtils();
 const props = defineProps({
   itemInfo: {
     type: Array,
   },
 });
+
+//이미지
+const testData = {
+  UUID: '',
+  imgNm: '',
+  imgLoc: '',
+  corpCd: '테스트가맹점코드',
+  itemCd: '41',
+  userId: 'admin',
+};
+const itemImgData = ref('');
+
+async function getItemImg() {
+  const result = await apiUtils.post('/api/file/getImg', testData);
+  itemImgData.value = result;
+}
+onMounted(() => {
+  getItemImg();
+});
+
+const selectAmt = ref(0);
+
+const itemInfo = props.itemInfo;
+
+const amtDecrease = () => {
+  if (selectAmt.value > 0) selectAmt.value -= 1;
+};
+const amtIncrease = () => {
+  if (selectAmt.value < itemInfo.saleAmt) selectAmt.value += 1;
+  else alert(`구매할 수 있는 최대 수량은 ${itemInfo.saleAmt}개 입니다.`);
+};
 
 import { router } from '@/router';
 
@@ -70,6 +99,11 @@ const goPage = (page) => {
   width: 50%;
   aspect-ratio: 1 / 1;
   background-color: var(--gray100);
+  overflow: hidden;
+}
+.item-img1 img {
+  width: 100%;
+  height: auto;
 }
 .item-text-wrap {
   flex: 1 0 0;
@@ -119,18 +153,43 @@ const goPage = (page) => {
 .info-text5 {
   min-width: 100px;
 }
-
+.sale-wrap {
+  margin-top: 60px;
+}
 .btn-box1 {
   display: flex;
   gap: 16px;
-  margin-top: 80px;
-}
-.btn-style1 {
-  padding: 16px;
+  margin-top: 24px;
 }
 .btn-style2 {
   font-size: 20px;
   flex: 1 0 0;
   padding: 20px 12px;
+}
+.item-amt-wrap {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  font-size: 18px;
+  color: var(--ngray400);
+}
+.item-amt-box {
+  width: 140px;
+  display: flex;
+  border: 1px solid var(--ngray200);
+  border-radius: 4px;
+}
+.item-amt {
+  flex: 1 0 0;
+  border: none;
+  text-align: center;
+  width: 24px;
+  outline: none;
+  font-size: 18px;
+}
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 </style>
