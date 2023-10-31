@@ -110,11 +110,11 @@
                     </svg>
                 </div>
             </div>
+            <Footer></Footer>
         </div>
         <div v-if="currentTab === 1">
                 <ChangeInfo></ChangeInfo>
             </div>
-        <Footer></Footer>
     </div>
 </template>
 
@@ -156,29 +156,18 @@ const router = useRouter();
 
 const apiUtils = new ApiUtils();
 
-const testData = {
-    userId: sessionStorage.getItem('userId'),
-    userNm: '테스트입니다'
-}
-
 const ecoData  = {
     userId: sessionStorage.getItem('userId')
 }
 
-async function myPage() {
+async function ecoStatus() {
     const token = sessionStorage.getItem('token');
 
-    const result = await apiUtils.post('/api/mypage/query', testData, {
+    const result = await apiUtils.post('/api/ecoStatus/queryMyEco', ecoData, {
         headers: {
           Authorization: `BEARER ${token}`,
         }
       });
-    userInfos.value = result.data
-    console.log(userInfos.value);
-};
-
-async function ecoStatus() {
-    const result = await apiUtils.post('/api/ecoStatus/queryMyEco', ecoData);
     ecoInfos.value = result.data;
     console.log(ecoInfos.value);
 }
@@ -190,7 +179,6 @@ onMounted(async () => {
         router.push('/login') //토큰이 없으면 로그인 페이지로
     }
 
-    myPage();
     ecoStatus();
 })
 </script>
