@@ -177,6 +177,11 @@ QnA답변작성
   URL: '/api/login/resetPw'
   파라미터: 아이디(userId), 새 비밀번호(userPw)
 
+# 로그인 후 회사코드 조회
+회사코드 조회
+  URL: '/api/login/getCorpCd'
+  파라미터: 아이디(userId)
+
 # 판매자 정보 관라
 판매자 정보 조회
   URL: '/api/sellerProfile/query'  
