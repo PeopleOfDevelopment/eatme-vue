@@ -3,7 +3,7 @@
     <div id="main-wrapper">
         <div class="top-box">
             <div class="top-box-items">
-                <span class="material-symbols-rounded">arrow_back_ios</span>
+                <span class="material-symbols-rounded" @click="goPage('barcodereg-list')">arrow_back_ios</span>
                 <p class="top-box-text1">제품 정보 입력</p>
                 <Btn btntype="solid" class="top-box-btn1" @click="insert()">확인</Btn>
             </div>
@@ -198,6 +198,14 @@ const latestUpload = ref(null);
 watch(uploadFiles, (newVal) => {
     latestUpload.value = newVal[newVal.length - 1];
 })
+
+const clickedItem = ref(window.location.pathname.substring(1) || 'home');
+
+const goPage = (page) => {
+  if (page === 'home') router.push('/');
+  else router.push('/' + page);
+  clickedItem.value = page;
+};
 </script>
 
 <style scoped>

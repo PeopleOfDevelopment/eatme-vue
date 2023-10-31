@@ -1,7 +1,7 @@
 <template>
     <Sidebar pageType="seller"></Sidebar>
     <div id="main-wrapper" v-if="!isShow && !isShow2 && !isShow3">
-        <div style="height: 850px; overflow-y: scroll;">
+        <div style="height: 950px; overflow-y: scroll;">
             <p class="title-text1">제품 등록</p>
             <div v-if="goodCount === 0">
                 <span class="material-symbols-rounded" 
@@ -216,6 +216,7 @@ async function insertItem() {
     try {
         const result = await apiUtils.post('/api/goodsReg/insert', insertData);
         alert('등록완료');
+        router.go(0);
     } catch (error) {
         console.error('등록 오류 발생: ', error);
     }
@@ -289,7 +290,7 @@ onMounted(() => {
 const goodCount = computed(() => goods.value.length);
 const selectCount = computed(() => select_goods.value.length);
 const totalPrice = computed(() => {
-    const priceData = select_goods.value.map(item => (item.salePrc * (1 - (item.discountRat/100))));
+    const priceData = select_goods.value.map(item => (item[0].itemPrc * (1 - (item[0].selectDiscountRat/100))));
     return parseInt(priceData.reduce((accmulator, currentValue) => accmulator + currentValue, 0));
 });
 
@@ -302,18 +303,6 @@ const showPopup = () => {
 const hidePopup = () => {
     showingPopup.value = false;
 }
-
-const moveToDestination = (item) => {
-    // const itemData = {
-    //     itemCd: item.itemCd,
-    //     corpCd: item.corpCd,
-    //     itemNm: item.itemNm,
-    //     itemPrc: item.itemPrc
-    // };
-
-    // emit('moveToDestination', itemData);
-    // goPage('itemreg');
-};
 
 const removeItem = (item) => {
     const index = select_goods.value.indexOf(item);

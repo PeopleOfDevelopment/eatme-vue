@@ -13,7 +13,8 @@
                <p style="flex-basis: 70px;">원가</p>
                <p style="flex-basis: 70px;">할인율</p>
                <p style="flex-basis: 70px;">판매가</p>
-               <p style="flex-basis: 60px;">상태</p>
+               <p style="flex-basis: 90px;">판매</p>
+               <p style="flex-basis: 90px;">삭제</p>
            </div>
            <div class="menu-list">
                <div class="menu-info" v-for="item in filteredItems">
@@ -25,12 +26,9 @@
                    <p style="flex-basis: 70px;">{{ item.salePrc }}원</p>
                    <p style="flex-basis: 70px;">{{ item.discountRat }}%</p>
                    <p style="flex-basis: 70px;">{{ (item.salePrc * (1 - (item.discountRat/100))).toFixed(0) }}원</p>
-                   <p style="flex-basis: 60px;">
-                    <span v-if="item.pickYn === null && item.pickYn !== '0' && item.pickYn !== '1'">-</span>
-                    <span v-else-if="item.pickYn === '0'">배송 예정</span>
-                    <span v-else-if="item.pickYn === '1'">픽업 예정</span>
-                    <span v-else>에러</span>
-                    </p>
+                   <Btn btntype="LightSolid" style="flex-basis: 70px; margin-bottom: 10px;">판매</Btn>
+                   <Btn btntype="LightSolid" style="flex-basis: 70px; margin-bottom: 10px; color: var(--system-danger);"
+                   @click="deleteGoods(item)">삭제</Btn>
                </div>
            </div>
        </div>
@@ -39,9 +37,11 @@
    
 <script setup lang="ts">
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
+import Btn from '../../common/components/Btn.vue';
 import { ref, watch, onMounted } from 'vue';
 import Topnav from '../../common/components/TopNav.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import { router } from '@/router';
    
 const goods = ref([]);
 const filteredItems = ref([]);
@@ -61,6 +61,21 @@ async function query() {
 
   updateFilteredItems();
 };
+
+async function deleteGoods(item) {
+    const deleteData = [{
+        itemCd: item.itemCd,
+        corpCd: item.corpCd
+    }];
+    
+    try {
+        const result = await apiUtils.post('/api/goodsReg/delete', deleteData);
+        router.go(0);
+        console.log('삭제 완료');
+    } catch (error) {
+        console.error('오류 발생', error);
+    }
+}
 
 const currentTab = ref(0);
 
