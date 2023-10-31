@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="img-box1">
-            <input type="file" accept="image/*" required multiple ref="realUpload" @change="handleImageUpload">
+            <input type="file" accept="image/*" required multiple ref="realUpload" id="photo" @change="handleImageUpload">
             <div class="image-preview">
                 <img :src="latestUpload?.preview" :data-file="latestUpload?.name" class="img-real1">
             </div>
@@ -139,6 +139,18 @@ const useYn = ref(true);
 const apiUtils = new ApiUtils();
 
 const insert = async () => {
+  const imageInfo = {
+    itemCd: itemCd.value,
+    corpCd: corpCd.value,
+    userId: sessionStorage.getItem('userId'),
+    imgId: '',
+    imgNm: '',
+    imgLoc: ''
+  }
+  let formData = new FormData()
+  formData.append('imageData', document.getElementById('photo')?.files[0])
+  formData.append('imageInfo', JSON.stringify(imageInfo))
+
   const itemData = [{
     itemCd: itemCd.value,
     corpCd: corpCd.value,
@@ -147,9 +159,13 @@ const insert = async () => {
     itemPrc: itemPrice.value,
     useYn: useYn.value
   }];
-
   try {
     const result = await apiUtils.post('/api/itemReg/insert', itemData)
+    await apiUtils.post('/api/file/upload', formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
     itemRegGoods2.value = result.data;
     console.log('등록 성공: ', result.data);
     alert('등록 되었습니다.');
