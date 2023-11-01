@@ -1,27 +1,49 @@
 <template>
   <TopNav navType="title" subtitle="매장정보" @close="$emit('close')"></TopNav>
   <div class="market-info-wrap">
-    <div class="market-img"></div>
-    <div class="market-text-wrap">
-      <div class="market-name">{{ marketInfoDetail.corpNm }}</div>
-      <div class="market-table">
-        <div class="market-table-tr">
-          <div class="table-label">소개</div>
-          <div class="table-text">{{ marketInfoDetail.corpDesc }}</div>
+    <div class="market-detail-wrap">
+      <div class="market-img"></div>
+      <div class="market-text-wrap">
+        <div class="market-name">{{ marketInfoDetail.corpNm }}</div>
+        <div class="market-table">
+          <div class="market-table-tr">
+            <div class="table-label">소개</div>
+            <div class="table-text">{{ marketInfoDetail.corpDesc }}</div>
+          </div>
+          <div class="market-table-tr">
+            <div class="table-label">주소</div>
+            <div class="table-text">{{ marketInfoDetail.corpAddr }}</div>
+          </div>
+          <div class="market-table-tr">
+            <div class="table-label">영업시간</div>
+            <div class="table-text">{{ marketInfoDetail.openTime }}</div>
+          </div>
+          <div class="market-table-tr">
+            <div class="table-label">판매자</div>
+            <div class="table-text">{{ marketInfoDetail.ceoNm }}</div>
+          </div>
+          <div class="market-table-tr">
+            <div class="table-label">연락처</div>
+            <div class="table-text">{{ marketInfoDetail.corpPhoneNumber }}</div>
+          </div>
         </div>
-        <div class="market-table-tr">
-          <div class="table-label">주소</div>
-          <div class="table-text">{{ marketInfoDetail.corpAddr }}</div>
+        <div class="btn-box">
+          <Btn btntype="outline" @click="toggleWish">
+            <span
+              class="material-symbols-rounded"
+              :class="{ 'icon-fill': isInWishList }">
+              favorite
+            </span>
+          </Btn>
         </div>
       </div>
-      <div class="btn-box">
-        <Btn btntype="outline" @click="toggleWish">
-          <span
-            class="material-symbols-rounded"
-            :class="{ 'icon-fill': isInWishList }">
-            favorite
-          </span>
-        </Btn>
+    </div>
+    <div class="market-goods-wrap">
+      <h2 class="market-goods-title">판매 중인 할인 제품</h2>
+      <div class="item-list">
+        <Card
+          :itemList="productList"
+          @itemSelected="$emit('itemSelected', $event)"></Card>
       </div>
     </div>
   </div>
@@ -29,6 +51,7 @@
 <script setup>
 import Btn from '../../common/components/Btn.vue';
 import TopNav from '@/views/common/components/TopNav.vue';
+import Card from '@/views/common/components/Card.vue';
 const props = defineProps({
   marketInfo: {
     type: Array,
@@ -51,6 +74,19 @@ const testData = {
 async function getMarketInfoDetail() {
   const result = await apiUtils.post('/api/marketInfo/query', testData);
   marketInfoDetail.value = result.data;
+}
+
+const productList = ref([]);
+
+const corpData = {
+  userId: '',
+  userAddr: '',
+  curAddr: props.marketInfo.corpAddr,
+};
+
+async function getItem() {
+  const result = await apiUtils.post('/api/main/query/item', corpData);
+  productList.value = result.data;
 }
 
 /* 찜 */
@@ -114,20 +150,26 @@ async function deleteWishData() {
 onMounted(() => {
   getMarketInfoDetail();
   getWishList();
+  getItem();
 });
 </script>
 
 <style scoped>
 .market-info-wrap {
+  padding: 32px 75px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.market-detail-wrap {
   display: flex;
   flex-direction: row;
   gap: 32px;
-  padding: 32px 75px;
   color: var(--ngray800);
 }
 .market-img {
   width: 50%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 4 / 3;
   background-color: var(--gray100);
 }
 .market-text-wrap {
@@ -154,9 +196,22 @@ onMounted(() => {
   font-size: 20px;
 }
 .table-label {
-  min-width: 60px;
+  min-width: 80px;
 }
 .btn-box {
   display: flex;
+}
+.market-goods-wrap {
+  margin-bottom: 60px;
+}
+.market-goods-title {
+  text-align: left;
+  color: var(--ngray800);
+  padding-inline: 10px;
+}
+.item-list {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 </style>
