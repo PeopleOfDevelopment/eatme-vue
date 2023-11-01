@@ -41,6 +41,7 @@ import Btn from '../../common/components/Btn.vue';
 import TopNav from '@/views/common/components/TopNav.vue';
 import { ref, onMounted } from 'vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import axios from 'axios';
 
 const apiUtils = new ApiUtils();
 const props = defineProps({
@@ -57,15 +58,27 @@ const testData = {
   corpCd: '테스트가맹점코드',
   itemCd: '41',
   userId: 'admin',
-};
+};  
 const itemImgData = ref('');
-
 async function getItemImg() {
-  const result = await apiUtils.post('/api/file/getImg', testData);
-  itemImgData.value = result;
+  const reader = new FileReader()
+  const result = await axios.get('/api/file/getImg', {
+    responseType: 'blob',
+    params: {
+      corpCd: '테스트가맹점코드',
+      itemCd: '41'
+    }
+  });
+  reader.onload = () => {
+    itemImgData.value = reader.result 
+  } 
+  const blob = new Blob([result.data], { type : 'image/jpeg' })
+  reader.readAsDataURL(blob) 
+  // itemImgData.value = result;
+  
 }
-onMounted(() => {
-  getItemImg();
+onMounted(() => { 
+  getItemImg(); 
 });
 
 const itemInfo = props.itemInfo;
