@@ -17,11 +17,7 @@
             fill="#8B938A" />
         </svg>
       </div>
-      <p
-        style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
-        onclick="location.href='login'">
-        로그인
-      </p>
+      <p class="login-text" onclick="location.href='login'">로그인</p>
     </div>
     <div class="user" v-if="isLoggedIn === true && pageType === 'user'">
       <div class="circle1">
@@ -37,9 +33,7 @@
             fill="#8B938A" />
         </svg>
       </div>
-      <p
-        style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
-        @click="handle_toggle">
+      <p class="login-text" @click="handle_toggle">
         {{ userData2.userNick }}
       </p>
     </div>
@@ -62,26 +56,21 @@
           <span class="material-symbols-rounded">favorite</span>
           찜목록
         </p>
-        <p
-          @click="goPage('purchase-history')"
-          :class="{ clicked: clickedItem === 'purchase-history' }">
-          <span class="material-symbols-rounded">list_alt</span>
-          구매내역
-        </p>
       </div>
-      <Btns @click="goPage('basket')" btntype="ghost" style="margin-top: 10px">
-        <span class="material-symbols-rounded">shopping_cart</span>
-        장바구니
-      </Btns>
+      <!--isLoggedInSeller === true로 수정해야 함-->
       <Btns
+        v-if="isLoggedInSeller === false"
         btntype="outline"
         style="margin-top: 10px"
-        @click="goPage('dashboard')">
+        @click="goPage('goodmanage')">
         판매 관리
       </Btns>
     </div>
     <!--판매자 페이지-->
-    <div class="user" v-if="isLoggedInSeller === false && pageType === 'seller'">
+    <!--isLoggedInSeller === true로 수정해야 함-->
+    <div
+      class="user"
+      v-if="isLoggedInSeller === false && pageType === 'seller'">
       <div class="circle1">
         <svg
           style="margin-top: 20%"
@@ -95,51 +84,17 @@
             fill="#8B938A" />
         </svg>
       </div>
-      <p
-        style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
-        onclick="location.href='login'">
-        로그인
-      </p>
-    </div>
-    <div class="user" v-if="isLoggedInSeller === true && pageType === 'seller'">
-      <div class="circle1">
-        <svg
-          style="margin-top: 20%"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M8 8C6.9 8 5.95834 7.60833 5.175 6.825C4.39167 6.04167 4 5.1 4 4C4 2.9 4.39167 1.95833 5.175 1.175C5.95834 0.391667 6.9 0 8 0C9.1 0 10.0417 0.391667 10.825 1.175C11.6083 1.95833 12 2.9 12 4C12 5.1 11.6083 6.04167 10.825 6.825C10.0417 7.60833 9.1 8 8 8ZM2 16C1.45 16 0.979002 15.804 0.587002 15.412C0.195002 15.02 -0.000664969 14.5493 1.69779e-06 14V13.2C1.69779e-06 12.6333 0.146002 12.1123 0.438002 11.637C0.730002 11.1617 1.11733 10.7993 1.6 10.55C2.63333 10.0333 3.68334 9.64567 4.75 9.387C5.81667 9.12833 6.9 8.99933 8 9C9.1 9 10.1833 9.12933 11.25 9.388C12.3167 9.64667 13.3667 10.034 14.4 10.55C14.8833 10.8 15.271 11.1627 15.563 11.638C15.855 12.1133 16.0007 12.634 16 13.2V14C16 14.55 15.804 15.021 15.412 15.413C15.02 15.805 14.5493 16.0007 14 16H2Z"
-            fill="#8B938A" />
-        </svg>
-      </div>
-      <p
-        style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
-        @click="handle_toggle">
-        {{ user }}
+      <p class="login-text" @click="handle_toggle">
+        {{ userData2.userNick }}
       </p>
     </div>
     <div v-if="pageType === 'seller'" class="menu-container">
       <div class="menus">
         <p
-          @click="goPage('dashboard')"
-          :class="{ clicked: clickedItem === 'dashboard' }">
-          <span class="material-symbols-rounded">dashboard</span>
-          대시보드
-        </p>
-        <p
           @click="goPage('goodmanage')"
           :class="{ clicked: clickedItem === 'goodmanage' }">
-          <span class="material-symbols-rounded">shopping_cart</span>
-          상품관리
-        </p>
-        <p
-          @click="goPage('payment')"
-          :class="{ clicked: clickedItem === 'payment' }">
-          <span class="material-symbols-rounded">payments</span>
-          매출 및 정산
+          <span class="material-symbols-rounded">dashboard</span>
+          상품 관리
         </p>
         <p
           @click="goPage('seller-profile')"
@@ -227,10 +182,12 @@
 
   <div class="black-bg" v-show="LoginModal">
     <div class="modal1">
-      <p class="t1" @click="goPage('mypage')" style="cursor: pointer;">마이페이지</p>
+      <p class="t1" @click="goPage('mypage')" style="cursor: pointer">
+        마이페이지
+      </p>
       <hr />
-      <p class="t2" @click="Logout" style="cursor: pointer;">로그아웃</p>
-      </div>
+      <p class="t2" @click="Logout" style="cursor: pointer">로그아웃</p>
+    </div>
   </div>
 </template>
 
@@ -245,8 +202,8 @@ const LoginModal = ref(false);
 const userData2 = ref([]);
 
 const handle_toggle = () => {
-    LoginModal.value = !LoginModal.value;
-}
+  LoginModal.value = !LoginModal.value;
+};
 
 const goPage = (page) => {
   if (page === 'home') router.push('/');
@@ -269,19 +226,19 @@ const user = userData2.value.userNick;
 
 onMounted(async () => {
   const userData = {
-  userId: sessionStorage.getItem('userId'),
-  userPw: sessionStorage.getItem('userPw')
-}
+    userId: sessionStorage.getItem('userId'),
+    userPw: sessionStorage.getItem('userPw'),
+  };
 
   const token = sessionStorage.getItem('token');
 
-  if(token) {
+  if (token) {
     isLoggedIn.value = true;
     try {
       const result = await apiUtils.post('/api/mypage/query', userData, {
         headers: {
           Authorization: `Bearer ${token}`,
-        }
+        },
       });
       userData2.value = result.data;
       console.log('사용자 정보: ', userData2);
@@ -296,7 +253,7 @@ const Logout = () => {
 
   goPage('/');
   router.go(0);
-}
+};
 </script>
 
 <style scoped>
@@ -325,18 +282,22 @@ const Logout = () => {
   margin-bottom: 24px;
   color: #00a664;
   text-align: left;
+  cursor: pointer;
 }
 
 .user {
   float: left;
   width: 100%;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  padding-block: 10px;
   margin-bottom: 24px;
   font-family: Pretendard;
   font-size: 16px;
   border-top: solid 1px #dde5db;
   border-bottom: solid 1px #dde5db;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
 }
 
 .circle1 {
@@ -344,7 +305,6 @@ const Logout = () => {
   width: 30px;
   height: 30px;
   border-radius: 22px;
-  margin-top: 10px;
   background: #c1c9bf;
 }
 
@@ -360,6 +320,7 @@ const Logout = () => {
   padding: 8px;
   gap: 4px;
   color: var(--ngray600);
+  margin-bottom: 10px;
 }
 
 .search_input {
@@ -374,7 +335,6 @@ const Logout = () => {
 
 .menus {
   font-family: Pretendard;
-  margin-top: 24px;
   padding-top: 8px;
   padding-bottom: 8px;
 }
@@ -424,33 +384,32 @@ const Logout = () => {
   }
 }
 
-.black-bg{
-    width: 1670px;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    padding: 20px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    margin-left: 249px;
-    z-index: 999;
+.black-bg {
+  width: 1670px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  margin-left: 249px;
+  z-index: 999;
 }
 
 .modal1 {
-    width: 12%;
-    height: 8%;
-    background-color: white;
-    border: solid 1px #DDE5DB;
-    border-radius: 7px;
-    font-family: Pretendard;
-    margin-top: 5%;
-    margin-left: -20px;
+  width: 12%;
+  height: 8%;
+  background-color: white;
+  border: solid 1px #dde5db;
+  border-radius: 7px;
+  font-family: Pretendard;
+  margin-top: 5%;
+  margin-left: -20px;
 }
 
 hr {
   width: 90%;
 }
-
 .t1 {
   padding-top: 10px;
 }
