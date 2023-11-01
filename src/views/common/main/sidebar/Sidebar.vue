@@ -40,7 +40,7 @@
       <p
         style="float: left; margin-left: 10px; cursor: pointer; margin-top: 14px;"
         @click="handle_toggle">
-        {{ user }}
+        {{ userData2.userNick }}
       </p>
     </div>
     <div v-if="pageType === 'user'" class="search">
@@ -242,6 +242,7 @@ import { ApiUtils } from '../../utils/ApiUtils';
 
 const clickedItem = ref(window.location.pathname.substring(1) || 'home');
 const LoginModal = ref(false);
+const userData2 = ref([]);
 
 const handle_toggle = () => {
     LoginModal.value = !LoginModal.value;
@@ -264,7 +265,7 @@ const apiUtils = new ApiUtils();
 
 const isLoggedIn = ref(false);
 const isLoggedInSeller = ref(false);
-const user = sessionStorage.getItem('userId');
+const user = userData2.value.userNick;
 
 onMounted(async () => {
   const userData = {
@@ -277,12 +278,12 @@ onMounted(async () => {
   if(token) {
     isLoggedIn.value = true;
     try {
-      const result = await apiUtils.post('/api/login/login', userData, {
+      const result = await apiUtils.post('/api/mypage/query', userData, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
       });
-      const userData2 = result.data;
+      userData2.value = result.data;
       console.log('사용자 정보: ', userData2);
     } catch (error) {
       console.error('Error fetching user data: ', error);
