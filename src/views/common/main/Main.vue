@@ -6,10 +6,14 @@
   <div id="main-wrapper" v-else-if="selectedMarket">
     <MarketInfo
       :marketInfo="selectedMarket"
-      @close="clearSelectedMarket"></MarketInfo>
+      @close="clearSelectedMarket"
+      @itemSelected="selectItem"></MarketInfo>
   </div>
   <div id="main-wrapper" v-else>
-    <TopNav navType="location" :curAddr="testData.curAddr"></TopNav>
+    <TopNav
+      navType="location"
+      :curAddr="testData.curAddr"
+      @update:curAddr="updateCurAddr"></TopNav>
     <div id="sub-wrapper" v-if="selectedList === 'item'">
       <AroundItem
         :productList="productList"
@@ -112,6 +116,12 @@ const testData = {
   userId: 'testID',
   userAddr: '',
   curAddr: '오산시',
+};
+
+const updateCurAddr = (newAddr) => {
+  testData.curAddr = newAddr;
+  getMarketAround();
+  getItemAround();
 };
 
 async function getMarketAround() {
