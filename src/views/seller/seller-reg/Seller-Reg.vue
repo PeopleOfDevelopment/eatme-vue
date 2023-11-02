@@ -3,11 +3,35 @@
     <div class="reg-title-box">
       <h3>판매회원 가입</h3>
       <p class="sub-title">
-        <span class="strong-text">사업자등록번호</span>
+        <span class="strong-text">가맹점 정보</span>
         를 입력해주세요.
       </p>
     </div>
     <div class="reg-input-box">
+      <input
+        class="reg-input"
+        v-model="corpCd"
+        placeholder="가맹점 코드" />
+      <input
+        class="reg-input"
+        v-model="corpNm"
+        placeholder="가맹점 이름" />
+      <input
+        class="reg-input"
+        v-model="corpAddr"
+        placeholder="가맹점 주소" />
+      <input
+        class="reg-input"
+        v-model="corpDesc"
+        placeholder="가맹점 소개 내용" />
+      <input
+        class="reg-input"
+        v-model="ceoNm"
+        placeholder="가맹점 대표 이름" />
+      <input
+        class="reg-input"
+        v-model="corpPhoneNumber"
+        placeholder="가맹점 전화번호" />
       <input
         :class="{ red: showStyle }"
         class="reg-input"
@@ -25,12 +49,14 @@
         사업자등록번호를 도용하여 가입 시, 형사 처벌을 받을 수 있습니다.
       </p>
     </div>
-    <Btn type="solid">인증하기</Btn>
+    <Btn type="solid" @click="check()">인증하기</Btn>
   </div>
 </template>
 <script setup>
 import Btn from '../../common/components/Btn.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import { router } from '@/router';
 
 const errorMessage = ref(null);
 const errorList = [
@@ -38,7 +64,14 @@ const errorList = [
   '사업자등록번호가 유효하지 않습니다.',
 ];
 
+const corpCd = ref('');
+const corpNm = ref('');
 const regNumber = ref('');
+const corpAddr = ref('');
+const corpDesc = ref('');
+const ceoNm = ref('');
+const corpPhoneNumber = ref('');
+
 const valid = ref(false);
 const showStyle = ref(false);
 
@@ -75,6 +108,74 @@ const checkValid = () => {
   showStyle.value = !valid.value;
   console.log(showStyle.value);
 };
+
+const apiUtils = new ApiUtils();
+
+const corp = ref('');
+
+const corpData = {
+    userId: sessionStorage.getItem('userId'),
+}
+
+async function getCorpData() {
+    const token = sessionStorage.getItem('token');
+
+    const result = await apiUtils.post('/api/login/getCorpCd', corpData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+    corp.value = result
+    await getCorpData2();
+};
+
+const sellerProfile = ref([]);
+
+async function getCorpData2() {
+  const testData = {
+    corpCd: corp.value,
+  };
+
+  const result = await apiUtils.post('/api/sellerProfile/query', testData);
+  sellerProfile.value = result.data;
+  console.log(result)
+}
+
+onMounted(() => {
+  const token = sessionStorage.getItem('token');
+    if(!token) {
+        alert('로그인 후 이용할 수 있습니다.')
+        router.push('/login') //토큰이 없으면 로그인 페이지로
+    }
+    
+  getCorpData();
+})
+
+const joinData = ref([]);
+
+const check = async () => {
+  
+  const corpData = {
+    corpCd: corpCd.value,
+    corpNm: corpNm.value,
+    corpRegNo: regNumber.value,
+    userId: sessionStorage.getItem('userId'),
+    corpAddr: corpAddr.value,
+    corpDesc: corpDesc.value,
+    ceoNm: ceoNm.value,
+    corpPhoneNumber: corpPhoneNumber.value
+  };
+
+  try {
+    const result = await apiUtils.post('/api/sellerReg/insert', corpData)
+    joinData.value = result.data;
+    console.log('가맹점 등록 성공: ', result.data);
+    alert('등록되었습니다.');
+    router.push('/goodmanage');
+  } catch (error) {
+    console.error('등록 실패: ', error);
+  }
+};
 </script>
 
 <style scoped>
@@ -84,7 +185,7 @@ const checkValid = () => {
 #reg-box {
   max-width: 500px;
   margin-inline: auto;
-  padding: 32px 16px 60px;
+  padding: 100px 16px 60px;
   display: flex;
   flex-direction: column;
 }
@@ -106,6 +207,7 @@ const checkValid = () => {
   border-radius: 8px;
   border: 1px solid var(--ngray200);
   flex: 1 0 0;
+  margin-bottom: 20px;
 }
 .red {
   border: 1px solid var(--system-danger);

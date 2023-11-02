@@ -59,7 +59,7 @@
       </div>
       <!--isLoggedInSeller === true로 수정해야 함-->
       <Btns
-        v-if="isLoggedInSeller === false"
+        v-if="isLoggedInSeller === true && corp && corp.toLowerCase() !== '가맹점 등록이 되지 않은 계정입니다.'"
         btntype="outline"
         style="margin-top: 10px"
         @click="goPage('goodmanage')">
@@ -68,9 +68,7 @@
     </div>
     <!--판매자 페이지-->
     <!--isLoggedInSeller === true로 수정해야 함-->
-    <div
-      class="user"
-      v-if="isLoggedInSeller === false && pageType === 'seller'">
+    <div class="user" v-if="isLoggedInSeller === true && pageType === 'seller'">
       <div class="circle1">
         <svg
           style="margin-top: 20%"
@@ -84,7 +82,7 @@
             fill="#8B938A" />
         </svg>
       </div>
-      <p class="login-text" @click="handle_toggle">
+      <p class="login-text" @click="handle_toggle2">
         {{ userData2.userNick }}
       </p>
     </div>
@@ -189,6 +187,16 @@
       <p class="t2" @click="Logout" style="cursor: pointer">로그아웃</p>
     </div>
   </div>
+
+  <div class="black-bg" v-show="LoginModal2">
+    <div class="modal1">
+      <p class="t1" @click="goPage('seller-profile')" style="cursor: pointer">
+        마이페이지
+      </p>
+      <hr />
+      <p class="t2" @click="Logout" style="cursor: pointer">로그아웃</p>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -199,11 +207,18 @@ import { ApiUtils } from '../../utils/ApiUtils';
 
 const clickedItem = ref(window.location.pathname.substring(1) || 'home');
 const LoginModal = ref(false);
+const LoginModal2 = ref(false);
 const userData2 = ref([]);
+const corp = ref('');
+const corpData = ref([]);
 
 const handle_toggle = () => {
   LoginModal.value = !LoginModal.value;
 };
+
+const handle_toggle2 = () => {
+  LoginModal2.value = !LoginModal2.value;
+}
 
 const goPage = (page) => {
   if (page === 'home') router.push('/');
@@ -230,10 +245,15 @@ onMounted(async () => {
     userPw: sessionStorage.getItem('userPw'),
   };
 
+  const corpData = {
+    userId: sessionStorage.getItem('userId')
+  }
+
   const token = sessionStorage.getItem('token');
 
   if (token) {
     isLoggedIn.value = true;
+    isLoggedInSeller.value = true;
     try {
       const result = await apiUtils.post('/api/mypage/query', userData, {
         headers: {
@@ -245,11 +265,36 @@ onMounted(async () => {
     } catch (error) {
       console.error('Error fetching user data: ', error);
     }
+
+    try {
+      const resultCorp = await apiUtils.post('/api/login/getCorpCd', corpData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      corp.value = resultCorp;
+
+      const testData = {
+        corpCd: corp.value,
+      };
+
+      if (corp.value && corp.value !== '가맹점 등록이 되지 않은 계정입니다.') {
+        const getCorpData = await apiUtils.post('/api/sellerProfile/query', testData);
+        corpData.value = getCorpData.data;
+        console.log(corpData.value);
+        sessionStorage.setItem('corpCd', testData.corpCd);
+      }
+      console.log(corp.value)
+    } catch (error) {
+      console.error('Error fetching user data: ', error);
+    }
   }
 });
 
 const Logout = () => {
   sessionStorage.removeItem('token');
+  sessionStorage.removeItem('userId');
+  sessionStorage.removeItem('corpCd');
 
   goPage('/');
   router.go(0);

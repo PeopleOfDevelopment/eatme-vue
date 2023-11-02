@@ -85,7 +85,7 @@ const apiUtils = new ApiUtils();
 const sellerProfile = ref([]);
 
 const testData = {
-  corpCd: '테스트가맹점코드',
+  corpCd: sessionStorage.getItem('corpCd'),
 };
 
 async function getSellerProfile() {

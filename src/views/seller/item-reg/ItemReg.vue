@@ -9,7 +9,8 @@
             </div>
         </div>
         <div class="img-box1">
-            <input type="file" accept="image/*" required multiple ref="realUpload" id="photo" @change="handleImageUpload">
+            <label for="photo">사진 변경</label>
+            <input type="file" name="file" accept="image/*" required multiple ref="realUpload" id="photo" @change="handleImageUpload">
             <div class="image-preview">
                 <img :src="latestUpload?.preview" :data-file="latestUpload?.name" class="img-real1">
             </div>
@@ -132,7 +133,7 @@ const itemDate = ref('');
 const itemPrice = ref();
 //테스트용
 const itemCd = ref('Code');
-const corpCd = ref('테스트가맹점코드');
+const corpCd = ref('');
 const itemBarcode = ref('654321');
 const useYn = ref(true);
 
@@ -153,7 +154,7 @@ const insert = async () => {
 
   const itemData = [{
     itemCd: itemCd.value,
-    corpCd: corpCd.value,
+    corpCd: sessionStorage.getItem('corpCd'),
     itemBarcode: itemBarcode.value,
     itemNm: itemNm.value,
     itemPrc: itemPrice.value,
@@ -245,9 +246,11 @@ const goPage = (page) => {
     overflow: hidden;
 }
 .img-real1 {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
 }
 .change-btn1 {
     position: absolute;
@@ -426,5 +429,29 @@ const goPage = (page) => {
     float: right;
     margin-right: 20px;
     margin-top: 20px;
+}
+
+.img-box1 label {
+    position: absolute;
+    top: 85%;
+    left: 70%;
+    width: 100px;
+    height: 30px;
+    padding: 8px 8px 8px 8px;
+    background-color: black;
+    color: white;
+    opacity: 0.5;
+    border-radius: 30px;
+    font-size: 20px;
+    z-index: 99;
+}
+
+.img-box1 input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
     <Sidebar pageType="seller"></Sidebar>
     <div id="main-wrapper" v-if="!isShow && !isShow2 && !isShow3">
-        <div style="height: 950px; overflow-y: scroll;">
+        <div style="height: 850px; overflow-y: scroll;">
             <p class="title-text1">제품 등록</p>
             <div v-if="goodCount === 0">
                 <span class="material-symbols-rounded" 
@@ -92,7 +92,7 @@
 
             <div class="scan-text-box1">
                 <p class="barcode-scan-text2">스캔이 되지 않는 경우</p>
-                <p class="barcode-scan-text3" @click="goPage('itemreg')">문제 해결</p>
+                <p class="barcode-scan-text3" @click="goPage('itemreg')" style="cursor: pointer;">문제 해결</p>
                 <p class="barcode-scan-text2">혹은</p>
                 <p class="barcode-scan-text3">바코드 입력</p>
             </div>
@@ -138,7 +138,9 @@
                         <div class="menu-list">
                             <div class="menu-info" v-for="item in select_goods" :key="item.itemCd">
                                 <p style="flex-basis: 10%;">{{ item[0].itemCd }}</p>
-                                <div style="width: 55px; height: 55px; margin: 5px; background-color: #000;"></div>
+                                <div class="menu-img">
+                                    <img :src="itemImgData" class="img-real1"/>
+                                </div>
                                 <p style="flex-basis: 30%;">{{ item[0].itemNm }}</p>
                                 <p style="flex-basis: 5%;">{{ item[0].itemAmt }}</p>
                                 <p style="flex-basis: 5%;">{{ item[0].itemPrc }}원</p>
@@ -177,6 +179,7 @@ import GoodsSelect from '../goods-reg/SelectGoods.vue';
 import { ref, computed, watchEffect, onMounted } from 'vue';
 import { router } from '@/router';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import axios from 'axios';
 
 const goods = ref([]);
 const goods2 = ref([]);
@@ -187,14 +190,12 @@ const apiUtils = new ApiUtils();
 
 const testData = {
   itemCd: '',
-  itemNm : '테스트아이템',
-  corpCd : '테스트가맹점코드',
+  itemNm : '',
+  corpCd : sessionStorage.getItem('corpCd'),
 }
 
 async function query() {
-  const result = await apiUtils.post('/api/itemReg/query', testData);
-  goods.value = result.data
-  console.log(goods)
+    console.log(stringItemCd)
 };
 
 async function query2() {
@@ -282,9 +283,56 @@ const shouldDisplay = (item) => {
     return false;
 };
 
-onMounted(() => {
-  query();
-  query2();
+//이미지
+const numericItemCd = parseInt(goods.value.itemCd, 10);
+const stringItemCd = (numericItemCd + 1).toString();
+
+const imgData = {
+  UUID: '',
+  imgNm: '',
+  imgLoc: '',
+  corpCd: '테스트가맹점코드',
+  itemCd: stringItemCd,
+  userId: 'admin',
+};  
+const itemImgData = ref('');
+async function getItemImg() {
+    if(!goods.value.itemCd) {
+        console.error('itemCd값이 비어있습니다.');
+        return;
+    }
+
+  const reader = new FileReader()
+  const result = await axios.get('/api/file/getImg', {
+    responseType: 'blob',
+    params: {
+      corpCd: imgData.corpCd,
+      itemCd: goods.value.itemCd
+    }
+  });
+  reader.onload = () => {
+    itemImgData.value = reader.result 
+  } 
+  const blob = new Blob([result.data], { type : 'image/jpeg' })
+  reader.readAsDataURL(blob) 
+  // itemImgData.value = result;
+  
+}
+
+onMounted(async() => {
+    const result = await apiUtils.post('/api/itemReg/query', testData);
+    goods.value = result.data
+
+    query();
+    query2();
+    
+    watchEffect(() => {
+        select_goods.value.forEach(item => {
+            if(item[0].itemCd) {
+                getItemImg();
+            }
+        })
+    })
 })
 
 const goodCount = computed(() => goods.value.length);
@@ -387,6 +435,20 @@ const goPage = (page) => {
     justify-content: space-around;
     border-bottom: solid 1px #C1C9BF;
     font-size: 20px;
+}
+
+.menu-img {
+    width: 60px;
+    height: 60px;
+    overflow: hidden;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.img-real1 {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 }
 
 .list-btn1 {

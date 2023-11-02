@@ -12,7 +12,8 @@
     <div class="eatme-info-wrap">
       <div class="eatme-cs">
         <Btn btntype="ghostGray">EAT ME 고객센터</Btn>
-        <Btn btntype="ghostGray">가맹 신청하기</Btn>
+        <Btn btntype="ghostGray" @click="goPage('seller-reg')"
+        v-if="corp && corp.toLowerCase() === '가맹점 등록이 되지 않은 계정입니다.'">가맹 신청하기</Btn>
       </div>
       <div class="eatme-info">
         <Btn btntype="textGrayThin">사업자정보확인</Btn>
@@ -25,10 +26,47 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Btn from '../../components/Btn.vue';
 import Modal from '../../components/Modal.vue';
+import { ApiUtils } from '../../utils/ApiUtils';
+import { router } from '@/router';
+
 const noticeOpen = ref(false);
+
+const apiUtils = new ApiUtils();
+
+const corp = ref('');
+
+onMounted(async () => {
+  const corpData = {
+    userId: sessionStorage.getItem('userId')
+  }
+
+  const token = sessionStorage.getItem('token');
+
+  if (token) {
+    try {
+      const resultCorp = await apiUtils.post('/api/login/getCorpCd', corpData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      corp.value = resultCorp;
+      console.log(corp.value)
+    } catch (error) {
+      console.error('Error fetching user data: ', error);
+    }
+  }
+});
+
+const clickedItem = ref(window.location.pathname.substring(1) || 'home');
+
+const goPage = (page) => {
+  if (page === 'home') router.push('/');
+  else router.push('/' + page);
+  clickedItem.value = page;
+};
 </script>
 
 <style scoped>

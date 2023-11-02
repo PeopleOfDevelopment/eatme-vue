@@ -3,7 +3,7 @@
   <div class="item-info-box1">
     <div class="item-img1">
       <!-- 문제 여기 -->
-      <img :src="itemImgData" />
+      <img :src="itemImgData" class="img-real1"/>
     </div>
     <div class="item-text-wrap">
       <div class="item-info1">
@@ -66,7 +66,7 @@ async function getItemImg() {
     responseType: 'blob',
     params: {
       corpCd: '테스트가맹점코드',
-      itemCd: '41'
+      itemCd: '40'
     }
   });
   reader.onload = () => {
@@ -96,10 +96,14 @@ const itemInfo = props.itemInfo;
   aspect-ratio: 1 / 1;
   background-color: var(--gray100);
   overflow: hidden;
+  position: relative;
 }
 .item-img1 img {
-  width: 100%;
-  height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 .item-text-wrap {
   flex: 1 0 0;
