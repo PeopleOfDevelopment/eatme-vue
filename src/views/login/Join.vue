@@ -4,6 +4,7 @@
     <p class="join-text1">회원가입</p>
     <p class="join-text2">이미 EAT ME의 회원이신가요?</p>
     <p class="join-text3" onclick="location.href='login'" style="cursor: pointer;">로그인</p>
+    <div class="ph-box1">
     <div class="ph1">
       <div class="id1">
         <input placeholder="아이디" style="width: 91%; float: left;" class="inputInfor" v-model="userId">
@@ -16,11 +17,16 @@
           margin-top: 7px;
           margin-left: 2px;
           float: right;
-        ">
+        " @click="checkOverlapId()">
         중복확인
       </Btns>
     </div>
-
+    <div class="show-text1" v-if="IsCheckId === false">
+      <p>이미 존재하는 아이디입니다.</p>
+    </div>
+    <div class="show-text2" v-else-if="IsCheckId === true">
+      <p>사용 가능한 아이디입니다.</p>
+    </div>
     <div class="ph1">
       <div class="pw1">
         <input placeholder="닉네임(6자 이내)" style="width: 91%; float: left;" maxlength="10" class="inputInfor" v-model="userNick">
@@ -33,11 +39,16 @@
           margin-top: 7px;
           margin-left: 2px;
           float: right;
-        ">
+        " @click="checkOverlapNick()">
         중복확인
       </Btns>
     </div>
-
+    <div class="show-text1" v-if="IsCheckNick === false">
+      <p>이미 존재하는 닉네임입니다.</p>
+    </div>
+    <div class="show-text2" v-else-if="IsCheckNick === true">
+      <p>사용 가능한 닉네임입니다.</p>
+    </div>
     <input placeholder="비밀번호" type="password" v-model="password" class="inputInfor" @input="pw_check">
     <p class="join-text4" :class="passwordCorrectClass">
       {{ passwordCorrect }}
@@ -76,6 +87,7 @@
       회원가입
     </Btns>
   </div>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -114,38 +126,91 @@ const pw_check = () => {
 }
 
 const check = async () => {
-  //비밀번호 확인
-  if (password.value.length < 8) {
-    alert('입력한 글자가 8글자 이상이어야 합니다.');
-  }
+  if (IsCheckId.value === true && IsCheckNick.value === true) {
+      //비밀번호 확인
+    if (password.value.length < 8) {
+      alert('입력한 글자가 8글자 이상이어야 합니다.');
+    }
 
-  if (password.value != password2.value) {
-    alert('비밀번호를 다시 한 번 확인해주세요.');
+    if (password.value != password2.value) {
+      alert('비밀번호를 다시 한 번 확인해주세요.');
+    } else {
+      console.log('비밀번호 일치')
+    }
+    
+    const userData = {
+      userId: userId.value,
+      userPw: password.value,
+      userPw2: password2.value,
+      userNick: userNick.value,
+      userEmail: userEmail.value,
+      userPhoneNumber: userNumber.value,
+      userAddr: userAddr.value,
+      userNm: userNm.value
+    };
+
+    try {
+      const result = await apiUtils.post('/api/join/insert', userData)
+      joinData.value = result.data;
+      console.log('회원가입 성공: ', result.data);
+      alert('회원가입 되었습니다.');
+      router.push('/login');
+    } catch (error) {
+      console.error('회원가입 실패: ', error);
+    }
   } else {
-    console.log('비밀번호 일치')
-  }
-  
-  const userData = {
-    userId: userId.value,
-    userPw: password.value,
-    userPw2: password2.value,
-    userNick: userNick.value,
-    userEmail: userEmail.value,
-    userPhoneNumber: userNumber.value,
-    userAddr: userAddr.value,
-    userNm: userNm.value
-  };
-
-  try {
-    const result = await apiUtils.post('/api/join/insert', userData)
-    joinData.value = result.data;
-    console.log('회원가입 성공: ', result.data);
-    alert('회원가입 되었습니다.');
-    router.push('/login');
-  } catch (error) {
-    console.error('회원가입 실패: ', error);
+    alert('아이디와 닉네임 중복을 확인해주세요.');
   }
 };
+
+const check1 = ref(false);
+const check2 = ref(false);
+
+const IsCheckId = ref(null);
+const IsCheckNick = ref(null);
+
+async function checkOverlapId() {
+  IsCheckId.value = null;
+
+  try {
+    const checkData1 = {
+      userId: userId.value
+    };
+
+    const result = await apiUtils.post('/api/join/checkOverlap', checkData1);
+    check1.value = result;
+    console.log(check1.value);
+    
+    if (check1.value === true) {
+      IsCheckId.value = true;
+    } else {
+      IsCheckId.value = false;
+    }
+  } catch (error) {
+    console.error('오류 발생: ', error);
+  }
+}
+
+async function checkOverlapNick() {
+  IsCheckNick.value = null;
+
+  try {
+    const checkData2 = {
+      userNick: userNick.value
+    };
+
+    const result = await apiUtils.post('/api/join/checkOverlap', checkData2);
+    check2.value = result;
+    
+    if (check2.value === true) {
+      IsCheckNick.value = true;
+    } else {
+      IsCheckNick.value = false;
+    }
+  } catch (error) {
+    console.error('오류 발생: ', error);
+  }
+}
 </script>
 
 <style scoped>
@@ -187,6 +252,12 @@ const check = async () => {
   margin-top: 20px;
 }
 
+.ph-box1 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .ph1 {
   width: 100%;
   float: left;
@@ -205,7 +276,7 @@ const check = async () => {
   color: #aaaca8;
   margin-top: 5px;
   margin-bottom: 5px;
-  float: left;
+  text-align: left;
   margin-left: 10px;
 }
 
@@ -237,5 +308,23 @@ const check = async () => {
 
 input::placeholder {
     color: #A5ADA4;
+}
+
+.show-text1 {
+  font-size: 14px;
+  color: #d13125;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.show-text2 {
+  font-size: 14px;
+  color: #00a664;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: left;
+  margin-left: 10px;
 }
 </style>
