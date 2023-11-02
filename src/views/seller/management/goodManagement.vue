@@ -19,7 +19,9 @@
            <div class="menu-list">
                <div class="menu-info" v-for="item in filteredItems">
                    <p style="flex-basis: 90px;">{{ item.itemCd }}</p>
-                   <div class="menu-img"></div>
+                   <div class="menu-img">
+                    <img :src="itemImgData" class="img-real1"/>
+                   </div>
                    <p style="flex-basis: 296px;">{{ item.itemNm }}</p>
                    <p style="flex-basis: 50px;">{{ item.saleAmt }}</p>
                    <p style="flex-basis: 90px;">{{ item.itemExpdate }}</p>
@@ -42,6 +44,7 @@ import { ref, watch, onMounted } from 'vue';
 import Topnav from '../../common/components/TopNav.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import { router } from '@/router';
+import axios from 'axios';
    
 const goods = ref([]);
 const filteredItems = ref([]);
@@ -49,9 +52,9 @@ const filteredItems = ref([]);
 const apiUtils = new ApiUtils();
 
 const testData = {
-  itemCd: 'Code',
-  itemNm : '테스트아이템',
-  corpCd : '테스트가맹점코드',
+  itemCd: '',
+  itemNm : '',
+  corpCd : sessionStorage.getItem('corpCd'),
 }
 
 async function query() {
@@ -99,7 +102,36 @@ const updateFilteredItems = () => {
     }
 }
 
+//이미지
+const imgData = {
+  UUID: '',
+  imgNm: '',
+  imgLoc: '',
+  corpCd: '테스트가맹점코드',
+  itemCd: '58',
+  userId: 'admin',
+};  
+const itemImgData = ref('');
+async function getItemImg() {
+  const reader = new FileReader()
+  const result = await axios.get('/api/file/getImg', {
+    responseType: 'blob',
+    params: {
+      corpCd: '테스트가맹점코드',
+      itemCd: '57'
+    }
+  });
+  reader.onload = () => {
+    itemImgData.value = reader.result 
+  } 
+  const blob = new Blob([result.data], { type : 'image/jpeg' })
+  reader.readAsDataURL(blob) 
+  // itemImgData.value = result;
+  
+}
+
 onMounted(() => {
+    getItemImg(); 
     query();
 })
 </script>
@@ -145,7 +177,13 @@ onMounted(() => {
 .menu-img {
     width: 60px;
     height: 60px;
-    background-color: #000;
+    overflow: hidden;
+}
+
+.img-real1 {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
 }
    
 .list-btn1 {
