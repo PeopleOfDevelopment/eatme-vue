@@ -29,6 +29,11 @@
   URL: '/api/join/insert'
   파라미터 : 이름(userNm), 아이디(userId), 비밀번호(userPw), 닉네임(userNick), 주소(userAddr), 이메일(userEmail), 전화번호(userPhoneNumber)
 
+아이디 및 닉네임 중복체크 
+  URL: '/api/join/checkOverlap'
+  파라미터: 아이디(userId) 또는 닉네임(userNick)  * 파라미터를 둘 다 넣으면 안됨
+  리턴값: true -> 사용가능, false -> 사용불가
+
 # 가맹점 URL
 가맹점 등록 :
   URL: '/api/sellerReg/insert'
