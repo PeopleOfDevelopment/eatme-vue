@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <Sidebar></Sidebar>
+    <div id="main-wrapper">
         <div class="box2">
             <div class="box2-border">
                 <p class="box2-text1">회원 정보</p>
@@ -58,11 +59,6 @@
                     </div>
                 </div>
             </div>
-            <div class="box2-3">
-                <p class="box2-7-text1">휴대전화</p>
-                <p class="box2-3-text2">010-****-1234</p>
-                <Btn btntype="userInfo" style="width: 100px; height: 20px; margin-left: auto; margin-right: 40px; margin-top: -10px; margin-bottom: 10px;">휴대전화 변경</Btn>
-            </div>
             <p class="red-text1" @click="handle_toggle">회원 탈퇴</p>
 
             <div class="black-bg" v-show="modalOpen">
@@ -85,6 +81,7 @@
 <script setup>
 import Btn from '../../../common/components/Btn.vue';
 import Footer from '../../../common/main/footer/Footer.vue';
+import Sidebar from '../../../common/main/sidebar/Sidebar.vue';
 import { ref } from 'vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import { onMounted } from 'vue';
@@ -220,8 +217,7 @@ onMounted(() => {
     width: 70%;
     display: flex;
     margin: 0 auto;
-    margin-top: 6%;
-    margin-bottom: 6%;
+    margin-top: 13%;
     flex-direction: column;
 }
 

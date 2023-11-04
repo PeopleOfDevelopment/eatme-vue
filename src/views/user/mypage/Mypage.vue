@@ -1,9 +1,6 @@
 <template>
     <Sidebar></Sidebar>
     <div id="main-wrapper">
-        <TopNav navType="tabs" :tabList="['나의 기록', '개인 정보 변경']"
-        :currentTab="currentTab" :changeTab="changeTab"></TopNav>
-        <div v-if="currentTab === 0">
             <div class="box1">
                 <p class="box1-text1">이번 달 내가 구한 음식 수는?</p>
                 <div class="box1-btns1">
@@ -110,11 +107,7 @@
                     </svg>
                 </div>
             </div>
-            <Footer></Footer>
-        </div>
-        <div v-if="currentTab === 1">
-                <ChangeInfo></ChangeInfo>
-            </div>
+        <Footer></Footer>
     </div>
 </template>
 
@@ -127,7 +120,6 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import ChangeInfo from '../mypage/change-user-info/ChangeUserInfo.vue';
 import { ApiUtils } from '../../common/utils/ApiUtils';
-import { router } from '@/router';
 import axios from 'axios';
 
 const change_btn = (e) => {
@@ -141,12 +133,6 @@ const change_btn = (e) => {
                     }
                 });
                 console.log(e.currentTarget);
-};
-
-const currentTab = ref(0);
-
-const changeTab = (index) => {
-  currentTab.value = index;
 };
 
 const userInfos = ref([]);
