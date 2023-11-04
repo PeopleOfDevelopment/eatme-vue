@@ -94,14 +94,14 @@ async function getItem() {
 const isInWishList = ref(false);
 
 const wishData = {
-  userId: 'admin',
+  userId: '',
   corpCd: targetCorp,
 };
 
 const wishList = ref([]);
 
 const userData = {
-  userId: 'admin',
+  userId: '',
 };
 
 async function getWishList() {
@@ -148,6 +148,11 @@ async function deleteWishData() {
 }
 
 onMounted(() => {
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    userData.userId = sessionStorage.getItem('userId');
+    wishData.userId = sessionStorage.getItem('userId');
+  }
   getMarketInfoDetail();
   getWishList();
   getItem();

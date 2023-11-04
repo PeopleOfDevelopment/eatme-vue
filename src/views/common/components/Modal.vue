@@ -144,7 +144,6 @@ const initializeEditor = () => {
   quill = new Quill(editor.value, {
     modules: {
       toolbar: [
-        [{ header: [1, 2, false] }],
         ['bold', 'italic', 'underline'],
         [{ color: [] }, { background: [] }],
         ['link', 'image'],
@@ -158,19 +157,18 @@ const initializeEditor = () => {
 /* 공지 추가 */
 async function insertNotice() {
   const noticeNew = {
-    noticeNo: noticeList.value.length + 1,
     noticeTit: editTitle.value,
     noticeTxt: quill.root.innerHTML,
-    noticeTodt: editFrdt.value,
-    noticeFrdt: editTodt.value,
+    noticeTodt: editTodt.value,
+    noticeFrdt: editFrdt.value,
     noticeTp: '전체',
   };
   try {
     const result = await apiUtils.post('/api/admin/notice/insert', noticeNew);
-    joinData.value = result.data;
     console.log('공지 등록 완료');
     alert('공지가 등록되었습니다.');
     isNoticeEdited.value = false;
+    getNoticeList();
   } catch (error) {
     console.error('공지 등록 실패');
   }
