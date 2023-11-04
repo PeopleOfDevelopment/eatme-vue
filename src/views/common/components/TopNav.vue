@@ -47,6 +47,7 @@ import Btn from './Btn.vue';
 const modalOpen = ref(false);
 const locationWrap = ref(null);
 const curAddr = ref(props.curAddr);
+const curAddrJibun = ref('');
 const emit = defineEmits(['update:curAddr']);
 
 const showLocation = () => {
@@ -54,10 +55,12 @@ const showLocation = () => {
   new daum.Postcode({
     oncomplete: (data) => {
       let addr = data.roadAddress; //도로명주소
+      let jibunAddr = data.jibunAddress; //지번주소
       curAddr.value = addr;
+      curAddrJibun.value = jibunAddr.replace(/\s\d+(-\d+)?$/, '');
       toggleModal();
       if (curAddr.value !== props.curAddr) {
-        emit('update:curAddr', curAddr.value);
+        emit('update:curAddr', curAddrJibun.value);
       }
     },
   }).embed(locationWrap.value);

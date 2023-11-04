@@ -1,19 +1,22 @@
 <template>
   <footer id="footer">
-    <div class="notice-wrap">
-      <Btn
-        class="notice-title"
-        btntype="textGrayThin"
-        @click="noticeOpen = true">
-        공지사항
+    <div class="notice-wrap" @click="noticeOpen = true">
+      <Btn class="notice-title" btntype="textGrayThin">공지사항</Btn>
+      <Btn v-if="noticeList != null" btntype="textGray">
+        {{ noticeList[0].noticeTit }}
       </Btn>
-      <Btn btntype="textGray">사이트 점검 안내</Btn>
     </div>
     <div class="eatme-info-wrap">
       <div class="eatme-cs">
         <Btn btntype="ghostGray">EAT ME 고객센터</Btn>
-        <Btn btntype="ghostGray" @click="goPage('seller-reg')"
-        v-if="corp && corp.toLowerCase() === '가맹점 등록이 되지 않은 계정입니다.'">가맹 신청하기</Btn>
+        <Btn
+          btntype="ghostGray"
+          @click="goPage('seller-reg')"
+          v-if="
+            corp && corp.toLowerCase() === '가맹점 등록이 되지 않은 계정입니다.'
+          ">
+          가맹 신청하기
+        </Btn>
       </div>
       <div class="eatme-info">
         <Btn btntype="textGrayThin">사업자정보확인</Btn>
@@ -32,6 +35,12 @@ import Modal from '../../components/Modal.vue';
 import { ApiUtils } from '../../utils/ApiUtils';
 import { router } from '@/router';
 
+const props = defineProps({
+  noticeList: {
+    type: Array,
+  },
+});
+
 const noticeOpen = ref(false);
 
 const apiUtils = new ApiUtils();
@@ -40,8 +49,8 @@ const corp = ref('');
 
 onMounted(async () => {
   const corpData = {
-    userId: sessionStorage.getItem('userId')
-  }
+    userId: sessionStorage.getItem('userId'),
+  };
 
   const token = sessionStorage.getItem('token');
 
@@ -53,7 +62,7 @@ onMounted(async () => {
         },
       });
       corp.value = resultCorp;
-      console.log(corp.value)
+      console.log(corp.value);
     } catch (error) {
       console.error('Error fetching user data: ', error);
     }

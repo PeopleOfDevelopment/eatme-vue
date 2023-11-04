@@ -40,9 +40,9 @@
               <span v-if="isAdmin">~ {{ selectedNotice.noticeTodt }}</span>
             </div>
           </div>
-          <div class="selected-contents">
-            {{ selectedNotice.noticeTxt }}
-          </div>
+          <div
+            class="selected-contents"
+            v-html="selectedNotice.noticeTxt"></div>
           <div v-if="isAdmin" class="admin-btn-wrap">
             <Btn btntype="ghostGray">수정</Btn>
             <Btn btntype="ghostGray">삭제</Btn>
@@ -125,7 +125,7 @@ const noticeParam = {
 };
 async function getNoticeList() {
   const result = await apiUtils.post('/api/admin/notice/query', noticeParam);
-  noticeList.value = result.data;
+  noticeList.value = result.data.reverse();
 }
 
 /* 에디터 */
@@ -146,10 +146,11 @@ const initializeEditor = () => {
       toolbar: [
         [{ header: [1, 2, false] }],
         ['bold', 'italic', 'underline'],
-        ['image'],
+        [{ color: [] }, { background: [] }],
+        ['link', 'image'],
       ],
     },
-    placeholder: '입력해주세요',
+    placeholder: '내용을 입력해주세요',
     theme: 'snow',
   });
 };
@@ -174,12 +175,6 @@ async function insertNotice() {
     console.error('공지 등록 실패');
   }
 }
-/*
-URL: '/api/admin/notice/insert'
-  파라미터: 공지번호(noticeNo), 공지제목(noticeTit), 공지내용(noticeTxt), 
-  공지시작일(noticeTodt), 공지종료일(noticeFrdt), 공지타입(noticeTp, 
-  판매자공지일경우 '판매자', 전체일 경우 '전체')
-*/
 
 onMounted(async () => {
   const token = sessionStorage.getItem('token');
@@ -199,7 +194,7 @@ onMounted(async () => {
   width: calc(100% - 248px);
   height: 100%;
   position: fixed;
-  z-index: 99;
+  z-index: 999;
   top: 0;
   display: flex;
   justify-content: center;
@@ -207,14 +202,13 @@ onMounted(async () => {
 }
 .modal {
   background-color: white;
-  position: fixed;
   padding: 10px;
+  max-width: 400px;
   width: 100%;
-  height: 600px;
-  max-width: 600px;
   color: var(--ngray800);
   display: flex;
   flex-direction: column;
+  min-height: 50vh;
 }
 .title-wrapper {
   display: flex;
@@ -236,6 +230,7 @@ onMounted(async () => {
   align-items: center;
   border-bottom: 1px solid var(--ngray200);
   cursor: pointer;
+  gap: 40px;
 }
 .notice-contents {
   color: var(--ngray600);
