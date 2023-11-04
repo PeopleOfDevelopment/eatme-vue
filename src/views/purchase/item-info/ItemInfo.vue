@@ -55,8 +55,8 @@ const testData = {
   UUID: '',
   imgNm: '',
   imgLoc: '',
-  corpCd: '테스트가맹점코드',
-  itemCd: '41',
+  corpCd: props.itemInfo.corpCd,
+  itemCd: props.itemInfo.itemCd,
   userId: 'admin',
 };  
 const itemImgData = ref('');
@@ -65,10 +65,10 @@ async function getItemImg() {
   const result = await axios.get('/api/file/getImg', {
     responseType: 'blob',
     params: {
-      corpCd: '테스트가맹점코드',
-      itemCd: '40'
+      corpCd: props.itemInfo.corpCd,
+      itemCd: props.itemInfo.itemCd
     }
-  });
+  }); 
   reader.onload = () => {
     itemImgData.value = reader.result 
   } 

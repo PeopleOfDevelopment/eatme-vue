@@ -140,9 +140,10 @@ const useYn = ref(true);
 const apiUtils = new ApiUtils();
 
 const insert = async () => {
+  const seq:number = await apiUtils.post('/api/itemReg/getSeq') + 1
   const imageInfo = {
-    itemCd: itemCd.value,
-    corpCd: corpCd.value,
+    itemCd: seq,
+    corpCd: sessionStorage.getItem('corpCd'),
     userId: sessionStorage.getItem('userId'),
     imgId: '',
     imgNm: '',
@@ -153,7 +154,7 @@ const insert = async () => {
   formData.append('imageInfo', JSON.stringify(imageInfo))
 
   const itemData = [{
-    itemCd: itemCd.value,
+    itemCd: seq,
     corpCd: sessionStorage.getItem('corpCd'),
     itemBarcode: itemBarcode.value,
     itemNm: itemNm.value,
@@ -175,6 +176,7 @@ const insert = async () => {
     console.error('등록 실패: ', error);
   }
 };
+
 
 const realUpload = ref(null);
 const uploadFiles = ref([]);
