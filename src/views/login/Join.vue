@@ -2,8 +2,10 @@
   <div class="join">
     <p class="eatme-text1">EAT ME</p>
     <p class="join-text1">회원가입</p>
-    <p class="join-text2">이미 EAT ME의 회원이신가요?</p>
+    <div class="join-text-box1">
+      <p class="join-text2">이미 EAT ME의 회원이신가요?</p>
     <p class="join-text3" onclick="location.href='login'" style="cursor: pointer;">로그인</p>
+    </div>
     <div class="ph-box1">
     <div class="ph1">
       <div class="id1">
@@ -12,11 +14,9 @@
       <Btns
         btntype="ghost"
         style="
-          width: 70px;
-          padding: 18px 10px 18px 10px;
+          width: 80px;
           margin-top: 7px;
-          margin-left: 2px;
-          float: right;
+          margin-bottom: 7px;
         " @click="checkOverlapId()">
         중복확인
       </Btns>
@@ -34,11 +34,9 @@
       <Btns
         btntype="ghost"
         style="
-          width: 70px;
-          padding: 18px 10px 18px 10px;
+          width: 80px;
           margin-top: 7px;
-          margin-left: 2px;
-          float: right;
+          margin-bottom: 7px;
         " @click="checkOverlapNick()">
         중복확인
       </Btns>
@@ -216,6 +214,8 @@ async function checkOverlapNick() {
   font-family: Pretendard;
   margin: 0 auto;
   width: 30%;
+  display: flex;
+  flex-direction: column;
 }
 
 .eatme-text1 {
@@ -231,6 +231,11 @@ async function checkOverlapNick() {
   font-weight: bold;
   margin-top: 20px;
   color: #2b322c;
+}
+
+.join-text-box1 {
+  display: flex;
+  justify-content: space-around;
 }
 
 .join-text2 {
@@ -258,7 +263,8 @@ async function checkOverlapNick() {
 
 .ph1 {
   width: 100%;
-  float: left;
+  display: flex;
+  justify-content: space-between;
 }
 
 .id1 {
