@@ -12,7 +12,7 @@
   <div id="main-wrapper" v-else>
     <TopNav
       navType="location"
-      :curAddr="testData.curAddr"
+      :curAddr="userData.curAddr"
       @update:curAddr="updateCurAddr"></TopNav>
     <div id="sub-wrapper" v-if="selectedList === 'item'">
       <AroundItem
@@ -85,9 +85,9 @@
           </div>
         </div>
       </div>
-      <Footer></Footer>
+      <Footer :noticeList="noticeList"></Footer>
     </div>
-    <NonModal v-if="showNm"></NonModal>
+    <NonModal v-if="showNm" :noticeList="noticeList"></NonModal>
   </div>
 </template>
 
@@ -112,30 +112,55 @@ const marketList = ref([]);
 
 const productList = ref([]);
 
-const testData = {
-  userId: 'testID',
+const userData = {
+  userId: '',
   userAddr: '',
-  curAddr: '오산시',
+  curAddr: '경기도',
 };
 
 const updateCurAddr = (newAddr) => {
-  testData.curAddr = newAddr;
+  userData.curAddr = newAddr;
   getMarketAround();
   getItemAround();
 };
 
 async function getMarketAround() {
-  const result = await apiUtils.post('/api/main/query/corp', testData);
+  const result = await apiUtils.post('/api/main/query/corp', userData);
   marketList.value = result.data;
 }
 
 async function getItemAround() {
-  const result = await apiUtils.post('/api/main/query/item', testData);
+  const result = await apiUtils.post('/api/main/query/item', userData);
   productList.value = result.data;
 }
+
+const noticeList = ref();
+
+/* 공지 데이터 불러오기 */
+let today = new Date();
+let tY = today.getFullYear();
+let tM = String(today.getMonth() + 1).padStart(2, '0');
+let tD = String(today.getDate()).padStart(2, '0');
+let todayFormat = `${tY}-${tM}-${tD}`;
+
+const noticeParam = {
+  noticeTp: '전체',
+  noticeFrdt: todayFormat,
+  noticeTodt: todayFormat,
+};
+async function getNoticeList() {
+  const result = await apiUtils.post('/api/admin/notice/query', noticeParam);
+  noticeList.value = result.data.reverse();
+}
+
 onMounted(() => {
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    userData.userId = sessionStorage.getItem('userId');
+  }
   getMarketAround();
   getItemAround();
+  getNoticeList();
 });
 
 /* 이동 */

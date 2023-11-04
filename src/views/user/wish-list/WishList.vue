@@ -33,24 +33,25 @@ const apiUtils = new ApiUtils();
 
 const wishList = ref([]);
 
-const testData = {
-  userId: 'admin',
+const userData = {
+  userId: '',
 };
 
 async function getWishList() {
-  const result = await apiUtils.post('/api/wishList/query', testData);
+  const result = await apiUtils.post('/api/wishList/query', userData);
   wishList.value = result.data;
 }
 
 onMounted(async () => {
   const token = sessionStorage.getItem('token');
-    if(!token) {
-        alert('로그인 후 이용할 수 있습니다.')
-        router.push('/login') //토큰이 없으면 로그인 페이지로
-    }
-    
-    getWishList();
-})
+  if (!token) {
+    alert('로그인 후 이용할 수 있습니다.');
+    router.push('/login'); //토큰이 없으면 로그인 페이지로
+  } else {
+    userData.userId = sessionStorage.getItem('userId');
+  }
+  getWishList();
+});
 
 /*매장 상세 페이지 이동*/
 const selectedMarket = ref(null);

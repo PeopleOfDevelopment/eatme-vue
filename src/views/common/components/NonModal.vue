@@ -1,18 +1,8 @@
 <template>
-  <div class="nonmodal-box" v-if="modalOpen">
+  <div class="nonmodal-box" v-if="modalOpen && noticeList != null">
     <div class="nm-contents-container">
-      <h2 class="nm-title">사이트 점검 안내</h2>
-      <div class="nm-contents">
-        서버 안정화를 위한 사이트 점검을 실시합니다.
-        <br />
-        작업 시간 동안 모든 서비스 이용이 중단되오니 이용에 참고 부탁드립니다.
-        <br />
-        <br />
-        <strong>점검 시간</strong>
-        <br />
-        2023.05.29　13:00 ~ 13:10
-        <Btn btntype="textThin">자세히 보기</Btn>
-      </div>
+      <h2 class="nm-title">{{ noticeList[0].noticeTit }}</h2>
+      <div class="nm-contents" v-html="noticeList[0].noticeTxt"></div>
     </div>
     <div class="nm-close-container">
       <div class="hide-nm-24-container">
@@ -32,6 +22,13 @@
 <script setup>
 import Btn from './Btn.vue';
 import { ref } from 'vue';
+
+const props = defineProps({
+  noticeList: {
+    type: Array,
+  },
+});
+
 const modalOpen = ref(true);
 const hideModal = ref(false);
 
@@ -63,7 +60,7 @@ const closeModal = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 24px;
   color: var(--ngray800);
   max-width: 550px;
 }
@@ -72,6 +69,7 @@ const closeModal = () => {
   flex-direction: column;
   gap: 32px;
   width: 100%;
+  min-height: 150px;
 }
 .nm-title {
   padding: 0;
