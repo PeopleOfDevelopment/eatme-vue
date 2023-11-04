@@ -1,8 +1,6 @@
 <template>
     <Sidebar pageType="seller"></Sidebar>
     <div id="main-wrapper">
-        <Topnav navType="tabs" :tabList="['전체 상품', '픽업 관리', '배송 관리']"
-        :currentTab="currentTab" :changeTab="changeTab"></Topnav>
        <div class="menu-box">
            <div class="menu-top-box">
                <p style="flex-basis: 90px;">상품코드</p>
@@ -17,10 +15,10 @@
                <p style="flex-basis: 90px;">삭제</p>
            </div>
            <div class="menu-list">
-               <div class="menu-info" v-for="item in filteredItems">
+               <div class="menu-info" v-for="item in filteredItems" :key="item.itemCd">
                    <p style="flex-basis: 90px;">{{ item.itemCd }}</p>
                    <div class="menu-img">
-                    <img :src="itemImgData" class="img-real1"/>
+                    <img :src="item.imgSrc" class="img-real1"/>
                    </div>
                    <p style="flex-basis: 296px;">{{ item.itemNm }}</p>
                    <p style="flex-basis: 50px;">{{ item.saleAmt }}</p>
@@ -102,37 +100,56 @@ const updateFilteredItems = () => {
     }
 }
 
-//이미지
-const imgData = {
-  UUID: '',
-  imgNm: '',
-  imgLoc: '',
-  corpCd: '테스트가맹점코드',
-  itemCd: '58',
-  userId: 'admin',
-};  
-const itemImgData = ref('');
-async function getItemImg() {
-  const reader = new FileReader()
-  const result = await axios.get('/api/file/getImg', {
-    responseType: 'blob',
-    params: {
-      corpCd: '테스트가맹점코드',
-      itemCd: '57'
+//이미지 
+const itemImgData = ref([]);
+
+async function getItemImg(item) {
+    const imgData = {
+    UUID: '',
+    imgNm: '',
+    imgLoc: '',
+    corpCd: item.corpCd || '',
+    itemCd: item.itemCd || '',
+    userId: 'admin',
+    }; 
+
+  if(!imgData.corpCd || !imgData.itemCd) {
+    item.imgSrc = require('../../../assets/img/eatme.jpg');
+  } else {
+    try {
+        const result = await axios.get('/api/file/getImg', {
+        responseType: 'blob',
+        params: {
+            corpCd: item.corpCd,
+            itemCd: item.itemCd
+        }
+        }); 
+        const reader = new FileReader()
+        reader.onload = () => {
+        item.imgSrc = reader.result; 
+        } 
+        const blob = new Blob([result.data], { type : 'image/jpeg' })
+        reader.readAsDataURL(blob) 
+        // itemImgData.value = result;
+    } catch (error) {
+        console.error('이미지를 불러올 수 없습니다.', error);
+        item.imgSrc = require('../../../assets/img/eatme.jpg'); 
     }
-  });
-  reader.onload = () => {
-    itemImgData.value = reader.result 
-  } 
-  const blob = new Blob([result.data], { type : 'image/jpeg' })
-  reader.readAsDataURL(blob) 
-  // itemImgData.value = result;
-  
+  }
 }
 
-onMounted(() => {
-    getItemImg(); 
-    query();
+onMounted(async () => {
+    await query();
+
+    if (goods.value.sellingAll && goods.value.sellingAll.length > 0) {
+        goods.value.sellingAll.forEach(async (item) => {
+        if (item && item.corpCd && item.itemCd) {
+            await getItemImg(item);
+        }
+    });
+    } else {
+        console.log('데이터 없음');
+    }
 })
 </script>
    
@@ -140,6 +157,7 @@ onMounted(() => {
 .menu-box {
     width: 90%;
     margin: 0 auto;
+    margin-top: 50px;
 }
 .menu-top-box {
     display: flex;

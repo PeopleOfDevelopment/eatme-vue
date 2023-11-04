@@ -115,7 +115,7 @@ const productList = ref([]);
 const userData = {
   userId: '',
   userAddr: '',
-  curAddr: '경기도',
+  curAddr: '오산',
 };
 
 const updateCurAddr = (newAddr) => {

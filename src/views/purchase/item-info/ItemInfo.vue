@@ -55,26 +55,37 @@ const testData = {
   UUID: '',
   imgNm: '',
   imgLoc: '',
-  corpCd: props.itemInfo.corpCd,
-  itemCd: props.itemInfo.itemCd,
+  corpCd: props.itemInfo.corpCd || '',
+  itemCd: props.itemInfo.itemCd || '',
   userId: 'admin',
 };  
+
 const itemImgData = ref('');
+
 async function getItemImg() {
+  if(!testData.corpCd || !testData.itemCd) {
+    itemImgData.value = require('../../../assets/img/eatme.jpg')
+  }
+
   const reader = new FileReader()
-  const result = await axios.get('/api/file/getImg', {
-    responseType: 'blob',
-    params: {
-      corpCd: props.itemInfo.corpCd,
-      itemCd: props.itemInfo.itemCd
-    }
-  }); 
-  reader.onload = () => {
-    itemImgData.value = reader.result 
-  } 
-  const blob = new Blob([result.data], { type : 'image/jpeg' })
-  reader.readAsDataURL(blob) 
-  // itemImgData.value = result;
+  try {
+    const result = await axios.get('/api/file/getImg', {
+      responseType: 'blob',
+      params: {
+        corpCd: props.itemInfo.corpCd,
+        itemCd: props.itemInfo.itemCd
+      }
+    }); 
+    reader.onload = () => {
+      itemImgData.value = reader.result 
+    } 
+    const blob = new Blob([result.data], { type : 'image/jpeg' })
+    reader.readAsDataURL(blob) 
+    // itemImgData.value = result;
+  } catch (error) {
+    console.error('이미지를 불러올 수 없습니다.', error);
+    itemImgData.value = require('../../../assets/img/eatme.jpg'); 
+  }
   
 }
 onMounted(() => { 
