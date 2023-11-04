@@ -85,9 +85,9 @@
           </div>
         </div>
       </div>
-      <Footer :noticeList="noticeList"></Footer>
+      <Footer @notice="(n) => (receivedNotice = n)"></Footer>
     </div>
-    <NonModal v-if="showNm" :noticeList="noticeList"></NonModal>
+    <NonModal v-if="showNm" :notice="receivedNotice"></NonModal>
   </div>
 </template>
 
@@ -106,10 +106,10 @@ import AroundMarket from '@/views/purchase/around-market/AroundMarket.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 
 import { ref, onMounted } from 'vue';
+
 const apiUtils = new ApiUtils();
 
 const marketList = ref([]);
-
 const productList = ref([]);
 
 const userData = {
@@ -134,24 +134,7 @@ async function getItemAround() {
   productList.value = result.data;
 }
 
-const noticeList = ref();
-
-/* 공지 데이터 불러오기 */
-let today = new Date();
-let tY = today.getFullYear();
-let tM = String(today.getMonth() + 1).padStart(2, '0');
-let tD = String(today.getDate()).padStart(2, '0');
-let todayFormat = `${tY}-${tM}-${tD}`;
-
-const noticeParam = {
-  noticeTp: '전체',
-  noticeFrdt: todayFormat,
-  noticeTodt: todayFormat,
-};
-async function getNoticeList() {
-  const result = await apiUtils.post('/api/admin/notice/query', noticeParam);
-  noticeList.value = result.data.reverse();
-}
+const receivedNotice = ref();
 
 onMounted(() => {
   const token = sessionStorage.getItem('token');
@@ -160,7 +143,6 @@ onMounted(() => {
   }
   getMarketAround();
   getItemAround();
-  getNoticeList();
 });
 
 /* 이동 */

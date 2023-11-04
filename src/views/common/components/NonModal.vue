@@ -1,8 +1,8 @@
 <template>
-  <div class="nonmodal-box" v-if="modalOpen && noticeList != null">
+  <div class="nonmodal-box" v-if="modalOpen && notice != null">
     <div class="nm-contents-container">
-      <h2 class="nm-title">{{ noticeList[0].noticeTit }}</h2>
-      <div class="nm-contents" v-html="noticeList[0].noticeTxt"></div>
+      <h2 class="nm-title">{{ notice[0].noticeTit }}</h2>
+      <div class="nm-contents" v-html="notice[0].noticeTxt"></div>
     </div>
     <div class="nm-close-container">
       <div class="hide-nm-24-container">
@@ -24,9 +24,7 @@ import Btn from './Btn.vue';
 import { ref } from 'vue';
 
 const props = defineProps({
-  noticeList: {
-    type: Array,
-  },
+  notice: Array,
 });
 
 const modalOpen = ref(true);

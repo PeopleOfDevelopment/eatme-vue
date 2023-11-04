@@ -35,15 +35,33 @@ import Modal from '../../components/Modal.vue';
 import { ApiUtils } from '../../utils/ApiUtils';
 import { router } from '@/router';
 
-const props = defineProps({
-  noticeList: {
-    type: Array,
-  },
-});
-
 const noticeOpen = ref(false);
 
 const apiUtils = new ApiUtils();
+
+const noticeList = ref();
+
+/* 공지 데이터 불러오기 */
+let today = new Date();
+let tY = today.getFullYear();
+let tM = String(today.getMonth() + 1).padStart(2, '0');
+let tD = String(today.getDate()).padStart(2, '0');
+let todayFormat = `${tY}-${tM}-${tD}`;
+
+const noticeParam = {
+  noticeTp: '전체',
+  noticeFrdt: todayFormat,
+  noticeTodt: todayFormat,
+};
+async function getNoticeList() {
+  const result = await apiUtils.post('/api/admin/notice/query', noticeParam);
+  noticeList.value = result.data.reverse();
+}
+const emit = defineEmits(['notice']);
+
+const sendNotice = () => {
+  emit('notice', noticeList);
+};
 
 const corp = ref('');
 
@@ -67,6 +85,8 @@ onMounted(async () => {
       console.error('Error fetching user data: ', error);
     }
   }
+  getNoticeList();
+  sendNotice();
 });
 
 const clickedItem = ref(window.location.pathname.substring(1) || 'home');

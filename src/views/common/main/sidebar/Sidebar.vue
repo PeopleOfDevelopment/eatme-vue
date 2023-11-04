@@ -2,39 +2,20 @@
   <!--판매자 페이지: <Sidebar pageType="seller"></Sidebar>
   관리자 페이지: <Sidebar pageType="admin"></Sidebar>-->
   <div class="sideBar" :class="{ seller: pageType !== 'user' }">
-    <p class="eatMe">EAT ME</p>
-    <div class="user" v-if="isLoggedIn === false && pageType === 'user'">
-      <div class="circle1">
-        <svg
-          style="margin-top: 20%"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M8 8C6.9 8 5.95834 7.60833 5.175 6.825C4.39167 6.04167 4 5.1 4 4C4 2.9 4.39167 1.95833 5.175 1.175C5.95834 0.391667 6.9 0 8 0C9.1 0 10.0417 0.391667 10.825 1.175C11.6083 1.95833 12 2.9 12 4C12 5.1 11.6083 6.04167 10.825 6.825C10.0417 7.60833 9.1 8 8 8ZM2 16C1.45 16 0.979002 15.804 0.587002 15.412C0.195002 15.02 -0.000664969 14.5493 1.69779e-06 14V13.2C1.69779e-06 12.6333 0.146002 12.1123 0.438002 11.637C0.730002 11.1617 1.11733 10.7993 1.6 10.55C2.63333 10.0333 3.68334 9.64567 4.75 9.387C5.81667 9.12833 6.9 8.99933 8 9C9.1 9 10.1833 9.12933 11.25 9.388C12.3167 9.64667 13.3667 10.034 14.4 10.55C14.8833 10.8 15.271 11.1627 15.563 11.638C15.855 12.1133 16.0007 12.634 16 13.2V14C16 14.55 15.804 15.021 15.412 15.413C15.02 15.805 14.5493 16.0007 14 16H2Z"
-            fill="#8B938A" />
-        </svg>
-      </div>
-      <p class="login-text" onclick="location.href='login'">로그인</p>
+    <p class="eatMe" @click="goPage('home')">EAT ME</p>
+    <div
+      class="user"
+      v-if="isLoggedIn === false && pageType === 'user'"
+      onclick="location.href='login'">
+      <p class="login-text">로그인</p>
     </div>
-    <div class="user" v-if="isLoggedIn === true && pageType === 'user'">
-      <div class="circle1">
-        <svg
-          style="margin-top: 20%"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M8 8C6.9 8 5.95834 7.60833 5.175 6.825C4.39167 6.04167 4 5.1 4 4C4 2.9 4.39167 1.95833 5.175 1.175C5.95834 0.391667 6.9 0 8 0C9.1 0 10.0417 0.391667 10.825 1.175C11.6083 1.95833 12 2.9 12 4C12 5.1 11.6083 6.04167 10.825 6.825C10.0417 7.60833 9.1 8 8 8ZM2 16C1.45 16 0.979002 15.804 0.587002 15.412C0.195002 15.02 -0.000664969 14.5493 1.69779e-06 14V13.2C1.69779e-06 12.6333 0.146002 12.1123 0.438002 11.637C0.730002 11.1617 1.11733 10.7993 1.6 10.55C2.63333 10.0333 3.68334 9.64567 4.75 9.387C5.81667 9.12833 6.9 8.99933 8 9C9.1 9 10.1833 9.12933 11.25 9.388C12.3167 9.64667 13.3667 10.034 14.4 10.55C14.8833 10.8 15.271 11.1627 15.563 11.638C15.855 12.1133 16.0007 12.634 16 13.2V14C16 14.55 15.804 15.021 15.412 15.413C15.02 15.805 14.5493 16.0007 14 16H2Z"
-            fill="#8B938A" />
-        </svg>
-      </div>
-      <p class="login-text" @click="handle_toggle">
-        {{ userData2.userNick }}
+    <div
+      class="user"
+      v-if="isLoggedIn === true && pageType === 'user'"
+      @click="handle_toggle2">
+      <p class="login-text">
+        <span class="user-nick">{{ userData2.userNick }}</span>
+        님, 어서오세요!
       </p>
     </div>
     <div v-if="pageType === 'user'" class="search">
@@ -54,7 +35,13 @@
           @click="goPage('wishlist')"
           :class="{ clicked: clickedItem === 'wishlist' }">
           <span class="material-symbols-rounded">favorite</span>
-          찜목록
+          찜한 매장
+        </p>
+        <p
+          @click="goPage('wishitem')"
+          :class="{ clicked: clickedItem === 'wishitem' }">
+          <span class="material-symbols-rounded">shopping_cart</span>
+          찜한 상품
         </p>
         <p
           @click="goPage('mypage')"
@@ -63,9 +50,12 @@
           환경보호수치
         </p>
       </div>
-      <!--isLoggedInSeller === true로 수정해야 함-->
       <Btns
-        v-if="isLoggedInSeller === true && corp && corp.toLowerCase() !== '가맹점 등록이 되지 않은 계정입니다.'"
+        v-if="
+          isLoggedInSeller === true &&
+          corp &&
+          corp.toLowerCase() !== '가맹점 등록이 되지 않은 계정입니다.'
+        "
         btntype="outline"
         style="margin-top: 10px"
         @click="goPage('goodmanage')">
@@ -73,23 +63,13 @@
       </Btns>
     </div>
     <!--판매자 페이지-->
-    <!--isLoggedInSeller === true로 수정해야 함-->
-    <div class="user" v-if="isLoggedInSeller === true && pageType === 'seller'">
-      <div class="circle1">
-        <svg
-          style="margin-top: 20%"
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M8 8C6.9 8 5.95834 7.60833 5.175 6.825C4.39167 6.04167 4 5.1 4 4C4 2.9 4.39167 1.95833 5.175 1.175C5.95834 0.391667 6.9 0 8 0C9.1 0 10.0417 0.391667 10.825 1.175C11.6083 1.95833 12 2.9 12 4C12 5.1 11.6083 6.04167 10.825 6.825C10.0417 7.60833 9.1 8 8 8ZM2 16C1.45 16 0.979002 15.804 0.587002 15.412C0.195002 15.02 -0.000664969 14.5493 1.69779e-06 14V13.2C1.69779e-06 12.6333 0.146002 12.1123 0.438002 11.637C0.730002 11.1617 1.11733 10.7993 1.6 10.55C2.63333 10.0333 3.68334 9.64567 4.75 9.387C5.81667 9.12833 6.9 8.99933 8 9C9.1 9 10.1833 9.12933 11.25 9.388C12.3167 9.64667 13.3667 10.034 14.4 10.55C14.8833 10.8 15.271 11.1627 15.563 11.638C15.855 12.1133 16.0007 12.634 16 13.2V14C16 14.55 15.804 15.021 15.412 15.413C15.02 15.805 14.5493 16.0007 14 16H2Z"
-            fill="#8B938A" />
-        </svg>
-      </div>
-      <p class="login-text" @click="handle_toggle2">
-        {{ userData2.userNick }}
+    <div
+      class="user"
+      v-if="isLoggedInSeller === true && pageType === 'seller'"
+      @click="handle_toggle2">
+      <p class="login-text">
+        <span class="user-nick">{{ userData2.userNick }}</span>
+        님, 어서오세요!
       </p>
     </div>
     <div v-if="pageType === 'seller'" class="menu-container">
@@ -224,7 +204,7 @@ const handle_toggle = () => {
 
 const handle_toggle2 = () => {
   LoginModal2.value = !LoginModal2.value;
-}
+};
 
 const goPage = (page) => {
   if (page === 'home') router.push('/');
@@ -252,8 +232,8 @@ onMounted(async () => {
   };
 
   const corpData = {
-    userId: sessionStorage.getItem('userId')
-  }
+    userId: sessionStorage.getItem('userId'),
+  };
 
   const token = sessionStorage.getItem('token');
 
@@ -285,12 +265,15 @@ onMounted(async () => {
       };
 
       if (corp.value && corp.value !== '가맹점 등록이 되지 않은 계정입니다.') {
-        const getCorpData = await apiUtils.post('/api/sellerProfile/query', testData);
+        const getCorpData = await apiUtils.post(
+          '/api/sellerProfile/query',
+          testData
+        );
         corpData.value = getCorpData.data;
         console.log(corpData.value);
         sessionStorage.setItem('corpCd', testData.corpCd);
       }
-      console.log(corp.value)
+      console.log(corp.value);
     } catch (error) {
       console.error('Error fetching user data: ', error);
     }
@@ -350,13 +333,8 @@ const Logout = () => {
   align-items: center;
   cursor: pointer;
 }
-
-.circle1 {
-  float: left;
-  width: 30px;
-  height: 30px;
-  border-radius: 22px;
-  background: #c1c9bf;
+.user-nick {
+  font-weight: 700;
 }
 
 .search {
