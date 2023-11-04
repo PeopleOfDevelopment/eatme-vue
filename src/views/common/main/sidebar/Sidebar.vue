@@ -56,6 +56,12 @@
           <span class="material-symbols-rounded">favorite</span>
           찜목록
         </p>
+        <p
+          @click="goPage('mypage')"
+          :class="{ clicked: clickedItem === 'mypage' }">
+          <span class="material-symbols-rounded">nature</span>
+          환경보호수치
+        </p>
       </div>
       <!--isLoggedInSeller === true로 수정해야 함-->
       <Btns
@@ -180,7 +186,7 @@
 
   <div class="black-bg" v-show="LoginModal">
     <div class="modal1">
-      <p class="t1" @click="goPage('mypage')" style="cursor: pointer">
+      <p class="t1" @click="goPage('changeinfo')" style="cursor: pointer">
         마이페이지
       </p>
       <hr />

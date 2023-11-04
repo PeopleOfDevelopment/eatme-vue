@@ -49,6 +49,7 @@
     <div class="show-text2" v-else-if="IsCheckNick === true">
       <p>사용 가능한 닉네임입니다.</p>
     </div>
+    <input placeholder="이름(실명)" class="inputInfor" v-model="userNm">
     <input placeholder="비밀번호" type="password" v-model="password" class="inputInfor" @input="pw_check">
     <p class="join-text4" :class="passwordCorrectClass">
       {{ passwordCorrect }}
@@ -56,7 +57,6 @@
 
     <input placeholder="비밀번호 확인" type="password" v-model="password2" class="inputInfor">
     <input placeholder="이메일" class="inputInfor" v-model="userEmail">
-    <input placeholder="전화번호" class="inputInfor" v-model="userNumber">
 
     <div class="c-text1">
       <input type="checkbox" style="margin-right: 5px;" />
@@ -99,8 +99,7 @@ import { router } from '@/router';
 const userId = ref('');
 const userNick = ref('');
 const userEmail = ref('');
-const userNumber = ref('');
-const userNm = ref('ppp')
+const userNm = ref('')
 const userAddr = ref('경기도')
 
 const password = ref('');
@@ -144,7 +143,6 @@ const check = async () => {
       userPw2: password2.value,
       userNick: userNick.value,
       userEmail: userEmail.value,
-      userPhoneNumber: userNumber.value,
       userAddr: userAddr.value,
       userNm: userNm.value
     };
@@ -241,7 +239,7 @@ async function checkOverlapNick() {
   margin-left: 15%;
   color: #2e312e;
   margin-top: 20px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .join-text3 {
