@@ -2,7 +2,9 @@
   <TopNav navType="title" subtitle="매장정보" @close="$emit('close')"></TopNav>
   <div class="market-info-wrap">
     <div class="market-detail-wrap">
-      <div class="market-img"></div>
+      <div class="market-img">
+        <img :src="marketImgData" />
+      </div>
       <div class="market-text-wrap">
         <div class="market-name">{{ marketInfoDetail.corpNm }}</div>
         <div class="market-table">
@@ -147,6 +149,41 @@ async function deleteWishData() {
   }
 }
 
+//이미지
+const imgData = {
+  UUID: '',
+  imgNm: '',
+  imgLoc: '',
+  corpCd: targetCorp || '',
+};
+
+const corpImgData = ref('');
+
+async function getCorpImg() {
+  if (!imgData.corpCd) {
+    corpImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+
+  const reader = new FileReader();
+  try {
+    const result = await axios.get('/api/file/getCorpImg', {
+      responseType: 'blob',
+      params: {
+        corpCd: targetCorp,
+      },
+    });
+    console.log(`getcorpimg실행`);
+    reader.onload = () => {
+      corpImgData.value = reader.result;
+    };
+    const blob = new Blob([result.data], { type: 'image/jpeg' });
+    reader.readAsDataURL(blob);
+  } catch (error) {
+    console.error('이미지를 불러올 수 없습니다.', error);
+    corpImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+}
+
 onMounted(() => {
   const token = sessionStorage.getItem('token');
   if (token) {
@@ -154,6 +191,7 @@ onMounted(() => {
     wishData.userId = sessionStorage.getItem('userId');
   }
   getMarketInfoDetail();
+  getCorpImg();
   getWishList();
   getItem();
 });
