@@ -5,7 +5,9 @@
     v-for="(item, index) in itemList"
     :key="index"
     @click="$emit('itemSelected', item)">
-    <img :src="getItemImage(item.itemCd)" alt="Item image" class="card-img"/>
+    <div class="card-img">
+      <img :src="getItemImage(item.itemCd)" alt="Item image" />
+    </div>
     <div v-if="market" class="card-info">
       <div class="place-name">{{ item.corpNm }}</div>
       <div class="place-info">
@@ -51,7 +53,7 @@ const props = defineProps({
   itemImgData: {
     type: Array,
     default: [],
-  }
+  },
 });
 
 const getItemImage = (itemCd) => {
@@ -77,6 +79,11 @@ const getItemImage = (itemCd) => {
   width: 285px;
   height: 285px;
   background-color: var(--gray100);
+}
+.card-img img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 .market .card-img {
   height: 180px;

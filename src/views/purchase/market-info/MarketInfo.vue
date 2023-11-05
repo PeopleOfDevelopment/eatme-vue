@@ -41,7 +41,7 @@
       </div>
     </div>
     <div class="market-goods-wrap">
-      <h2 class="market-goods-title">판매 중인 할인 제품</h2>
+      <h2 class="market-goods-title">판매 중인 할인 상품</h2>
       <div class="item-list">
         <Card
           :itemList="productList"
@@ -70,25 +70,19 @@ const targetCorp = props.marketInfo.corpCd;
 
 const marketInfoDetail = ref([]);
 
-const testData = {
+const corpData = {
   corpCd: targetCorp,
 };
 
 async function getMarketInfoDetail() {
-  const result = await apiUtils.post('/api/marketInfo/query', testData);
+  const result = await apiUtils.post('/api/marketInfo/query', corpData);
   marketInfoDetail.value = result.data;
 }
 
 const productList = ref([]);
 
-const corpData = {
-  userId: '',
-  userAddr: '',
-  curAddr: props.marketInfo.corpAddr,
-};
-
 async function getItem() {
-  const result = await apiUtils.post('/api/main/query/item', corpData);
+  const result = await apiUtils.post('/api/goodsReg/query', corpData);
   productList.value = result.data;
 }
 
@@ -215,6 +209,11 @@ onMounted(() => {
   width: 50%;
   aspect-ratio: 4 / 3;
   background-color: var(--gray100);
+}
+.market-img img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 .market-text-wrap {
   flex: 1 0 0;
