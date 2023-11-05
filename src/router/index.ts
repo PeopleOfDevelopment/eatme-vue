@@ -11,6 +11,7 @@ import Mypage from '../views/user/mypage/Mypage.vue';
 import ChangeInfo from '../views/user/mypage/change-user-info/ChangeUserInfo.vue';
 import HistoryDetail from '../views/purchase/purchase-history-detail/PurchaseHistoryDetail.vue';
 import WishList from '../views/user/wish-list/WishList.vue';
+import WishItem from '../views/user/wish-item/WishItem.vue';
 import ItemReg from '../views/seller/item-reg/ItemReg.vue';
 import ItemInfo from '../views/purchase/item-info/ItemInfo.vue';
 import Dashboard from '../views/seller/dashboard/Dashboard.vue';
@@ -45,6 +46,7 @@ const routes = [
   { path: '/changeinfo', component: ChangeInfo },
   { path: '/detail', component: HistoryDetail },
   { path: '/wishlist', component: WishList },
+  { path: '/wishitem', component: WishItem },
   { path: '/itemreg', component: ItemReg },
   { path: '/iteminfo', component: ItemInfo },
   { path: '/dashboard', component: Dashboard },
@@ -65,7 +67,7 @@ const routes = [
   { path: '/seller-qna-work', component: SellerQnaWork },
   { path: '/qna', component: Qna },
   { path: '/ecostatus', component: Ecostatus },
-  { path: '/itemupdate', component: ItemUpdate},
+  { path: '/itemupdate', component: ItemUpdate },
 ];
 
 //라우터생성
