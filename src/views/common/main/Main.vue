@@ -68,7 +68,8 @@
           </div>
           <div class="item-list-wrap">
             <div class="item-list" ref="scrollBoxItem">
-              <Card :itemList="productList" @itemSelected="selectItem"></Card>
+              <Card :itemList="productList" @itemSelected="selectItem"
+              :itemImgData="itemImgData"></Card>
             </div>
             <Btn
               btntype="slideNav"
@@ -104,6 +105,7 @@ import MarketInfo from '@/views/purchase/market-info/MarketInfo.vue';
 import AroundItem from '@/views/purchase/around-item/AroundItem.vue';
 import AroundMarket from '@/views/purchase/around-market/AroundMarket.vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import axios from 'axios';
 
 import { ref, onMounted } from 'vue';
 
@@ -132,9 +134,58 @@ async function getMarketAround() {
 async function getItemAround() {
   const result = await apiUtils.post('/api/main/query/item', userData);
   productList.value = result.data;
+
+  if (productList.value && productList.value.length > 0) {
+    console.log('호출됨')
+        productList.value.forEach((item) => {
+        if (item && item.corpCd && item.itemCd) {
+            getItemImg(item);
+        }
+    });
+    } else {
+        console.log('데이터 없음');
+    }
 }
 
 const receivedNotice = ref();
+
+//이미지 
+const itemImgData = ref([]);
+
+async function getItemImg(item) {
+    const imgData = {
+    UUID: '',
+    imgNm: '',
+    imgLoc: '',
+    corpCd: item.corpCd || '',
+    itemCd: item.itemCd || '',
+    userId: 'admin',
+    }; 
+
+  if(!imgData.corpCd || !imgData.itemCd) {
+    item.imgSrc = require('../../../assets/img/eatme.jpg');
+  } else {
+    try {
+        const result = await axios.get('/api/file/getImg', {
+        responseType: 'blob',
+        params: {
+            corpCd: item.corpCd,
+            itemCd: item.itemCd
+        }
+        }); 
+        const reader = new FileReader()
+        reader.onload = () => {
+        item.imgSrc = reader.result; 
+        } 
+        const blob = new Blob([result.data], { type : 'image/jpeg' })
+        reader.readAsDataURL(blob) 
+        // itemImgData.value = result;
+    } catch (error) {
+        console.error('이미지를 불러올 수 없습니다.', error);
+        item.imgSrc = require('../../../assets/img/eatme.jpg'); 
+    }
+  }
+}
 
 onMounted(() => {
   const token = sessionStorage.getItem('token');

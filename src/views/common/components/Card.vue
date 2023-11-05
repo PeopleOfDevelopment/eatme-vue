@@ -5,7 +5,7 @@
     v-for="(item, index) in itemList"
     :key="index"
     @click="$emit('itemSelected', item)">
-    <img :src="item.imgSrc" class="card-img"/>
+    <img :src="getItemImage(item.itemCd)" alt="Item image" class="card-img"/>
     <div v-if="market" class="card-info">
       <div class="place-name">{{ item.corpNm }}</div>
       <div class="place-info">
@@ -38,11 +38,8 @@
 </template>
 
 <script setup>
-import { ApiUtils } from '../utils/ApiUtils';
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { ref, onMounted, toRefs, watch } from 'vue';
 
-const apiUtils = new ApiUtils();
 const props = defineProps({
   itemList: {
     type: Array,
@@ -51,57 +48,20 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  itemImgData: {
+    type: Array,
+    default: [],
+  }
 });
 
-//이미지 
-const itemImgData = ref([]);
+const getItemImage = (itemCd) => {
+  console.log('itemImgData: ', props.itemImgData);
+  console.log('itemCd: ', itemCd);
 
-async function getItemImg(item) {
-    const imgData = {
-    UUID: '',
-    imgNm: '',
-    imgLoc: '',
-    corpCd: item.corpCd || '',
-    itemCd: item.itemCd || '',
-    userId: 'admin',
-    }; 
-
-  if(!imgData.corpCd || !imgData.itemCd) {
-    item.imgSrc = require('../../../assets/img/eatme.jpg');
-  } else {
-    try {
-        const result = await axios.get('/api/file/getImg', {
-        responseType: 'blob',
-        params: {
-            corpCd: item.corpCd,
-            itemCd: item.itemCd
-        }
-        }); 
-        const reader = new FileReader()
-        reader.onload = () => {
-        item.imgSrc = reader.result; 
-        } 
-        const blob = new Blob([result.data], { type : 'image/jpeg' })
-        reader.readAsDataURL(blob) 
-        // itemImgData.value = result;
-    } catch (error) {
-        console.error('이미지를 불러올 수 없습니다.', error);
-        item.imgSrc = require('../../../assets/img/eatme.jpg'); 
-    }
-  }
-}
-
-onMounted(async () => {
-    if (props.itemList && props.itemList.length > 0) {
-        props.itemList.forEach(async (item) => {
-        if (item && item.corpCd && item.itemCd) {
-            await getItemImg(item);
-        }
-    });
-    } else {
-        console.log('데이터 없음');
-    }
-})
+  const itemImg = props.itemList.find((img) => img.itemCd === itemCd);
+  console.log('itemImg: ', itemImg);
+  return itemImg ? itemImg.imgSrc : require('../../../assets/img/eatme.jpg');
+};
 </script>
 
 <style scoped>
