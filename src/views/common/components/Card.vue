@@ -5,10 +5,10 @@
     v-for="(item, index) in itemList"
     :key="index"
     @click="$emit('itemSelected', item)">
-    <div class="card-img">
-      <img :src="getItemImage(item.itemCd)" alt="Item image" />
-    </div>
     <div v-if="market" class="card-info">
+      <div class="card-img">
+        <img :src="getItemImage2(item.corpCd)" alt="Item image"/>
+      </div>
       <div class="place-name">{{ item.corpNm }}</div>
       <div class="place-info">
         <span class="score-container">
@@ -18,6 +18,9 @@
       </div>
     </div>
     <div v-else class="card-info">
+      <div class="card-img">
+        <img :src="getItemImage(item.itemCd)" alt="Item image"/>
+      </div>
       <div class="place-info">
         <span class="place-name">{{ item.corpNm }}</span>
         <span class="place-time">
@@ -40,8 +43,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted, toRefs, watch } from 'vue';
-
 const props = defineProps({
   itemList: {
     type: Array,
@@ -54,14 +55,19 @@ const props = defineProps({
     type: Array,
     default: [],
   },
+  corpImgData: {
+    type: Array,
+    default: [],
+  }
 });
 
 const getItemImage = (itemCd) => {
-  console.log('itemImgData: ', props.itemImgData);
-  console.log('itemCd: ', itemCd);
-
   const itemImg = props.itemList.find((img) => img.itemCd === itemCd);
-  console.log('itemImg: ', itemImg);
+  return itemImg ? itemImg.imgSrc : require('../../../assets/img/eatme.jpg');
+};
+
+const getItemImage2 = (corpCd) => {
+  const itemImg = props.itemList.find((img) => img.corpCd === corpCd);
   return itemImg ? itemImg.imgSrc : require('../../../assets/img/eatme.jpg');
 };
 </script>
