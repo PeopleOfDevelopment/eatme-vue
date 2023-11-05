@@ -42,7 +42,8 @@
               <Card
                 :market="true"
                 :itemList="marketList"
-                @itemSelected="selectMarket"></Card>
+                @itemSelected="selectMarket"
+                :corpImgData="corpImgData"></Card>
             </div>
             <Btn
               btntype="slideNav"
@@ -129,6 +130,16 @@ const updateCurAddr = (newAddr) => {
 async function getMarketAround() {
   const result = await apiUtils.post('/api/main/query/corp', userData);
   marketList.value = result.data;
+
+  if (marketList.value && marketList.value.length > 0) {
+        marketList.value.forEach((item) => {
+        if (item && item.corpCd) {
+          getCorpImg(item);
+        }
+    });
+    } else {
+        console.log('데이터 없음');
+    }
 }
 
 async function getItemAround() {
@@ -136,7 +147,6 @@ async function getItemAround() {
   productList.value = result.data;
 
   if (productList.value && productList.value.length > 0) {
-    console.log('호출됨')
         productList.value.forEach((item) => {
         if (item && item.corpCd && item.itemCd) {
             getItemImg(item);
@@ -184,6 +194,41 @@ async function getItemImg(item) {
         console.error('이미지를 불러올 수 없습니다.', error);
         item.imgSrc = require('../../../assets/img/eatme.jpg'); 
     }
+  }
+}
+
+//가게 이미지
+const corpImgData = ref([]);
+
+async function getCorpImg(item) {
+  const imgData = {
+    UUID: '',
+    imgNm: '',
+    imgLoc: '',
+    corpCd: item.corpCd || '',
+  };
+
+  if (!imgData.corpCd) {
+    item.imgSrc = require('../../../assets/img/eatme.jpg');
+  }
+
+  const reader = new FileReader();
+  try {
+    const result = await axios.get('/api/file/getCorpImg', {
+      responseType: 'blob',
+      params: {
+        corpCd: item.corpCd,
+      },
+    });
+    console.log(`getcorpimg실행`);
+    reader.onload = () => {
+      item.imgSrc = reader.result;
+    };
+    const blob = new Blob([result.data], { type: 'image/jpeg' });
+    reader.readAsDataURL(blob);
+  } catch (error) {
+    console.error('이미지를 불러올 수 없습니다.', error);
+    item.imgSrc = require('../../../assets/img/eatme.jpg');
   }
 }
 
