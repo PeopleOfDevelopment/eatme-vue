@@ -163,7 +163,13 @@ onMounted(() => {
 const joinData = ref([]);
 
 const check = async () => {
-  
+  const imageInfo = {
+    corpCd: corpCd.value,
+    imgId: '',
+    imgNm: '',
+    imgLoc: ''
+  }
+
   const corpData = {
     corpCd: corpCd.value,
     corpNm: corpNm.value,
@@ -175,8 +181,17 @@ const check = async () => {
     corpPhoneNumber: corpPhoneNumber.value
   };
 
+  let formData = new FormData()
+  formData.append('imageData', document.getElementById('photo')?.files[0])
+  formData.append('imageInfo', JSON.stringify(imageInfo))
+
   try {
     const result = await apiUtils.post('/api/sellerReg/insert', corpData)
+    await apiUtils.post('/api/file/uploadCorp', formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
     joinData.value = result.data;
     console.log('가맹점 등록 성공: ', result.data);
     alert('등록되었습니다.');
