@@ -167,7 +167,6 @@ async function getCorpImg() {
         corpCd: targetCorp,
       },
     });
-    console.log(`getcorpimg실행`);
     reader.onload = () => {
       corpImgData.value = reader.result;
     };

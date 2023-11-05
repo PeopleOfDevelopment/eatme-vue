@@ -2,8 +2,14 @@
   <div id="top-nav" v-if="navType === 'location'" class="nav-location">
     <div class="location-box" @click="showLocation">
       <span class="material-symbols-rounded location-icon">location_on</span>
-      <Btn btntype="textGray" class="user-location">{{ curAddr }}</Btn>
+      <Btn btntype="textGray" class="user-location">
+        {{ curAddr }}
+      </Btn>
     </div>
+    <div
+      class="location-wrap"
+      :class="{ show: modalOpen }"
+      ref="locationWrap"></div>
   </div>
   <!--탭 버튼 예시
     <TopNav navType="tabs" :tabList="['상품', '매장']"
@@ -34,10 +40,6 @@
     </Btn>
   </div>
   <div v-else></div>
-  <div
-    class="location-wrap"
-    :class="{ show: modalOpen }"
-    ref="locationWrap"></div>
 </template>
 
 <script setup>
@@ -46,9 +48,9 @@ import Btn from './Btn.vue';
 
 const modalOpen = ref(false);
 const locationWrap = ref(null);
-const curAddr = ref(props.curAddr);
-const curAddrJibun = ref('');
-const emit = defineEmits(['update:curAddr']);
+const curAddr = ref(sessionStorage.getItem('curAddr'));
+const curSearchAddr = ref(props.curSearchAddr);
+const emit = defineEmits(['update:curSearchAddr']);
 
 const showLocation = () => {
   toggleModal();
@@ -57,10 +59,12 @@ const showLocation = () => {
       let addr = data.roadAddress; //도로명주소
       let jibunAddr = data.jibunAddress; //지번주소
       curAddr.value = addr;
-      curAddrJibun.value = jibunAddr.replace(/\s\d+(-\d+)?$/, '');
+      curSearchAddr.value = jibunAddr.replace(/\s\d+(-\d+)?$/, '');
+      sessionStorage.setItem('curAddr', curAddr.value);
+      sessionStorage.setItem('curSearchAddr', curSearchAddr.value);
       toggleModal();
       if (curAddr.value !== props.curAddr) {
-        emit('update:curAddr', curAddrJibun.value);
+        emit('update:curSearchAddr', curSearchAddr.value);
       }
     },
   }).embed(locationWrap.value);
@@ -177,9 +181,9 @@ const toggleModal = () => {
   display: none;
   position: absolute;
   z-index: 999;
-  margin-inline: 75px;
   border: 1px solid var(--ngray100);
   border-top: 0;
+  top: 65px;
 }
 .show {
   display: block;

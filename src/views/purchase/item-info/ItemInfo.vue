@@ -69,17 +69,24 @@ const targetItem = props.itemInfo;
 
 const isInWishList = ref(false);
 
-const wishData = {
+const wishData = [
+  {
+    userId: '',
+    corpCd: targetItem.corpCd,
+    itemCd: targetItem.itemCd,
+    salePrc: targetItem.salePrc,
+    itemExpdate: targetItem.itemExpdate,
+    itemQty: targetItem.saleAmt,
+    itemNm: targetItem.itemNm,
+    purchaseSt: '주문전',
+  },
+];
+
+const deleteData = {
   userId: '',
   corpCd: targetItem.corpCd,
   itemCd: targetItem.itemCd,
-  salePrc: targetItem.salePrc,
-  itemExpdate: targetItem.itemExpdate,
-  itemQty: 1,
-  itemNm: targetItem.itemNm,
-  purchaseSt: '주문전',
 };
-
 const wishList = ref([]);
 
 const toggleWish = () => {
@@ -114,7 +121,7 @@ async function insertWishData() {
 }
 async function deleteWishData() {
   try {
-    const result = await apiUtils.post('/api/basket/delete', wishData);
+    const result = await apiUtils.post('/api/basket/delete', deleteData);
     if (result === 0) {
       console.log('찜 목록 삭제 실패');
     } else {
@@ -165,7 +172,8 @@ async function getItemImg() {
 }
 onMounted(() => {
   userData.userId = sessionStorage.getItem('userId');
-  wishData.userId = sessionStorage.getItem('userId');
+  wishData[0].userId = sessionStorage.getItem('userId');
+  deleteData.userId = sessionStorage.getItem('userId');
   getWishList();
   getItemImg();
 });

@@ -12,8 +12,8 @@
   <div id="main-wrapper" v-else>
     <TopNav
       navType="location"
-      :curAddr="userData.curAddr"
-      @update:curAddr="updateCurAddr"></TopNav>
+      :curSearchAddr="userData.curAddr"
+      @update:curSearchAddr="updateCurAddr"></TopNav>
     <div id="sub-wrapper" v-if="selectedList === 'item'">
       <AroundItem
         :productList="productList"
@@ -69,8 +69,10 @@
           </div>
           <div class="item-list-wrap">
             <div class="item-list" ref="scrollBoxItem">
-              <Card :itemList="productList" @itemSelected="selectItem"
-              :itemImgData="itemImgData"></Card>
+              <Card
+                :itemList="productList"
+                @itemSelected="selectItem"
+                :itemImgData="itemImgData"></Card>
             </div>
             <Btn
               btntype="slideNav"
@@ -118,11 +120,12 @@ const productList = ref([]);
 const userData = {
   userId: '',
   userAddr: '',
-  curAddr: '오산',
+  curAddr: '',
 };
 
 const updateCurAddr = (newAddr) => {
   userData.curAddr = newAddr;
+  console.log(`바뀐주소검색: ${userData.curAddr}`);
   getMarketAround();
   getItemAround();
 };
@@ -147,52 +150,53 @@ async function getItemAround() {
   productList.value = result.data;
 
   if (productList.value && productList.value.length > 0) {
+    console.log('호출됨')
         productList.value.forEach((item) => {
         if (item && item.corpCd && item.itemCd) {
             getItemImg(item);
         }
     });
-    } else {
-        console.log('데이터 없음');
-    }
+  } else {
+    console.log('데이터 없음');
+  }
 }
 
 const receivedNotice = ref();
 
-//이미지 
+//이미지
 const itemImgData = ref([]);
 
 async function getItemImg(item) {
-    const imgData = {
+  const imgData = {
     UUID: '',
     imgNm: '',
     imgLoc: '',
     corpCd: item.corpCd || '',
     itemCd: item.itemCd || '',
     userId: 'admin',
-    }; 
+  };
 
-  if(!imgData.corpCd || !imgData.itemCd) {
+  if (!imgData.corpCd || !imgData.itemCd) {
     item.imgSrc = require('../../../assets/img/eatme.jpg');
   } else {
     try {
-        const result = await axios.get('/api/file/getImg', {
+      const result = await axios.get('/api/file/getImg', {
         responseType: 'blob',
         params: {
-            corpCd: item.corpCd,
-            itemCd: item.itemCd
-        }
-        }); 
-        const reader = new FileReader()
-        reader.onload = () => {
-        item.imgSrc = reader.result; 
-        } 
-        const blob = new Blob([result.data], { type : 'image/jpeg' })
-        reader.readAsDataURL(blob) 
-        // itemImgData.value = result;
+          corpCd: item.corpCd,
+          itemCd: item.itemCd,
+        },
+      });
+      const reader = new FileReader();
+      reader.onload = () => {
+        item.imgSrc = reader.result;
+      };
+      const blob = new Blob([result.data], { type: 'image/jpeg' });
+      reader.readAsDataURL(blob);
+      // itemImgData.value = result;
     } catch (error) {
-        console.error('이미지를 불러올 수 없습니다.', error);
-        item.imgSrc = require('../../../assets/img/eatme.jpg'); 
+      console.error('이미지를 불러올 수 없습니다.', error);
+      item.imgSrc = require('../../../assets/img/eatme.jpg');
     }
   }
 }
@@ -237,6 +241,18 @@ onMounted(() => {
   if (token) {
     userData.userId = sessionStorage.getItem('userId');
   }
+  const initAddr = sessionStorage.getItem('curSearchAddr');
+  if (initAddr) {
+    userData.curAddr = initAddr;
+  } else {
+    sessionStorage.setItem(
+      'curAddr',
+      '충남 천안시 동남구 상명대길 31 (상명대학교천안캠퍼스)'
+    );
+    sessionStorage.setItem('curSearchAddr', '충남 천안시 동남구 안서동');
+    userData.curAddr = '충남 천안시 동남구 안서동';
+  }
+
   getMarketAround();
   getItemAround();
 });
