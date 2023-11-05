@@ -3,7 +3,7 @@
   <div class="item-info-box1">
     <div class="item-img1">
       <!-- 문제 여기 -->
-      <img :src="itemImgData" class="img-real1"/>
+      <img :src="itemImgData" class="img-real1" />
     </div>
     <div class="item-text-wrap">
       <div class="item-info1">
@@ -31,6 +31,15 @@
           <p class="info-text5">남은 수량</p>
           <p>{{ itemInfo.saleAmt }}</p>
         </div>
+        <div class="btn-box">
+          <Btn btntype="outline" @click="toggleWish">
+            <span
+              class="material-symbols-rounded"
+              :class="{ 'icon-fill': isInWishList }">
+              favorite
+            </span>
+          </Btn>
+        </div>
       </div>
     </div>
   </div>
@@ -50,6 +59,73 @@ const props = defineProps({
   },
 });
 
+//찜
+
+const userData = {
+  userId: '',
+};
+
+const targetItem = props.itemInfo;
+
+const isInWishList = ref(false);
+
+const wishData = {
+  userId: '',
+  corpCd: targetItem.corpCd,
+  itemCd: targetItem.itemCd,
+  salePrc: targetItem.salePrc,
+  itemExpdate: targetItem.itemExpdate,
+  itemQty: 1,
+  itemNm: targetItem.itemNm,
+  purchaseSt: '주문전',
+};
+
+const wishList = ref([]);
+
+const toggleWish = () => {
+  if (isInWishList.value) {
+    deleteWishData();
+  } else {
+    insertWishData();
+  }
+};
+
+async function getWishList() {
+  const result = await apiUtils.post('/api/basket/query', userData);
+  wishList.value = result.data;
+  isInWishList.value = wishList.value.some(
+    (item) =>
+      item.itemCd === targetItem.itemCd && item.corpCd === targetItem.corpCd
+  );
+}
+
+async function insertWishData() {
+  try {
+    const result = await apiUtils.post('/api/basket/insert', wishData);
+    if (result === 1) {
+      console.log('찜 목록 추가 성공');
+      isInWishList.value = true;
+    } else {
+      console.log('찜 목록 추가 실패');
+    }
+  } catch (error) {
+    console.error('찜 목록 추가 중 오류 발생:', error);
+  }
+}
+async function deleteWishData() {
+  try {
+    const result = await apiUtils.post('/api/basket/delete', wishData);
+    if (result === 0) {
+      console.log('찜 목록 삭제 실패');
+    } else {
+      console.log('찜 목록 삭제 성공');
+      isInWishList.value = false;
+    }
+  } catch (error) {
+    console.error('찜 목록 삭제 중 오류 발생:', error);
+  }
+}
+
 //이미지
 const testData = {
   UUID: '',
@@ -58,38 +134,40 @@ const testData = {
   corpCd: props.itemInfo.corpCd || '',
   itemCd: props.itemInfo.itemCd || '',
   userId: 'admin',
-};  
+};
 
 const itemImgData = ref('');
 
 async function getItemImg() {
-  if(!testData.corpCd || !testData.itemCd) {
-    itemImgData.value = require('../../../assets/img/eatme.jpg')
+  if (!testData.corpCd || !testData.itemCd) {
+    itemImgData.value = require('../../../assets/img/eatme.jpg');
   }
 
-  const reader = new FileReader()
+  const reader = new FileReader();
   try {
     const result = await axios.get('/api/file/getImg', {
       responseType: 'blob',
       params: {
         corpCd: props.itemInfo.corpCd,
-        itemCd: props.itemInfo.itemCd
-      }
-    }); 
+        itemCd: props.itemInfo.itemCd,
+      },
+    });
     reader.onload = () => {
-      itemImgData.value = reader.result 
-    } 
-    const blob = new Blob([result.data], { type : 'image/jpeg' })
-    reader.readAsDataURL(blob) 
+      itemImgData.value = reader.result;
+    };
+    const blob = new Blob([result.data], { type: 'image/jpeg' });
+    reader.readAsDataURL(blob);
     // itemImgData.value = result;
   } catch (error) {
     console.error('이미지를 불러올 수 없습니다.', error);
-    itemImgData.value = require('../../../assets/img/eatme.jpg'); 
+    itemImgData.value = require('../../../assets/img/eatme.jpg');
   }
-  
 }
-onMounted(() => { 
-  getItemImg(); 
+onMounted(() => {
+  userData.userId = sessionStorage.getItem('userId');
+  wishData.userId = sessionStorage.getItem('userId');
+  getWishList();
+  getItemImg();
 });
 
 const itemInfo = props.itemInfo;
@@ -110,11 +188,11 @@ const itemInfo = props.itemInfo;
   position: relative;
 }
 .item-img1 img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .item-text-wrap {
   flex: 1 0 0;
@@ -163,5 +241,9 @@ const itemInfo = props.itemInfo;
 }
 .info-text5 {
   min-width: 100px;
+}
+.btn-box {
+  display: flex;
+  margin: 10px;
 }
 </style>
