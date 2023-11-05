@@ -26,20 +26,18 @@
                 </div>
                 <div class="menu-box" v-if="DataModify === false">
                     <div class="menu-top-box">
-                        <p style="flex-basis: 15%;">상품코드</p>
-                        <p style="flex-basis: 50%">제품명</p>
-                        <p style="flex-basis: 10%;">용량</p>
-                        <p style="flex-basis: 9.5%;">원가</p>
-                        <p style="flex-basis: 6%;">추가</p>
+                        <p style="flex-basis: 100px;">상품코드</p>
+                        <p style="flex-basis: 550px">제품명</p>
+                        <p style="flex-basis: 90px;">원가</p>
+                        <p style="flex-basis: 80px;">추가</p>
                     </div>
                     <div class="menu-list">
                         <div class="menu-info" v-for="(item, idx) in goods" v-show="shouldDisplay(item)">
-                            <p style="flex-basis: 15%;">{{ item.itemCd }}</p>
-                            <p style="flex-basis: 50%;">{{ item.itemNm }}</p>
-                            <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
-                            <p style="flex-basis: 10%;">{{ item.itemPrc }}원</p>
+                            <p style="flex-basis: 100px;">{{ item.itemCd }}</p>
+                            <p style="flex-basis: 550px;">{{ item.itemNm }}</p>
+                            <p style="flex-basis: 90px;">{{ item.itemPrc }}원</p>
                             <Btn btntype="LightSolid" class="list-btn1"
-                            @click="isShowing3(item)" style="flex-basis: 5%; margin-bottom: 10px;">추가</Btn>
+                            @click="isShowing3(item)" style="flex-basis: 70px; margin-bottom: 10px;">추가</Btn>
                         </div>
                     </div>
                 </div>
@@ -61,30 +59,21 @@
                 </div>
                 <div class="menu-box" v-if="DataModify === true">
                     <div class="menu-top-box">
-                        <input style="flex-basis: 20px;"
-                            type="checkbox"
-                            v-model="selectAll"
-                            @change="toggleSelectAll" />
-                        <p style="flex-basis: 10%;">상품코드</p>
-                        <p style="flex-basis: 30%;">제품명</p>
-                        <p style="flex-basis: 10%;">용량</p>
-                        <p style="flex-basis: 10%;">원가</p>
-                        <p style="flex-basis: 5%;">수정</p>
-                        <p style="flex-basis: 6%">삭제</p>
+                        <p style="flex-basis: 100px;">상품코드</p>
+                        <p style="flex-basis: 500px;">제품명</p>
+                        <p style="flex-basis: 90px;">원가</p>
+                        <p style="flex-basis: 80px;">수정</p>
+                        <p style="flex-basis: 80px">삭제</p>
                     </div>
                     <div class="menu-list">
                         <div class="menu-info" v-for="(item, idx) in goods">
-                            <input style="flex-basis: 20px;"
-                                type="checkbox"
-                                v-model="item.checked" />
-                            <p style="flex-basis: 10%;">{{ item.itemCd }}</p>
-                            <p style="flex-basis: 30%;">{{ item.itemNm }}</p>
-                            <p style="flex-basis: 10%;">{{ item.saleAmt }}</p>
-                            <p style="flex-basis: 10%;">{{ item.itemPrc }}원</p>
+                            <p style="flex-basis: 100px;">{{ item.itemCd }}</p>
+                            <p style="flex-basis: 500px;">{{ item.itemNm }}</p>
+                            <p style="flex-basis: 90px;">{{ item.itemPrc }}원</p>
                             <Btn btntype="LightSolid" class="list-btn1"
-                            @click="isShowing2(item)" style="flex-basis: 5%; margin-bottom: 10px;">수정</Btn>
+                            @click="isShowing2(item)" style="flex-basis: 70px; margin-bottom: 10px;">수정</Btn>
                             <Btn btntype="LightSolid" class="list-btn3" 
-                            @click="deleteItem(item)" style="flex-basis: 5%; margin-bottom: 10px;">삭제</Btn>
+                            @click="deleteItem(item)" style="flex-basis: 70px; margin-bottom: 10px;">삭제</Btn>
                         </div>
                     </div>
                 </div>
@@ -132,22 +121,22 @@
                             <p style="flex-basis: 5%;">원가</p>
                             <p style="flex-basis: 5%;">할인율</p>
                             <p style="flex-basis: 5%;">판매가</p>
-                            <p style="flex-basis: 5%;">수정</p>
+                            <!-- <p style="flex-basis: 5%;">수정</p> -->
                             <p style="flex-basis: 5%;">삭제</p>
                         </div>
                         <div class="menu-list">
                             <div class="menu-info" v-for="item in select_goods" :key="item.itemCd">
                                 <p style="flex-basis: 10%;">{{ item[0].itemCd }}</p>
                                 <div class="menu-img">
-                                    <img :src="itemImgData" class="img-real1"/>
+                                    <img :src="item.imgSrc" class="img-real1"/>
                                 </div>
                                 <p style="flex-basis: 30%;">{{ item[0].itemNm }}</p>
                                 <p style="flex-basis: 5%;">{{ item[0].itemAmt }}</p>
                                 <p style="flex-basis: 5%;">{{ item[0].itemPrc }}원</p>
                                 <p style="flex-basis: 5%;">{{ item[0].selectDiscountRat }}%</p>
                                 <p style="flex-basis: 5%;">{{ (item[0].itemPrc * (1 - (item[0].selectDiscountRat/100))).toFixed(0) }}원</p>
-                                <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 4%; margin-bottom: 10px;"
-                                @click="isShowing(item)">수정</Btn>
+                                <!-- <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 4%; margin-bottom: 10px;"
+                                @click="isShowing(item[0])">수정</Btn> -->
                                 <Btn btntype="LightSolid" class="list-btn3" style="flex-basis: 4%; margin-bottom: 10px;"
                                 @click="removeItem(item)">삭제</Btn>
                             </div>
@@ -158,11 +147,11 @@
             </Transition>
         </div>
     </div>
-    <div id="main-wrraper" v-if="isShow">
-        <GoodsUpdate :data="updateData"></GoodsUpdate>
-    </div>
+    <!-- <div id="main-wrraper" v-if="isShow">
+        <GoodsUpdate :data="updateData" :toggleIsShow1="toggleIsShow1"></GoodsUpdate>
+    </div> -->
     <div id="main-wrraper" v-if="isShow2">
-        <ItemUpdate :data="updateData2"></ItemUpdate>
+        <ItemUpdate :data="updateData2" :toggleIsShow2="toggleIsShow2"></ItemUpdate>
     </div>
     <div id="main-wrraper" v-if="isShow3">
         <GoodsSelect :data="insertData" :emitFunction="emitFunction" :toggleIsShow3="toggleIsShow3"></GoodsSelect>
@@ -176,7 +165,7 @@ import ItemUpdate from '../item-reg/ItemUpdate.vue';
 import GoodsUpdate from '../goods-reg/GoodsUpdate.vue';
 import ItemReg from '../item-reg/ItemReg.vue';
 import GoodsSelect from '../goods-reg/SelectGoods.vue';
-import { ref, computed, watchEffect, onMounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { router } from '@/router';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import axios from 'axios';
@@ -195,7 +184,7 @@ const testData = {
 }
 
 async function query() {
-    console.log(stringItemCd)
+    
 };
 
 async function query2() {
@@ -240,6 +229,17 @@ async function deleteItem(item) {
 
 const emitFunction = (eventName, eventData) => {
     select_goods.value.push(eventData);
+    getItemImg(eventData);
+}
+
+const toggleIsShow1 = () => {
+    isShow.value = !isShow.value;
+    console.log(select_goods);
+}
+
+const toggleIsShow2 = () => {
+    isShow2.value = !isShow2.value;
+    console.log(select_goods);
 }
 
 const toggleIsShow3 = () => {
@@ -253,6 +253,10 @@ const isShow3 = ref(false);
 const updateData = ref([]);
 const updateData2 = ref([]);
 const insertData = ref([]);
+
+const handleGoBack = () => {
+    isShow.value = true;
+}
 
 const isShowing = (item) => {
     isShow.value = !isShow.value;
@@ -283,40 +287,42 @@ const shouldDisplay = (item) => {
     return false;
 };
 
-//이미지
-const numericItemCd = parseInt(goods.value.itemCd, 10);
-const stringItemCd = (numericItemCd + 1).toString();
+//이미지 
+const itemImgData = ref([]);
 
-const imgData = {
-  UUID: '',
-  imgNm: '',
-  imgLoc: '',
-  corpCd: '테스트가맹점코드',
-  itemCd: stringItemCd,
-  userId: 'admin',
-};  
-const itemImgData = ref('');
-async function getItemImg() {
-    if(!goods.value.itemCd) {
-        console.error('itemCd값이 비어있습니다.');
-        return;
-    }
+async function getItemImg(eventData) {
+    const imgData = {
+    UUID: '',
+    imgNm: '',
+    imgLoc: '',
+    corpCd: eventData.corpCd || '',
+    itemCd: eventData.itemCd || '',
+    userId: 'admin',
+    }; 
 
-  const reader = new FileReader()
-  const result = await axios.get('/api/file/getImg', {
-    responseType: 'blob',
-    params: {
-      corpCd: imgData.corpCd,
-      itemCd: goods.value.itemCd
+  if(!imgData.corpCd || !imgData.itemCd) {
+    eventData.imgSrc = require('../../../assets/img/eatme.jpg');
+  } else {
+    try {
+        const result = await axios.get('/api/file/getImg', {
+        responseType: 'blob',
+        params: {
+            corpCd: eventData.corpCd,
+            itemCd: eventData.itemCd
+        }
+        }); 
+        const reader = new FileReader()
+        reader.onload = () => {
+        eventData.imgSrc = reader.result; 
+        } 
+        const blob = new Blob([result.data], { type : 'image/jpeg' })
+        reader.readAsDataURL(blob) 
+        // itemImgData.value = result;
+    } catch (error) {
+        console.error('이미지를 불러올 수 없습니다.', error);
+        eventData.imgSrc = require('../../../assets/img/eatme.jpg'); 
     }
-  });
-  reader.onload = () => {
-    itemImgData.value = reader.result 
-  } 
-  const blob = new Blob([result.data], { type : 'image/jpeg' })
-  reader.readAsDataURL(blob) 
-  // itemImgData.value = result;
-  
+  }
 }
 
 onMounted(async() => {
@@ -325,13 +331,18 @@ onMounted(async() => {
 
     query();
     query2();
-    
-    watchEffect(() => {
-        select_goods.value.forEach(item => {
-            if(item[0].itemCd) {
-                getItemImg();
+
+    watch(select_goods, (newSelectGoods) => {
+        if (newSelectGoods && newSelectGoods.length > 0) {
+            console.log('호출')
+            newSelectGoods.forEach(async (item) => {
+            if (item && item.corpCd && item.itemCd) {
+                await getItemImg(item);
             }
-        })
+        });
+        } else {
+            console.log('데이터 없음');
+        }
     })
 })
 

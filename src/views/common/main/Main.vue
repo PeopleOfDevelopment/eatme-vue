@@ -231,7 +231,6 @@ async function getCorpImg(item) {
     const blob = new Blob([result.data], { type: 'image/jpeg' });
     reader.readAsDataURL(blob);
   } catch (error) {
-    console.error('이미지를 불러올 수 없습니다.', error);
     item.imgSrc = require('../../../assets/img/eatme.jpg');
   }
 }
