@@ -2,13 +2,13 @@
     <div id="main-wrapper">
         <div class="top-box">
             <div class="top-box-items">
-                <span class="material-symbols-rounded">arrow_back_ios</span>
+                <span class="material-symbols-rounded" @click="goBack()">arrow_back_ios</span>
                 <p class="top-box-text1">상품 정보 수정</p>
                 <Btn btntype="solid" class="top-box-btn1" @click="editComplete('editData')">수정</Btn>
             </div>
         </div>
         <div class="img-box1">
-            <Btn btntype="opacityBlack" class="change-btn1">사진 변경</Btn>
+            <img :src="itemImgData" class="img-real1"/>
         </div>
         <div class="form-box1">
             <div class="form1">
@@ -76,9 +76,10 @@
 
 <script setup lang="ts">
 import Btn from '../../common/components/Btn.vue';
-import { ref, onMounted, reactive } from 'vue';
+import { ref, onMounted, reactive, getCurrentInstance } from 'vue';
 import { defineProps } from 'vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import axios from 'axios';
 
 const props = defineProps({
     data: {
@@ -92,6 +93,8 @@ const props = defineProps({
             itemBarcode: '',
         }),
     },
+
+    toggleIsShow1: Function,
 });
 
 const discount1 = ref(10);
@@ -183,8 +186,51 @@ const editComplete = (field) => {
   toggleEditing(field);
 };
 
+const goBack = () => {
+    props.toggleIsShow1();
+}
+
+//이미지
+const testData = {
+  UUID: '',
+  imgNm: '',
+  imgLoc: '',
+  corpCd: props.data.corpCd || '',
+  itemCd: props.data.itemCd || '',
+  userId: 'admin',
+};
+
+const itemImgData = ref('');
+
+async function getItemImg() {
+  if (!testData.corpCd || !testData.itemCd) {
+    itemImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+
+  const reader = new FileReader();
+  try {
+    const result = await axios.get('/api/file/getImg', {
+      responseType: 'blob',
+      params: {
+        corpCd: props.data.corpCd,
+        itemCd: props.data.itemCd,
+      },
+    });
+    reader.onload = () => {
+      itemImgData.value = reader.result;
+    };
+    const blob = new Blob([result.data], { type: 'image/jpeg' });
+    reader.readAsDataURL(blob);
+    // itemImgData.value = result;
+  } catch (error) {
+    console.error('이미지를 불러올 수 없습니다.', error);
+    itemImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+}
+
 onMounted(() => {
     console.log(props.data);
+    getItemImg();
 })
 
 </script>
@@ -223,6 +269,13 @@ onMounted(() => {
     background-color: #bdbdbd;
     float: left;
     margin-left: 100px;
+}
+.img-real1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 .change-btn1 {
     position: absolute;

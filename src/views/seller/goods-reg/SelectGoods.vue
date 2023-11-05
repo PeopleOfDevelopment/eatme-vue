@@ -2,13 +2,13 @@
     <div id="main-wrapper" v-if="isVisible">
         <div class="top-box">
             <div class="top-box-items">
-                <span class="material-symbols-rounded">arrow_back_ios</span>
-                <p class="top-box-text1">제품 정보 입력</p>
+                <span class="material-symbols-rounded" @click="goBack()">arrow_back_ios</span>
+                <p class="top-box-text1">상품 정보 입력</p>
                 <Btn btntype="solid" class="top-box-btn1" @click="insert()">확인</Btn>
             </div>
         </div>
         <div class="img-box1">
-            <Btn btntype="opacityBlack" class="change-btn1">사진 변경</Btn>
+            <img :src="itemImgData" class="img-real1"/>
         </div>
         <div class="form-box1">
             <div class="form1">
@@ -69,15 +69,16 @@
         </div>
         <div class="total-box">
             <p class="total-text1">판매가</p>
-            <p class="total-price1">{{ (itemPrice * (1 - (selectDiscountRat/100))).toFixed(0) }}원</p>
+            <p class="total-price1">{{ totalPrice }}원</p>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import Btn from '../../common/components/Btn.vue';
-import { ref, onMounted, defineEmits, defineProps } from 'vue';
+import { ref, onMounted, defineEmits, defineProps, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const router = useRouter();
 const isVisible = ref(true);
@@ -127,6 +128,11 @@ const corpCd = ref(props.data.corpCd);
 const itemBarcode = ref('654321');
 const useYn = ref(true);
 
+const totalPrice = computed(() => {
+    const totalPrice = itemPrice.value * (1 - (selectDiscountRat.value / 100));
+    return isNaN(totalPrice) ? 0 : totalPrice.toFixed(0);
+})
+
 const insert = async () => {
   const itemData = [{
     itemCd: itemCd.value,
@@ -143,6 +149,52 @@ const insert = async () => {
   props.emitFunction('eventName', itemData);
   isVisible.value = false;
   props.toggleIsShow3();
+}
+
+//이미지
+const testData = {
+  UUID: '',
+  imgNm: '',
+  imgLoc: '',
+  corpCd: props.data.corpCd || '',
+  itemCd: props.data.itemCd || '',
+  userId: 'admin',
+};
+
+const itemImgData = ref('');
+
+async function getItemImg() {
+  if (!testData.corpCd || !testData.itemCd) {
+    itemImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+
+  const reader = new FileReader();
+  try {
+    const result = await axios.get('/api/file/getImg', {
+      responseType: 'blob',
+      params: {
+        corpCd: props.data.corpCd,
+        itemCd: props.data.itemCd,
+      },
+    });
+    reader.onload = () => {
+      itemImgData.value = reader.result;
+    };
+    const blob = new Blob([result.data], { type: 'image/jpeg' });
+    reader.readAsDataURL(blob);
+    // itemImgData.value = result;
+  } catch (error) {
+    console.error('이미지를 불러올 수 없습니다.', error);
+    itemImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+}
+
+onMounted(() =>{
+    getItemImg();
+})
+
+const goBack = () => {
+    props.toggleIsShow3();
 }
 </script>
 
@@ -180,6 +232,14 @@ const insert = async () => {
     background-color: #bdbdbd;
     float: left;
     margin-left: 100px;
+}
+
+.img-real1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 .change-btn1 {
     position: absolute;

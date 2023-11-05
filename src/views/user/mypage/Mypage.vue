@@ -2,17 +2,17 @@
     <Sidebar></Sidebar>
     <div id="main-wrapper">
             <div class="box1">
-                <p class="box1-text1">이번 달 내가 구한 음식 수는?</p>
-                <div class="box1-btns1">
+                <p class="box1-text1"><span style="color: var(--primary-def);">EAT ME</span> 가 구한 음식 수는?</p>
+                <!-- <div class="box1-btns1">
                     <button class="btnbox" @click="change_btn">3월</button>
                     <button class="btnbox" @click="change_btn">4월</button>
                     <button class="btnbox active" @click="change_btn">5월</button>
-                </div>
-                <p class="box1-text2">총 구매횟수</p>
+                </div> -->
+                <p class="box1-text2">총 판매횟수</p>
                 <p class="box1-text3">0회</p>
             </div>
             <div class="box2">
-                <p class="box2-text1">나의 구매를 통해 지켜진 환경은?</p>
+                <p class="box2-text1">EAT ME 를 통해 지켜진 환경은?</p>
                 <div class="box2-tree">
                     <div class="round1">
                         <svg width="312" height="312" viewBox="-60 -35 312 312" fill="none" xmlns="http://www.w3.org/2000/svg">
