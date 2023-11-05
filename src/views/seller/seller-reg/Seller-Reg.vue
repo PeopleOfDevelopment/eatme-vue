@@ -1,60 +1,69 @@
 <template>
-  <div id="reg-box">
-    <div class="reg-title-box">
-      <h3>판매회원 가입</h3>
-      <p class="sub-title">
-        <span class="strong-text">가맹점 정보</span>
-        를 입력해주세요.
-      </p>
+  <div id="total-box">
+    <div class="img-box1">
+        <label for="photo">매장 사진 추가</label>
+        <input type="file" name="file" accept="image/*" required multiple ref="realUpload" id="photo" @change="handleImageUpload">
+        <div class="image-preview">
+            <img :src="latestUpload?.preview" :data-file="latestUpload?.name" class="img-real1">
+        </div>
     </div>
-    <div class="reg-input-box">
-      <input
-        class="reg-input"
-        v-model="corpCd"
-        placeholder="가맹점 코드" />
-      <input
-        class="reg-input"
-        v-model="corpNm"
-        placeholder="가맹점 이름" />
-      <input
-        class="reg-input"
-        v-model="corpAddr"
-        placeholder="가맹점 주소" />
-      <input
-        class="reg-input"
-        v-model="corpDesc"
-        placeholder="가맹점 소개 내용" />
-      <input
-        class="reg-input"
-        v-model="ceoNm"
-        placeholder="가맹점 대표 이름" />
-      <input
-        class="reg-input"
-        v-model="corpPhoneNumber"
-        placeholder="가맹점 전화번호" />
-      <input
-        :class="{ red: showStyle }"
-        class="reg-input"
-        v-model="regNumber"
-        @focus="outFocus"
-        @blur="checkValid"
-        placeholder="-없이 숫자 10자리 입력"
-        maxlength="10" />
-      <span class="error-msg">{{ errorMessage }}</span>
-      <p class="form-notice">
-        사업자 정보 확인에 문제가 있는 경우, 사업자등록증 사본 파일과 연락
-        가능한 이메일을 EAT ME 고객센터에 보내주세요.
-      </p>
-      <p class="form-notice strong">
-        사업자등록번호를 도용하여 가입 시, 형사 처벌을 받을 수 있습니다.
-      </p>
+    <div id="reg-box">
+      <div class="reg-title-box">
+        <h3>판매회원 가입</h3>
+        <p class="sub-title">
+          <span class="strong-text">가맹점 정보</span>
+          를 입력해주세요.
+        </p>
+      </div>
+      <div class="reg-input-box">
+        <input
+          class="reg-input"
+          v-model="corpCd"
+          placeholder="가맹점 코드" />
+        <input
+          class="reg-input"
+          v-model="corpNm"
+          placeholder="가맹점 이름" />
+        <input
+          class="reg-input"
+          v-model="corpAddr"
+          placeholder="가맹점 주소" />
+        <input
+          class="reg-input"
+          v-model="corpDesc"
+          placeholder="가맹점 소개 내용" />
+        <input
+          class="reg-input"
+          v-model="ceoNm"
+          placeholder="가맹점 대표 이름" />
+        <input
+          class="reg-input"
+          v-model="corpPhoneNumber"
+          placeholder="가맹점 전화번호" />
+        <input
+          :class="{ red: showStyle }"
+          class="reg-input"
+          v-model="regNumber"
+          @focus="outFocus"
+          @blur="checkValid"
+          placeholder="-없이 숫자 10자리 입력"
+          maxlength="10" />
+        <span class="error-msg">{{ errorMessage }}</span>
+        <p class="form-notice">
+          사업자 정보 확인에 문제가 있는 경우, 사업자등록증 사본 파일과 연락
+          가능한 이메일을 EAT ME 고객센터에 보내주세요.
+        </p>
+        <p class="form-notice strong">
+          사업자등록번호를 도용하여 가입 시, 형사 처벌을 받을 수 있습니다.
+        </p>
+      </div>
+      <Btn type="solid" @click="check()">인증하기</Btn>
     </div>
-    <Btn type="solid" @click="check()">인증하기</Btn>
   </div>
 </template>
 <script setup>
 import Btn from '../../common/components/Btn.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import { router } from '@/router';
 
@@ -176,15 +185,62 @@ const check = async () => {
     console.error('등록 실패: ', error);
   }
 };
+
+const realUpload = ref(null);
+const uploadFiles = ref([]);
+
+const handleImageUpload = () => {
+    const files = realUpload.value.files;
+
+    if (files) {
+        for (const file of files) {
+            if (file.type.match("image/.*")) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    uploadFiles.value = [{ name: file.name, preview: event.target.result }];
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+}
+
+const latestUpload = ref(null);
+watch(uploadFiles, (newVal) => {
+    latestUpload.value = newVal[newVal.length - 1];
+})
 </script>
 
 <style scoped>
 .strong-text {
   color: var(--primary-def);
 }
+
+#total-box {
+  display: flex;
+  flex-direction: row;
+  margin-inline: auto;
+  justify-content: center;
+}
+
+.img-box1 {
+  position: relative;
+  background-color: #bdbdbd;
+  width: 500px;
+  height: 500px;
+  margin-top: 120px;
+}
+
+.img-real1 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 #reg-box {
   max-width: 500px;
-  margin-inline: auto;
   padding: 100px 16px 60px;
   display: flex;
   flex-direction: column;
@@ -227,5 +283,29 @@ const check = async () => {
 .strong {
   color: var(--ngray500);
   font-weight: 700;
+}
+
+.img-box1 label {
+    position: absolute;
+    top: 85%;
+    left: 60%;
+    width: 150px;
+    height: 30px;
+    padding: 8px 8px 8px 8px;
+    background-color: black;
+    color: white;
+    opacity: 0.5;
+    border-radius: 20px;
+    font-size: 20px;
+    z-index: 99;
+}
+
+.img-box1 input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
 }
 </style>

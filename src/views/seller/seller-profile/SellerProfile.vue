@@ -59,17 +59,19 @@
           </span>
         </div>
       </div>
-      <div class="info-tr">
+      <!-- <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">사진</span>
           <span class="info-data profile-img"></span>
         </div>
         <Btn btntype="ghostGray">수정</Btn>
-      </div>
+      </div> -->
       <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">매장 사진</span>
-          <span class="info-data"><span class="place-img"></span></span>
+          <span class="info-data"><span class="place-img">
+            <img :src="itemImgData" class="img-real1" />
+          </span></span>
         </div>
       </div>
     </div>
@@ -135,6 +137,9 @@ const editComplete = (field) => {
   updateSellerProfile();
   toggleEditing(field);
 };
+
+//이미지
+const itemImgData = ref('');
 </script>
 
 <style scoped>
@@ -189,6 +194,15 @@ const editComplete = (field) => {
   height: 180px;
   background-color: var(--ngray200);
   display: block;
+  position: relative;
+}
+
+.img-real1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 .info-table .btn {
   min-width: 48px;
