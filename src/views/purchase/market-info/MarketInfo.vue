@@ -3,7 +3,7 @@
   <div class="market-info-wrap">
     <div class="market-detail-wrap">
       <div class="market-img">
-        <img :src="marketImgData" />
+        <img :src="corpImgData" />
       </div>
       <div class="market-text-wrap">
         <div class="market-name">{{ marketInfoDetail.corpNm }}</div>
@@ -54,6 +54,7 @@
 import Btn from '../../common/components/Btn.vue';
 import TopNav from '@/views/common/components/TopNav.vue';
 import Card from '@/views/common/components/Card.vue';
+import axios from 'axios';
 const props = defineProps({
   marketInfo: {
     type: Array,
