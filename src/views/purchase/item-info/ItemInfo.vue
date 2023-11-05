@@ -3,7 +3,7 @@
   <div class="item-info-box1">
     <div class="item-img1">
       <!-- 문제 여기 -->
-      <img :src="itemImgData" class="img-real1" />
+      <img :src="itemImgData" />
     </div>
     <div class="item-text-wrap">
       <div class="item-info1">
@@ -188,9 +188,7 @@ const itemInfo = props.itemInfo;
   position: relative;
 }
 .item-img1 img {
-  position: absolute;
-  top: 0;
-  left: 0;
+  object-fit: cover;
   width: 100%;
   height: 100%;
 }
