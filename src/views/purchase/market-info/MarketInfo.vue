@@ -45,7 +45,8 @@
       <div class="item-list">
         <Card
           :itemList="productList"
-          @itemSelected="$emit('itemSelected', $event)"></Card>
+          @itemSelected="$emit('itemSelected', $event)"
+          :itemImgData="itemImgData"></Card>
       </div>
     </div>
   </div>
@@ -84,6 +85,18 @@ const productList = ref([]);
 async function getItem() {
   const result = await apiUtils.post('/api/goodsReg/query', corpData);
   productList.value = result.data;
+
+  if (productList.value && productList.value.length > 0) {
+    console.log('호출됨');
+    productList.value.forEach((item) => {
+      if (item && item.corpCd && item.itemCd) {
+        getItemImg(item);
+      }
+    });
+  } else {
+    console.log('데이터 없음');
+  }
+  
 }
 
 /* 찜 */
@@ -175,6 +188,44 @@ async function getCorpImg() {
   } catch (error) {
     console.error('이미지를 불러올 수 없습니다.', error);
     corpImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+}
+
+//이미지
+const itemImgData = ref([]);
+
+async function getItemImg(item) {
+  const imgData = {
+    UUID: '',
+    imgNm: '',
+    imgLoc: '',
+    corpCd: targetCorp || '',
+    itemCd: item.itemCd || '',
+    userId: 'admin',
+  };
+
+  if (!imgData.corpCd || !imgData.itemCd) {
+    item.imgSrc = require('../../../assets/img/eatme.jpg');
+  } else {
+    try {
+      const result = await axios.get('/api/file/getImg', {
+        responseType: 'blob',
+        params: {
+          corpCd: targetCorp,
+          itemCd: item.itemCd,
+        },
+      });
+      const reader = new FileReader();
+      reader.onload = () => {
+        item.imgSrc = reader.result;
+      };
+      const blob = new Blob([result.data], { type: 'image/jpeg' });
+      reader.readAsDataURL(blob);
+      // itemImgData.value = result;
+    } catch (error) {
+      console.error('이미지를 불러올 수 없습니다.', error);
+      item.imgSrc = require('../../../assets/img/eatme.jpg');
+    }
   }
 }
 

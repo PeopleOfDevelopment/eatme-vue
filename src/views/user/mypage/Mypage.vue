@@ -9,7 +9,7 @@
                     <button class="btnbox active" @click="change_btn">5월</button>
                 </div> -->
                 <p class="box1-text2">총 판매횟수</p>
-                <p class="box1-text3">0회</p>
+                <p class="box1-text3">{{ ecoInfos.allSaleAmt }}회</p>
             </div>
             <div class="box2">
                 <p class="box2-text1">EAT ME 를 통해 지켜진 환경은?</p>
@@ -38,7 +38,7 @@
                 <div class="box3-text1">
                     <p style="float: left; margin-right: 80px; margin-bottom: 0px; margin-top: 180px;">온실가스 배출량이</p>
                     <div class="box3-text1-1">
-                        <p class="box3-textGreen1">6.0kg</p>
+                        <p class="box3-textGreen1">{{ (ecoInfos.allSaleAmt) * 1.2 }}kg</p>
                         <p style="float: left; margin-top: 20px; margin-left: 15px; margin-bottom: 0px;">줄었어요.</p>
                     </div>
                     <p class="box3-text1-2">음식을 1번 구하면 온실가스 배출량이 1.2kg 감소해요.</p>
@@ -135,36 +135,19 @@ const change_btn = (e) => {
                 console.log(e.currentTarget);
 };
 
-const userInfos = ref([]);
 const ecoInfos = ref([]);
 
 const router = useRouter();
 
 const apiUtils = new ApiUtils();
 
-const ecoData  = {
-    userId: sessionStorage.getItem('userId')
-}
-
 async function ecoStatus() {
-    const token = sessionStorage.getItem('token');
-
-    const result = await apiUtils.post('/api/ecoStatus/queryMyEco', ecoData, {
-        headers: {
-          Authorization: `BEARER ${token}`,
-        }
-      });
+    const result = await apiUtils.post('/api/ecoStatus/query');
     ecoInfos.value = result.data;
     console.log(ecoInfos.value);
 }
 
-onMounted(async () => {
-    const token = sessionStorage.getItem('token');
-    if(!token) {
-        alert('로그인 후 이용할 수 있습니다.')
-        router.push('/login') //토큰이 없으면 로그인 페이지로
-    }
-
+onMounted(() => {
     ecoStatus();
 })
 </script>

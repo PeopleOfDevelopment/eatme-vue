@@ -12,7 +12,8 @@
         <Card
           :itemList="wishList"
           :market="true"
-          @itemSelected="selectMarket"></Card>
+          @itemSelected="selectMarket"
+          :corpImgData="corpImgData"></Card>
       </div>
     </div>
     <Footer></Footer>
@@ -25,6 +26,7 @@ import Card from '../../common/components/Card.vue';
 import Footer from '../../common/main/footer/Footer.vue';
 import MarketInfo from '@/views/purchase/market-info/MarketInfo.vue';
 import { router } from '@/router';
+import axios from 'axios';
 
 import { ref, onMounted } from 'vue';
 
@@ -40,6 +42,16 @@ const userData = {
 async function getWishList() {
   const result = await apiUtils.post('/api/wishList/query', userData);
   wishList.value = result.data;
+
+  if (wishList.value && wishList.value.length > 0) {
+    wishList.value.forEach((item) => {
+      if (item && item.corpCd) {
+        getCorpImg(item);
+      }
+    });
+  } else {
+    console.log('데이터 없음');
+  }
 }
 
 onMounted(async () => {
@@ -68,6 +80,40 @@ const selectMarket = (item) => {
 const scrollToTop = () => {
   window.scrollTo(0, 0);
 };
+
+//가게 이미지
+const corpImgData = ref([]);
+
+async function getCorpImg(item) {
+  const imgData = {
+    UUID: '',
+    imgNm: '',
+    imgLoc: '',
+    corpCd: item.corpCd || '',
+  };
+
+  if (!imgData.corpCd) {
+    item.imgSrc = require('../../../assets/img/eatme.jpg');
+  }
+
+  const reader = new FileReader();
+  try {
+    const result = await axios.get('/api/file/getCorpImg', {
+      responseType: 'blob',
+      params: {
+        corpCd: item.corpCd,
+      },
+    });
+    console.log(`getcorpimg실행`);
+    reader.onload = () => {
+      item.imgSrc = reader.result;
+    };
+    const blob = new Blob([result.data], { type: 'image/jpeg' });
+    reader.readAsDataURL(blob);
+  } catch (error) {
+    item.imgSrc = require('../../../assets/img/eatme.jpg');
+  }
+}
 </script>
 
 <style scoped>

@@ -10,7 +10,8 @@
         <Card
           :itemList="wishList"
           :item="true"
-          @itemSelected="selectItem"></Card>
+          @itemSelected="selectItem"
+          :itemImgData="itemImgData"></Card>
       </div>
     </div>
     <Footer></Footer>
@@ -23,6 +24,7 @@ import Card from '@/views/common/components/Card.vue';
 import Footer from '@/views/common/main/footer/Footer.vue';
 import itemInfo from '@/views/purchase/item-info/ItemInfo.vue';
 import { router } from '@/router';
+import axios from 'axios';
 
 import { ref, onMounted } from 'vue';
 
@@ -38,6 +40,17 @@ const userData = {
 async function getWishList() {
   const result = await apiUtils.post('/api/basket/query', userData);
   wishList.value = result.data;
+
+  if (wishList.value && wishList.value.length > 0) {
+    console.log('호출됨');
+    wishList.value.forEach((item) => {
+      if (item && item.corpCd && item.itemCd) {
+        getItemImg(item);
+      }
+    });
+  } else {
+    console.log('데이터 없음');
+  }
 }
 
 onMounted(async () => {
@@ -66,6 +79,44 @@ const selectItem = (item) => {
 const scrollToTop = () => {
   window.scrollTo(0, 0);
 };
+
+//이미지
+const itemImgData = ref([]);
+
+async function getItemImg(item) {
+  const imgData = {
+    UUID: '',
+    imgNm: '',
+    imgLoc: '',
+    corpCd: item.corpCd || '',
+    itemCd: item.itemCd || '',
+    userId: 'admin',
+  };
+
+  if (!imgData.corpCd || !imgData.itemCd) {
+    item.imgSrc = require('../../../assets/img/eatme.jpg');
+  } else {
+    try {
+      const result = await axios.get('/api/file/getImg', {
+        responseType: 'blob',
+        params: {
+          corpCd: item.corpCd,
+          itemCd: item.itemCd,
+        },
+      });
+      const reader = new FileReader();
+      reader.onload = () => {
+        item.imgSrc = reader.result;
+      };
+      const blob = new Blob([result.data], { type: 'image/jpeg' });
+      reader.readAsDataURL(blob);
+      // itemImgData.value = result;
+    } catch (error) {
+      console.error('이미지를 불러올 수 없습니다.', error);
+      item.imgSrc = require('../../../assets/img/eatme.jpg');
+    }
+  }
+}
 </script>
 
 <style scoped>
