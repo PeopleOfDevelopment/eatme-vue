@@ -6,8 +6,8 @@
             <div v-if="goodCount === 0">
                 <span class="material-symbols-rounded" 
                 style="font-size: 225px; color: var(--ngray200);
-                margin-top: 350px; margin-right: 190px;">barcode_scanner</span>
-                <p class="barcode-scan-text1">상품의 바코드를 스캔해주세요</p>
+                margin-top: 350px; margin-right: 190px;">box_add</span>
+                <p class="barcode-scan-text1">등록된 제품이 없습니다.</p>
             </div>
 
             <div v-if="goodCount > 0">
@@ -80,10 +80,7 @@
             </div>
 
             <div class="scan-text-box1">
-                <p class="barcode-scan-text2">스캔이 되지 않는 경우</p>
-                <p class="barcode-scan-text3" @click="goPage('itemreg')" style="cursor: pointer;">문제 해결</p>
-                <p class="barcode-scan-text2">혹은</p>
-                <p class="barcode-scan-text3">바코드 입력</p>
+                <p class="barcode-scan-text3" @click="goPage('itemreg')" style="cursor: pointer;">제품 등록하기</p>
             </div>
         </div>
 
@@ -115,7 +112,6 @@
                     <div class="menu-box">
                         <div class="menu-top-box">
                             <p style="flex-basis: 10%;">상품코드</p>
-                            <p style="flex-basis: 70px;">사진</p>
                             <p style="flex-basis: 30%;">제품명</p>
                             <p style="flex-basis: 5%;">수량</p>
                             <p style="flex-basis: 5%;">원가</p>
@@ -127,16 +123,11 @@
                         <div class="menu-list">
                             <div class="menu-info" v-for="item in select_goods" :key="item.itemCd">
                                 <p style="flex-basis: 10%;">{{ item[0].itemCd }}</p>
-                                <div class="menu-img">
-                                    <img :src="item.imgSrc" class="img-real1"/>
-                                </div>
                                 <p style="flex-basis: 30%;">{{ item[0].itemNm }}</p>
                                 <p style="flex-basis: 5%;">{{ item[0].itemAmt }}</p>
                                 <p style="flex-basis: 5%;">{{ item[0].itemPrc }}원</p>
                                 <p style="flex-basis: 5%;">{{ item[0].selectDiscountRat }}%</p>
                                 <p style="flex-basis: 5%;">{{ (item[0].itemPrc * (1 - (item[0].selectDiscountRat/100))).toFixed(0) }}원</p>
-                                <!-- <Btn btntype="LightSolid" class="list-btn1" style="flex-basis: 4%; margin-bottom: 10px;"
-                                @click="isShowing(item[0])">수정</Btn> -->
                                 <Btn btntype="LightSolid" class="list-btn3" style="flex-basis: 4%; margin-bottom: 10px;"
                                 @click="removeItem(item)">삭제</Btn>
                             </div>
@@ -147,11 +138,11 @@
             </Transition>
         </div>
     </div>
-    <!-- <div id="main-wrraper" v-if="isShow">
-        <GoodsUpdate :data="updateData" :toggleIsShow1="toggleIsShow1"></GoodsUpdate>
-    </div> -->
     <div id="main-wrraper" v-if="isShow2">
-        <ItemUpdate :data="updateData2" :toggleIsShow2="toggleIsShow2"></ItemUpdate>
+        <ItemUpdate 
+        :data="updateData2" 
+        :toggleIsShow2="toggleIsShow2"
+        @updateData="handleUpdateData"></ItemUpdate>
     </div>
     <div id="main-wrraper" v-if="isShow3">
         <GoodsSelect :data="insertData" :emitFunction="emitFunction" :toggleIsShow3="toggleIsShow3"></GoodsSelect>
@@ -182,10 +173,6 @@ const testData = {
   itemNm : '',
   corpCd : sessionStorage.getItem('corpCd'),
 }
-
-async function query() {
-    
-};
 
 async function query2() {
   const result = await apiUtils.post('/api/goodsReg/query', testData);
@@ -229,7 +216,6 @@ async function deleteItem(item) {
 
 const emitFunction = (eventName, eventData) => {
     select_goods.value.push(eventData);
-    getItemImg(eventData);
 }
 
 const toggleIsShow1 = () => {
@@ -273,6 +259,25 @@ const isShowing3 = (item) => {
     insertData.value = item;
 }
 
+const handleUpdateData = (updatedData) => {
+    updateData2.value = updatedData;
+}
+
+async function update() {
+  try {
+    const result = await apiUtils.post('/api/itemReg/update', goods.value);
+    if (result === 1) {
+      alert('수정되었습니다.');
+      location.reload();
+      console.log('성공');
+    } else {
+      console.log('실패');
+    }
+  } catch (error) {
+    console.error('오류 발생:', error);
+  }
+}
+
 const search = ref('');
 
 //검색기능
@@ -287,63 +292,49 @@ const shouldDisplay = (item) => {
     return false;
 };
 
-//이미지 
-const itemImgData = ref([]);
+//이미지
+// const itemImgData = ref([]);
 
-async function getItemImg(eventData) {
-    const imgData = {
-    UUID: '',
-    imgNm: '',
-    imgLoc: '',
-    corpCd: eventData.corpCd || '',
-    itemCd: eventData.itemCd || '',
-    userId: 'admin',
-    }; 
+// async function getItemImg(select_goods) {
+//   const imgData = {
+//     UUID: '',
+//     imgNm: '',
+//     imgLoc: '',
+//     corpCd: select_goods.corpCd || '',
+//     itemCd: select_goods.itemCd || '',
+//     userId: 'admin',
+//   };
 
-  if(!imgData.corpCd || !imgData.itemCd) {
-    eventData.imgSrc = require('../../../assets/img/eatme.jpg');
-  } else {
-    try {
-        const result = await axios.get('/api/file/getImg', {
-        responseType: 'blob',
-        params: {
-            corpCd: eventData.corpCd,
-            itemCd: eventData.itemCd
-        }
-        }); 
-        const reader = new FileReader()
-        reader.onload = () => {
-        eventData.imgSrc = reader.result; 
-        } 
-        const blob = new Blob([result.data], { type : 'image/jpeg' })
-        reader.readAsDataURL(blob) 
-        // itemImgData.value = result;
-    } catch (error) {
-        console.error('이미지를 불러올 수 없습니다.', error);
-        eventData.imgSrc = require('../../../assets/img/eatme.jpg'); 
-    }
-  }
-}
+//   if (!imgData.corpCd || !imgData.itemCd) {
+//     select_goods.imgSrc = require('../../../assets/img/eatme.jpg');
+//   } else {
+//     try {
+//       const result = await axios.get('/api/file/getImg', {
+//         responseType: 'blob',
+//         params: {
+//           corpCd: select_goods.corpCd,
+//           itemCd: select_goods.itemCd,
+//         },
+//       });
+//       const reader = new FileReader();
+//       reader.onload = () => {
+//         select_goods.imgSrc = reader.result;
+//       };
+//       const blob = new Blob([result.data], { type: 'image/jpeg' });
+//       reader.readAsDataURL(blob);
+//       // itemImgData.value = result;
+//     } catch (error) {
+//       console.error('이미지를 불러올 수 없습니다.', error);
+//       select_goods.imgSrc = require('../../../assets/img/eatme.jpg');
+//     }
+//   }
+// }
 
 onMounted(async() => {
     const result = await apiUtils.post('/api/itemReg/query', testData);
     goods.value = result.data
 
-    query();
     query2();
-
-    watch(select_goods, (newSelectGoods) => {
-        if (newSelectGoods && newSelectGoods.length > 0) {
-            console.log('호출')
-            newSelectGoods.forEach(async (item) => {
-            if (item && item.corpCd && item.itemCd) {
-                await getItemImg(item);
-            }
-        });
-        } else {
-            console.log('데이터 없음');
-        }
-    })
 })
 
 const goodCount = computed(() => goods.value.length);
@@ -545,9 +536,9 @@ const goPage = (page) => {
 }
 
 .barcode-scan-text3 {
-    margin-right: 10px;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 700;
+    text-decoration: underline;
 }
 
 .search {

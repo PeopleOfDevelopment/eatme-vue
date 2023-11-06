@@ -11,7 +11,7 @@
         <div class="img-box1">
             <label for="photo">사진 변경</label>
             <input type="file" name="file" accept="image/*" required multiple ref="realUpload" id="photo" @change="handleImageUpload">
-            <div class="image-preview">
+            <div class="image-preview" v-if="latestUpload">
                 <img :src="latestUpload?.preview" :data-file="latestUpload?.name" class="img-real1">
             </div>
         </div>
@@ -24,7 +24,7 @@
                 <span class="material-symbols-rounded">cancel</span>
             </div>
         </div>
-        <div class="form-box-set1">
+        <!-- <div class="form-box-set1">
             <div class="form-box3">
                 <div class="form3">
                     <p class="form-text3">수량</p>
@@ -36,8 +36,8 @@
             <p style="font-size: 20px; color: #c5c7c3;
         float: right; margin-right: 70px; margin-top: 60px;"
         >개</p>
-        </div>
-        <div class="form-box1">
+        </div> -->
+        <!-- <div class="form-box1">
             <div class="form1">
                 <p class="form-text1">유통기한</p>
             </div>
@@ -47,7 +47,7 @@
         </div>
         <p style="font-size: 20px; color: #c5c7c3;
         float: right; margin-right: 70px; margin-top: -30px;"
-        >까지</p>
+        >까지</p> -->
         <div class="form-box1">
             <div class="form1">
                 <p class="form-text1">원가</p>
@@ -59,7 +59,7 @@
         <p style="font-size: 20px; color: #c5c7c3;
         float: right; margin-right: 70px; margin-top: -30px;"
         >원</p>
-        <div class="form-box1">
+        <!-- <div class="form-box1">
             <div class="form1">
                 <p class="form-text1">할인율</p>
             </div>
@@ -71,10 +71,10 @@
                 <button class="btnbox" @click="change_btn">{{discount5}}%</button>
                 <button class="btnbox" @click="change_btn">{{discount6}}%</button>
             </div>
-        </div>
+        </div> -->
         <div class="total-box">
             <p class="total-text1">판매가</p>
-            <p class="total-price1">{{ totalPrice }}원</p>
+            <p class="total-price1">{{ itemPrice }}원</p>
         </div>
     </div>
 </template>

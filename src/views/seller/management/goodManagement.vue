@@ -30,7 +30,8 @@
           </p>
           <Btn
             btntype="LightSolid"
-            style="flex-basis: 70px; margin-bottom: 10px">
+            style="flex-basis: 70px; margin-bottom: 10px"
+            @click="deleteGoods(item)">
             판매 완료
           </Btn>
           <Btn

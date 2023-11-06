@@ -165,6 +165,7 @@ const insert = async () => {
       itemExpdate: itemDate.value,
       itemPrc: itemPrice.value,
       itemNm: itemNm.value,
+      itemImgData: itemImgData.value,
     },
   ];
 
