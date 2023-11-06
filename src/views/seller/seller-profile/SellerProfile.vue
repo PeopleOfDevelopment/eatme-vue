@@ -69,9 +69,11 @@
       <div class="info-tr">
         <div class="info-wrap">
           <span class="info-label">매장 사진</span>
-          <span class="info-data"><span class="place-img">
-            <img :src="corpImgData" class="img-real1" />
-          </span></span>
+          <span class="info-data">
+            <span class="place-img">
+              <img :src="corpImgData" class="img-real1" />
+            </span>
+          </span>
         </div>
       </div>
     </div>
@@ -141,16 +143,15 @@ const editComplete = (field) => {
 
 //이미지
 const imgData = {
-    UUID: '',
-    imgNm: '',
-    imgLoc: '',
-    corpCd: sellerProfile.corpCd || '',
-  };
+  UUID: '',
+  imgNm: '',
+  imgLoc: '',
+  corpCd: sellerProfile.corpCd || '',
+};
 
 const corpImgData = ref('');
 
 async function getCorpImg() {
-
   if (!imgData.corpCd) {
     corpImgData.value = require('../../../assets/img/eatme.jpg');
   }
@@ -235,11 +236,9 @@ onMounted(() => {
 }
 
 .img-real1 {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 .info-table .btn {
   min-width: 48px;
