@@ -11,7 +11,7 @@
         <div>작성일</div>
       </div>
       <div
-        v-for="(item, index) in noticeListSeller"
+        v-for="(item, index) in noticeList"
         @click="toggleContents(index)"
         :class="{ open: isOpen[index] }">
         <div class="table-tr">
@@ -21,9 +21,7 @@
           </div>
           <div class="cs-detail-wrap">{{ item.noticeTodt }}</div>
         </div>
-        <div class="table-contents-box">
-          {{ item.noticeTxt }}
-        </div>
+        <div class="table-contents-box" v-html="item.noticeTxt"></div>
       </div>
     </div>
   </div>
@@ -34,24 +32,29 @@ import { ref, onMounted } from 'vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 const apiUtils = new ApiUtils();
 
-const noticeListSeller = ref([]);
+const noticeList = ref([]);
 
-const testData = {
-  noticeTodt: '2023-10-31',
-  noticeFrdt: '2023-10-01',
-  corpCd: '테스트가맹점코드',
+let today = new Date();
+let tY = today.getFullYear();
+let tM = String(today.getMonth() + 1).padStart(2, '0');
+let tD = String(today.getDate()).padStart(2, '0');
+let todayFormat = `${tY}-${tM}-${tD}`;
+
+const noticeParam = {
+  noticeTp: '전체',
+  noticeFrdt: todayFormat,
+  noticeTodt: todayFormat,
 };
-
 async function getNoticeList() {
-  const result = await apiUtils.post('/api/sellerNotice/query', testData);
-  noticeListSeller.value = result.data;
+  const result = await apiUtils.post('/api/admin/notice/query', noticeParam);
+  noticeList.value = result.data.reverse();
 }
 
 onMounted(() => {
   getNoticeList();
 });
 
-const isOpen = ref(Array(noticeListSeller.length).fill(false));
+const isOpen = ref(Array(getNoticeList.length).fill(false));
 
 const toggleContents = (index) => {
   isOpen.value[index] = !isOpen.value[index];
