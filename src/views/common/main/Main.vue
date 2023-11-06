@@ -125,6 +125,7 @@ const userData = {
 
 const updateCurAddr = (newAddr) => {
   userData.curAddr = newAddr;
+  userData.userAddr = newAddr;
   console.log(`바뀐주소검색: ${userData.curAddr}`);
   getMarketAround();
   getItemAround();
@@ -135,14 +136,14 @@ async function getMarketAround() {
   marketList.value = result.data;
 
   if (marketList.value && marketList.value.length > 0) {
-        marketList.value.forEach((item) => {
-        if (item && item.corpCd) {
-          getCorpImg(item);
-        }
+    marketList.value.forEach((item) => {
+      if (item && item.corpCd) {
+        getCorpImg(item);
+      }
     });
-    } else {
-        console.log('데이터 없음');
-    }
+  } else {
+    console.log('데이터 없음');
+  }
 }
 
 async function getItemAround() {
@@ -150,11 +151,11 @@ async function getItemAround() {
   productList.value = result.data;
 
   if (productList.value && productList.value.length > 0) {
-    console.log('호출됨')
-        productList.value.forEach((item) => {
-        if (item && item.corpCd && item.itemCd) {
-            getItemImg(item);
-        }
+    console.log('호출됨');
+    productList.value.forEach((item) => {
+      if (item && item.corpCd && item.itemCd) {
+        getItemImg(item);
+      }
     });
   } else {
     console.log('데이터 없음');
@@ -243,6 +244,7 @@ onMounted(() => {
   const initAddr = sessionStorage.getItem('curSearchAddr');
   if (initAddr) {
     userData.curAddr = initAddr;
+    userData.userAddr = initAddr;
   } else {
     sessionStorage.setItem(
       'curAddr',
@@ -250,6 +252,7 @@ onMounted(() => {
     );
     sessionStorage.setItem('curSearchAddr', '충남 천안시 동남구 안서동');
     userData.curAddr = '충남 천안시 동남구 안서동';
+    userData.userAddr = '충남 천안시 동남구 안서동';
   }
 
   getMarketAround();
