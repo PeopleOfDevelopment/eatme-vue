@@ -70,7 +70,7 @@
         <div class="info-wrap">
           <span class="info-label">매장 사진</span>
           <span class="info-data"><span class="place-img">
-            <img :src="itemImgData" class="img-real1" />
+            <img :src="corpImgData" class="img-real1" />
           </span></span>
         </div>
       </div>
@@ -82,6 +82,8 @@ import Sidebar from '@/views/common/main/sidebar/Sidebar.vue';
 import Btn from '@/views/common/components/Btn.vue';
 import { ref, onMounted } from 'vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
+import axios from 'axios';
+
 const apiUtils = new ApiUtils();
 
 const sellerProfile = ref([]);
@@ -93,6 +95,9 @@ const testData = {
 async function getSellerProfile() {
   const result = await apiUtils.post('/api/sellerProfile/query', testData);
   sellerProfile.value = result.data;
+  console.log(sellerProfile.value.corpCd);
+
+  getCorpImg();
 }
 async function updateSellerProfile() {
   try {
@@ -110,10 +115,6 @@ async function updateSellerProfile() {
     console.error('판매자 프로필 업데이트 중 오류 발생:', error);
   }
 }
-
-onMounted(() => {
-  getSellerProfile();
-});
 
 const isEditingCorpDesc = ref(false);
 
@@ -139,7 +140,43 @@ const editComplete = (field) => {
 };
 
 //이미지
-const itemImgData = ref('');
+const imgData = {
+    UUID: '',
+    imgNm: '',
+    imgLoc: '',
+    corpCd: sellerProfile.corpCd || '',
+  };
+
+const corpImgData = ref('');
+
+async function getCorpImg() {
+
+  if (!imgData.corpCd) {
+    corpImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+
+  const reader = new FileReader();
+  try {
+    const result = await axios.get('/api/file/getCorpImg', {
+      responseType: 'blob',
+      params: {
+        corpCd: sellerProfile.value.corpCd,
+      },
+    });
+    reader.onload = () => {
+      corpImgData.value = reader.result;
+    };
+    const blob = new Blob([result.data], { type: 'image/jpeg' });
+    reader.readAsDataURL(blob);
+  } catch (error) {
+    console.error('이미지를 불러올 수 없습니다.', error);
+    corpImgData.value = require('../../../assets/img/eatme.jpg');
+  }
+}
+
+onMounted(() => {
+  getSellerProfile();
+});
 </script>
 
 <style scoped>

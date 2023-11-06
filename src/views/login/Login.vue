@@ -48,15 +48,6 @@
           로그인
         </Btn>
 
-        <div class="line-text">또는</div>
-
-        <div class="btn-box1">
-          <div class="btn-b1"></div>
-          <div class="btn-b1"></div>
-          <div class="btn-b1"></div>
-          <div class="btn-b1"></div>
-        </div>
-
         <div class="b-text7">
           <p onclick="location.href='join'" style="cursor: pointer;">회원가입</p>
           <p>|</p>
@@ -229,7 +220,7 @@ const goPage = () => {
 }
 
 .b-text7 p {
-  margin-left: 90px;
+  margin-left: 80px;
 }
 
 .inputInfor {
