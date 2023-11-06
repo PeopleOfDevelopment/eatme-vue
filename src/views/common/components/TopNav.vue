@@ -1,10 +1,12 @@
 <template>
-  <div id="top-nav" v-if="navType === 'location'" class="nav-location">
-    <div class="location-box" @click="showLocation">
-      <span class="material-symbols-rounded location-icon">location_on</span>
-      <Btn btntype="textGray" class="user-location">
-        {{ curAddr }}
-      </Btn>
+  <div id="top-nav" v-if="navType === 'location'">
+    <div class="nav-location">
+      <div class="location-box" @click="showLocation">
+        <span class="material-symbols-rounded location-icon">location_on</span>
+        <Btn btntype="textGray" class="user-location">
+          {{ curAddr }}
+        </Btn>
+      </div>
     </div>
     <div
       class="location-wrap"
@@ -115,10 +117,8 @@ onMounted(() => {
 <style scoped>
 #top-nav {
   padding-inline: 75px;
-  display: flex;
   border-bottom: 1px solid var(--ngray100);
   background-color: var(--gray-white);
-  align-items: center;
   position: sticky;
   top: 0;
   z-index: 998;
@@ -140,6 +140,7 @@ onMounted(() => {
   display: flex;
   color: var(--ngray800);
   text-align: left;
+  justify-content: flex-start;
 }
 .location-filter {
   padding-right: 0;
@@ -190,8 +191,6 @@ onMounted(() => {
   position: absolute;
   z-index: 999;
   border: 1px solid var(--ngray100);
-  border-top: 0;
-  top: 65px;
 }
 .show {
   display: block;
