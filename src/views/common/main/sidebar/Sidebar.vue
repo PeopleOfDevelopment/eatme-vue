@@ -12,7 +12,7 @@
     <div
       class="user"
       v-if="isLoggedIn === true && pageType === 'user'"
-      @click="handle_toggle2">
+      @click="handle_toggle">
       <p class="login-text">
         <span class="user-nick">{{ userData2.userNick }}</span>
         님, 어서오세요!

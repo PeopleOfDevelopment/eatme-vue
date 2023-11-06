@@ -86,6 +86,15 @@ import { ref } from 'vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import { onMounted } from 'vue';
 import Mypage from '../Mypage.vue';
+import { router } from '@/router';
+
+const clickedItem = ref(window.location.pathname.substring(1) || 'home');
+
+const goPage = (page) => {
+  if (page === 'home') router.push('/');
+  else router.push('/' + page);
+  clickedItem.value = page;
+};
 
 const modalOpen = ref(false);   
 
@@ -173,14 +182,18 @@ const editComplete = (field) => {
   toggleEditing(field);
 };
 
+async function exit() {
 const testData = {
     userId: sessionStorage.getItem('userId'),
-    userNm: '김회원'
+    userNm: user.value.userNm,
 }
 
-async function exit() {
   const result = await apiUtils.post('/api/mypage/exit', testData);
   console.log('탈퇴완료');
+  sessionStorage.removeItem('userId');
+  sessionStorage.removeItem('userNick');
+  sessionStorage.removeItem('token');
+  goPage('/');
 };
 
 onMounted(() => {

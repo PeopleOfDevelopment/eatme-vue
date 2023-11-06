@@ -74,7 +74,7 @@
         </div>
         <div class="total-box">
             <p class="total-text1">판매가</p>
-            <p class="total-price1">{{ (itemPrice * (1 - (selectDiscountRat/100))).toFixed(0) }}원</p>
+            <p class="total-price1">{{ totalPrice }}원</p>
         </div>
     </div>
 </template>
@@ -83,7 +83,7 @@
 import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Btn from '../../common/components/Btn.vue';
 import { ApiUtils } from '../../common/utils/ApiUtils';
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { router } from '@/router';
 
 const props = defineProps({
@@ -136,6 +136,11 @@ const itemCd = ref('Code');
 const corpCd = ref('');
 const itemBarcode = ref('654321');
 const useYn = ref(true);
+
+const totalPrice = computed(() => {
+    const totalPrice = itemPrice.value * (1 - (selectDiscountRat.value / 100));
+    return isNaN(totalPrice) ? 0 : totalPrice.toFixed(0);
+})
 
 const apiUtils = new ApiUtils();
 
