@@ -4,7 +4,7 @@
             <div class="top-box-items">
                 <span class="material-symbols-rounded" @click="goBack()">arrow_back_ios</span>
                 <p class="top-box-text1">품목 정보 수정</p>
-                <Btn btntype="solid" class="top-box-btn1" @click="editComplete('editData')">수정</Btn>
+                <Btn btntype="solid" class="top-box-btn1" @click="update()">수정</Btn>
             </div>
         </div>
         <div class="img-box1">
@@ -19,30 +19,6 @@
                 <span class="material-symbols-rounded">cancel</span>
             </div>
         </div>
-        <div class="form-box-set1">
-            <div class="form-box3">
-                <div class="form3">
-                    <p class="form-text3">수량</p>
-                </div>
-                <div class="form-input-box3">
-                    <input type="text" class="form-input3" dir="rtl" v-model="itemAmt">
-                </div>
-            </div>
-            <p style="font-size: 20px; color: #c5c7c3;
-        float: right; margin-right: 70px; margin-top: 60px;"
-        >개</p>
-        </div>
-        <div class="form-box1">
-            <div class="form1">
-                <p class="form-text1">유통기한</p>
-            </div>
-            <div class="form-input-box4">
-                <input type="text" class="form-input4" dir="rtl" v-model="itemDate">
-            </div>
-        </div>
-        <p style="font-size: 20px; color: #c5c7c3;
-        float: right; margin-right: 70px; margin-top: -30px;"
-        >까지</p>
         <div class="form-box1">
             <div class="form1">
                 <p class="form-text1">원가</p>
@@ -54,30 +30,17 @@
         <p style="font-size: 20px; color: #c5c7c3;
         float: right; margin-right: 70px; margin-top: -30px;"
         >원</p>
-        <div class="form-box1">
-            <div class="form1">
-                <p class="form-text1">할인율</p>
-            </div>
-            <div class="box1-btns1">
-                <button class="btnbox active" @click="change_btn">{{discount1}}%</button>
-                <button class="btnbox" @click="change_btn">{{discount2}}%</button>
-                <button class="btnbox" @click="change_btn">{{discount3}}%</button>
-                <button class="btnbox" @click="change_btn">{{discount4}}%</button>
-                <button class="btnbox" @click="change_btn">{{discount5}}%</button>
-                <button class="btnbox" @click="change_btn">{{discount6}}%</button>
-            </div>
-        </div>
         <div class="total-box">
             <p class="total-text1">판매가</p>
-            <p class="total-price1">{{ totalPrice }}원</p>
+            <p class="total-price1">{{ itemPrice }}원</p>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import Btn from '../../common/components/Btn.vue';
-import { ref, onMounted, reactive, computed } from 'vue';
-import { defineProps } from 'vue';
+import { ref, onMounted, reactive, computed, toHandlers } from 'vue';
+import { defineProps, getCurrentInstance } from 'vue';
 import { ApiUtils } from '@/views/common/utils/ApiUtils';
 import axios from 'axios';
 
@@ -126,36 +89,18 @@ const itemCd = ref(props.data.itemCd);
 const corpCd = ref(props.data.corpCd);
 const itemBarcode = ref(props.data.itemBarcode);
 
-const totalPrice = computed(() => {
-    const totalPrice = itemPrice.value * (1 - (selectDiscountRat.value / 100));
-    return isNaN(totalPrice) ? 0 : totalPrice.toFixed(0);
-})
-
-const editData = reactive([{
-    itemCd: itemCd.value,
-    corpCd: corpCd.value,
-    discountRat: selectDiscountRat.value,
-    itemPrc: itemPrice.value,
-    saleAmt: itemAmt.value,
-    itemBarcode: itemBarcode.value,
-}]);
-
-const editedData = reactive([{
-    itemCd: editData.itemCd,
-    corpCd: editData.corpCd,
-    discountRat: editData.discountRat,
-    itemPrc: editData.salePrc,
-    saleAmt: editData.saleAmt,
-    itemBarcode: editData.itemBarcode,
-}]);
-
-
 const apiUtils = new ApiUtils();
+
+const { emit } = getCurrentInstance();
 
 async function update() {
   try {
-    const result = await apiUtils.post('/api/goodsReg/update', editedData);
+    const result = await apiUtils.post('/api/itemReg/update', props.data);
     if (result === 1) {
+        const updatedData = {
+        itemNm: itemNm.value,
+      }
+      emit('updateData', updatedData);
       alert('수정되었습니다.');
       location.reload();
       console.log('성공');
@@ -166,30 +111,6 @@ async function update() {
     console.error('오류 발생:', error);
   }
 }
-
-const toggleEditing = (field) => {
-  if (field === 'editData') {
-    editedData.corpCd = editData.corpCd;
-    editedData.itemCd = editData.itemCd;
-    editedData.discountRat = editData.discountRat;
-    editedData.itemPrc = editData.itemPrc;
-    editedData.saleAmt = editData.saleAmt;
-    editedData.itemBarcode = editData.itemBarcode;
-  }
-};
-
-const editComplete = (field) => {
-  if (field === 'editData') {
-    editData.corpCd = editedData.corpCd;
-    editData.itemCd = editedData.itemCd
-    editData.discountRat = editedData.discountRat;
-    editData.salePrc = editedData.salePrc;
-    editData.saleAmt = editedData.saleAmt;
-    editData.itemBarcode = editedData.itemBarcode;
-  }
-  update();
-  toggleEditing(field);
-};
 
 //이미지
 const testData = {
