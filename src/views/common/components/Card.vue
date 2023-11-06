@@ -58,7 +58,7 @@ const props = defineProps({
   corpImgData: {
     type: Array,
     default: [],
-  }
+  },
 });
 
 const getItemImage = (itemCd) => {
