@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Btn from './Btn.vue';
 
 const modalOpen = ref(false);
@@ -103,6 +103,13 @@ const props = defineProps({
 const toggleModal = () => {
   modalOpen.value = !modalOpen.value;
 };
+
+onMounted(() => {
+  const initAddr = sessionStorage.getItem('curSearchAddr');
+  if (!initAddr) {
+    curAddr.value = '충남 천안시 동남구 상명대길 31 (상명대학교천안캠퍼스)';
+  }
+});
 </script>
 
 <style scoped>
@@ -132,6 +139,7 @@ const toggleModal = () => {
   padding: 10px;
   display: flex;
   color: var(--ngray800);
+  text-align: left;
 }
 .location-filter {
   padding-right: 0;
