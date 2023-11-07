@@ -3,7 +3,7 @@
     <div class="img-box1">
         <label for="photo">매장 사진 추가</label>
         <input type="file" name="file" accept="image/*" required multiple ref="realUpload" id="photo" @change="handleImageUpload">
-        <div class="image-preview">
+        <div class="image-preview" v-if="latestUpload">
             <img :src="latestUpload?.preview" :data-file="latestUpload?.name" class="img-real1">
         </div>
     </div>
@@ -48,7 +48,7 @@
           @blur="checkValid"
           placeholder="-없이 숫자 10자리 입력"
           maxlength="10" />
-        <span class="error-msg">{{ errorMessage }}</span>
+        <!-- <span class="error-msg">{{ errorMessage }}</span> -->
         <p class="form-notice">
           사업자 정보 확인에 문제가 있는 경우, 사업자등록증 사본 파일과 연락
           가능한 이메일을 EAT ME 고객센터에 보내주세요.

@@ -193,7 +193,7 @@ const testData = {
   sessionStorage.removeItem('userId');
   sessionStorage.removeItem('userNick');
   sessionStorage.removeItem('token');
-  goPage('/');
+  goPage('');
 };
 
 onMounted(() => {

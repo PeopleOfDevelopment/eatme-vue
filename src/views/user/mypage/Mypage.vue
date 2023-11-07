@@ -4,18 +4,18 @@
     <div class="box1">
       <p class="box1-text1">
         <span style="color: var(--primary-def)">EAT ME</span>
-        가 구한 음식 수는?
+        를 통해 구할 수 있는 음식은?
       </p>
       <!-- <div class="box1-btns1">
                     <button class="btnbox" @click="change_btn">3월</button>
                     <button class="btnbox" @click="change_btn">4월</button>
                     <button class="btnbox active" @click="change_btn">5월</button>
                 </div> -->
-      <p class="box1-text2">총 판매횟수</p>
+      <p class="box1-text2">현재 등록된 상품</p>
       <p class="box1-text3">{{ ecoInfos.allSaleAmt }}회</p>
     </div>
     <div class="box2">
-      <p class="box2-text1">EAT ME 를 통해 지켜진 환경은?</p>
+      <p class="box2-text1">EAT ME 를 통해 지킬 수 있는 환경은?</p>
       <div class="box2-tree">
         <div class="round1">
           <svg
@@ -54,10 +54,10 @@
               style="
                 float: left;
                 margin-top: 20px;
-                margin-left: 15px;
+                margin-left: 10px;
                 margin-bottom: 0px;
               ">
-              심어졌어요.
+              심어져요.
             </p>
           </div>
           <p class="box2-text2-2">음식을 4번 구하면 나무 한 그루가 심어져요.</p>
@@ -76,7 +76,7 @@
           온실가스 배출량이
         </p>
         <div class="box3-text1-1">
-          <p class="box3-textGreen1">{{ ecoInfos.allSaleAmt * 1.2 }}kg</p>
+          <p class="box3-textGreen1">{{ (ecoInfos.allSaleAmt * 1.2).toFixed(2) }}kg</p>
           <p
             style="
               float: left;
@@ -84,7 +84,7 @@
               margin-left: 15px;
               margin-bottom: 0px;
             ">
-            줄었어요.
+            줄어요.
           </p>
         </div>
         <p class="box3-text1-2">
