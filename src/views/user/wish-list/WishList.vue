@@ -1,9 +1,13 @@
 <template>
   <Sidebar></Sidebar>
-  <div v-if="selectedMarket" id="main-wrapper">
+  <div v-if="selectedMarket && !selectedItem" id="main-wrapper">
     <MarketInfo
       :marketInfo="selectedMarket"
-      @close="clearSelectedMarket"></MarketInfo>
+      @close="clearSelectedMarket"
+      @itemSelected="selectItem"></MarketInfo>
+  </div>
+  <div id="main-wrapper" v-else-if="selectedMarket && selectedItem">
+    <itemInfo :itemInfo="selectedItem" @close="clearSelectedItem"></itemInfo>
   </div>
   <div v-else id="main-wrapper">
     <div class="content-section">
@@ -25,6 +29,7 @@ import Sidebar from '../../common/main/sidebar/Sidebar.vue';
 import Card from '../../common/components/Card.vue';
 import Footer from '../../common/main/footer/Footer.vue';
 import MarketInfo from '@/views/purchase/market-info/MarketInfo.vue';
+import itemInfo from '@/views/purchase/item-info/ItemInfo.vue';
 import { router } from '@/router';
 import axios from 'axios';
 
@@ -79,6 +84,17 @@ const selectMarket = (item) => {
 
 const scrollToTop = () => {
   window.scrollTo(0, 0);
+};
+
+const selectedItem = ref(null);
+
+const clearSelectedItem = () => {
+  selectedItem.value = null;
+};
+
+const selectItem = (item) => {
+  selectedItem.value = item;
+  scrollToTop();
 };
 
 //가게 이미지
