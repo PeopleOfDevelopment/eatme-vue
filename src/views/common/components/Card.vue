@@ -24,8 +24,8 @@
       <div class="place-info">
         <span class="place-name">{{ item.corpNm }}</span>
         <span class="place-time">
-          <span class="material-symbols-rounded">schedule</span>
-          3일
+          <span class="material-symbols-rounded">schedule
+          </span><span class="calcDday-text1">{{ calcDday(item.itemExpdate) }}일</span>
         </span>
       </div>
       <div class="product-info">
@@ -43,6 +43,8 @@
 </template>
 
 <script setup>
+import { ref, onMounted, watchEffect } from 'vue';
+
 const props = defineProps({
   itemList: {
     type: Array,
@@ -70,6 +72,19 @@ const getItemImage2 = (corpCd) => {
   const itemImg = props.itemList.find((img) => img.corpCd === corpCd);
   return itemImg ? itemImg.imgSrc : require('../../../assets/img/eatme.jpg');
 };
+
+watchEffect(() => {
+  if (props.itemList.length > 0) {
+    console.log(props.itemList.itemExpdate);
+  }
+})
+const calcDday = (date) => {
+  const today = new Date();
+const expdate = new Date(date)
+const dDay = expdate - today;
+return Math.floor(dDay/(1000*60*60*24))
+}
+
 </script>
 
 <style scoped>
@@ -143,5 +158,9 @@ const getItemImage2 = (corpCd) => {
   font-size: 14px;
   text-decoration-line: line-through;
   color: var(--ngray400);
+}
+
+.calcDday-text {
+  font-family: Pretendard;
 }
 </style>
