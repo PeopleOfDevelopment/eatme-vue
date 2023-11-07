@@ -11,9 +11,7 @@
       </div>
       <div class="item-info2">
         <p class="info-text2">{{ itemInfo.discountRat }}%</p>
-        <p class="info-text3">
-          {{ (itemInfo.itemPrc * (100 - itemInfo.discountRat)) / 100 }}원
-        </p>
+        <p class="info-text3">{{ itemInfo.salePrc }}원</p>
       </div>
       <div class="item-info3">
         <p class="info-text4">{{ itemInfo.itemPrc }}원</p>

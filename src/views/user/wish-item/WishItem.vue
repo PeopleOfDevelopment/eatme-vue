@@ -1,7 +1,7 @@
 <template>
   <Sidebar></Sidebar>
   <div v-if="selectedItem" id="main-wrapper">
-    <ItemInfo :itemInfo="selectedItem" @close="clearSelectedItem"></ItemInfo>
+    <itemInfo :itemInfo="selectedItem" @close="clearSelectedItem"></itemInfo>
   </div>
   <div v-else id="main-wrapper">
     <div class="content-section">

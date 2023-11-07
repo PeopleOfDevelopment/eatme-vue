@@ -7,7 +7,7 @@
     @click="$emit('itemSelected', item)">
     <div v-if="market" class="card-info">
       <div class="card-img">
-        <img :src="getItemImage2(item.corpCd)" alt="Item image"/>
+        <img :src="getItemImage2(item.corpCd)" alt="Item image" />
       </div>
       <div class="place-name">{{ item.corpNm }}</div>
       <div class="place-info">
@@ -19,7 +19,7 @@
     </div>
     <div v-else class="card-info">
       <div class="card-img">
-        <img :src="getItemImage(item.itemCd)" alt="Item image"/>
+        <img :src="getItemImage(item.itemCd)" alt="Item image" />
       </div>
       <div class="place-info">
         <span class="place-name">{{ item.corpNm }}</span>
@@ -33,7 +33,7 @@
         <div class="price-info">
           <div class="discount-price">
             <span class="discount-rate">{{ item.discountRat }}%</span>
-            <span>{{ (item.itemPrc * (100 - item.discountRat)) / 100 }}원</span>
+            <span>{{ item.salePrc }}원</span>
           </div>
           <div class="cost">{{ item.itemPrc }}원</div>
         </div>
