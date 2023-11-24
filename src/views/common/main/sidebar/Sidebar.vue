@@ -23,7 +23,16 @@
       <input
         class="search_input"
         type="text"
-        placeholder="제품 혹은 매장 검색" />
+        placeholder="제품 혹은 매장 검색"
+        v-model="searchQuery" />
+    </div>
+    <div v-if="searchQuery && filteredItems.length > 0" class="search-results">
+      <div style="text-align: left; padding-bottom: 10px;">
+        검색결과
+      </div>
+      <div v-for="(item, index) in filteredItems" :key="index" class="search-result">
+        {{ item.itemNm || item.corpNm }}
+      </div>
     </div>
     <div v-if="pageType === 'user'" class="menu-container">
       <div class="menus">
@@ -188,7 +197,7 @@
 <script setup>
 import { router } from '@/router';
 import Btns from '../../components/Btn.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watchEffect } from 'vue';
 import { ApiUtils } from '../../utils/ApiUtils';
 
 const clickedItem = ref(window.location.pathname.substring(1) || 'home');
@@ -288,6 +297,76 @@ const Logout = () => {
   goPage('/');
   router.go(0);
 };
+
+const marketList = ref([]);
+const productList = ref([]);
+
+const userData = {
+  userId: '',
+  userAddr: '',
+  curAddr: '',
+};
+
+const updateCurAddr = (newAddr) => {
+  userData.curAddr = newAddr;
+  userData.userAddr = newAddr;
+  console.log(`바뀐주소검색: ${userData.curAddr}`);
+  getMarketAround();
+  getItemAround();
+};
+
+async function getMarketAround() {
+  const result = await apiUtils.post('/api/main/query/corp', userData);
+  marketList.value = result.data;
+}
+
+async function getItemAround() {
+  const result = await apiUtils.post('/api/main/query/item', userData);
+  productList.value = result.data;
+}
+
+onMounted(() => {
+  const initAddr = sessionStorage.getItem('curSearchAddr');
+  if (initAddr) {
+    userData.curAddr = initAddr;
+    userData.userAddr = initAddr;
+  } else {
+    sessionStorage.setItem(
+      'curAddr',
+      '충남 천안시 동남구 상명대길 31 (상명대학교천안캠퍼스)'
+    );
+    sessionStorage.setItem('curSearchAddr', '충남 천안시 동남구 안서동');
+    userData.curAddr = '충남 천안시 동남구 안서동';
+    userData.userAddr = '충남 천안시 동남구 안서동';
+  }
+
+  getMarketAround();
+  getItemAround();
+});
+
+const searchQuery = ref('');
+const filteredItems = ref([]);
+
+const filterItems = () => {
+  if (!productList.value || !marketList.value) {
+    return;
+  }
+
+  const filteredProducts = productList.value.filter((item) => 
+    item && item.itemNm && item.itemNm.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+
+  const filteredMarkets = marketList.value.filter((item) => 
+    item && item.corpNm && item.corpNm.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+
+  filteredItems.value = [...filteredProducts, ...filteredMarkets];
+};
+
+
+watchEffect(() => {
+  filterItems();
+})
 </script>
 
 <style scoped>
@@ -441,5 +520,12 @@ hr {
 }
 .t1 {
   padding-top: 10px;
+}
+
+.search-result {
+  border-bottom: 1px solid var(--ngray200);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: left;
 }
 </style>
