@@ -84,7 +84,11 @@ const productList = ref([]);
 
 async function getItem() {
   const result = await apiUtils.post('/api/goodsReg/query', corpData);
-  productList.value = result.data;
+  const currentDate = new Date();
+
+  productList.value = result.data.filter(item => {
+    return new Date(item.itemExpdate) > currentDate;
+  });
 
   if (productList.value && productList.value.length > 0) {
     console.log('호출됨');
