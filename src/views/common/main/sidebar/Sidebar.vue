@@ -1,6 +1,7 @@
 <template>
   <!--판매자 페이지: <Sidebar pageType="seller"></Sidebar>
   관리자 페이지: <Sidebar pageType="admin"></Sidebar>-->
+
   <div class="sideBar" :class="{ seller: pageType !== 'user' }">
     <p class="eatMe" @click="goPage('home')">EAT ME</p>
     <div
@@ -23,15 +24,16 @@
       <input
         class="search_input"
         type="text"
-        placeholder="제품 혹은 매장 검색"
+        placeholder="주변 할인 상품 검색"
         v-model="searchQuery" />
     </div>
     <div v-if="searchQuery && filteredItems.length > 0" class="search-results">
       <div style="text-align: left; padding-bottom: 10px;">
         검색결과
       </div>
-      <div v-for="(item, index) in filteredItems" :key="index" class="search-result">
-        {{ item.itemNm || item.corpNm }}
+      <div v-for="(item, index) in filteredItems" :key="index" class="search-result"
+      @click="$emit('itemSelected', item)">
+        {{ item.itemNm }}
       </div>
     </div>
     <div v-if="pageType === 'user'" class="menu-container">
@@ -192,6 +194,10 @@
       <p class="t2" @click="Logout" style="cursor: pointer">로그아웃</p>
     </div>
   </div>
+
+  <div id="main-wrapper" v-if="selectedItem">
+    <ItemInfo :itemInfo="selectedItem" @close="clearSelectedItem"></ItemInfo>
+  </div>
 </template>
 
 <script setup>
@@ -199,6 +205,7 @@ import { router } from '@/router';
 import Btns from '../../components/Btn.vue';
 import { ref, onMounted, watchEffect } from 'vue';
 import { ApiUtils } from '../../utils/ApiUtils';
+import ItemInfo from '../../../purchase/item-info/ItemInfo.vue';
 
 const clickedItem = ref(window.location.pathname.substring(1) || 'home');
 const LoginModal = ref(false);
@@ -348,7 +355,7 @@ const searchQuery = ref('');
 const filteredItems = ref([]);
 
 const filterItems = () => {
-  if (!productList.value || !marketList.value) {
+  if (!productList.value) {
     return;
   }
 
@@ -356,17 +363,24 @@ const filterItems = () => {
     item && item.itemNm && item.itemNm.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
 
-  const filteredMarkets = marketList.value.filter((item) => 
-    item && item.corpNm && item.corpNm.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
-
-  filteredItems.value = [...filteredProducts, ...filteredMarkets];
+  filteredItems.value = [...filteredProducts];
 };
 
 
 watchEffect(() => {
   filterItems();
 })
+
+const selectedItem = ref(null);
+
+const showItemDetails = (item) => {
+  selectedItem.value = item;
+  emit('itemSelected', item);
+};
+
+const clearSelectedItem = () => {
+  selectedItem.value = null;
+};
 </script>
 
 <style scoped>
@@ -527,5 +541,6 @@ hr {
   padding-top: 5px;
   padding-bottom: 5px;
   text-align: left;
+  cursor: pointer;
 }
 </style>

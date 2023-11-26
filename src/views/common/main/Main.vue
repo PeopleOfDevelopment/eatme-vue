@@ -1,5 +1,5 @@
 <template>
-  <Sidebar></Sidebar>
+  <Sidebar @itemSelected="handleItemSelected"></Sidebar>
   <div id="main-wrapper" v-if="selectedItem">
     <ItemInfo :itemInfo="selectedItem" @close="clearSelectedItem"></ItemInfo>
   </div>
@@ -261,6 +261,10 @@ onMounted(() => {
 
 /* 이동 */
 const selectedItem = ref(null);
+
+const handleItemSelected = (item) => {
+  selectedItem.value = item;
+}
 
 const clearSelectedItem = () => {
   selectedItem.value = null;

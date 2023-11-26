@@ -33,6 +33,7 @@ import SellerQnaWork from '../views/admin/admin/seller-qna-work/SellerQnaWork.vu
 import Qna from '../views/user/qna/QnaReg.vue';
 import Ecostatus from '../views/user/eco-status/EcoStatus.vue';
 import ItemUpdate from '../views/seller/item-reg/ItemUpdate.vue';
+import MarketInfo from '../views/purchase/market-info/MarketInfo.vue';
 
 //라우터설계(경로랑 컴포넌트 배열로 입력)
 const routes = [
