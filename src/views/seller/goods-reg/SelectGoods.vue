@@ -294,6 +294,8 @@ const goBack = () => {
   border-bottom: solid 1px var(--gray200);
   width: 95%;
   height: 48px;
+  display: flex;
+  align-items: center;
 }
 .form-input1 {
   border: none;
