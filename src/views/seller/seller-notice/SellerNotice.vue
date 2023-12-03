@@ -19,7 +19,7 @@
           <div class="cs-title">
             {{ item.noticeTit }}
           </div>
-          <div class="cs-detail-wrap">{{ item.noticeTodt }}</div>
+          <div class="cs-detail-wrap">{{ item.noticeFrdt }}</div>
         </div>
         <div class="table-contents-box" v-html="item.noticeTxt"></div>
       </div>
